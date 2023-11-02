@@ -1,12 +1,11 @@
 package com.yohanii.lostandfound.domain.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@AllArgsConstructor
+@Data
+@NoArgsConstructor
 public class User {
 
     private Long id;
