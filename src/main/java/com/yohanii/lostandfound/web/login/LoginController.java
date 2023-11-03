@@ -20,18 +20,17 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/login")
 @RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
 
-    @GetMapping
+    @GetMapping("/login")
     public String loginForm(@ModelAttribute LoginForm loginForm) {
         return "login/loginForm";
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public String login(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "/login/loginForm";
@@ -45,6 +44,16 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute("loginUser", loginUser);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
 
         return "redirect:/";
     }
