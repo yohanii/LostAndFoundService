@@ -2,10 +2,7 @@ package com.yohanii.lostandfound.domain.user;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class UserMemoryRepository {
@@ -21,6 +18,12 @@ public class UserMemoryRepository {
 
     public User findById(Long id) {
         return store.get(id);
+    }
+
+    public Optional<User> findByLoginId(String loginId) {
+        return findAll().stream()
+                .filter(user -> user.getLoginId().equals(loginId))
+                .findFirst();
     }
 
     public List<User> findAll() {
