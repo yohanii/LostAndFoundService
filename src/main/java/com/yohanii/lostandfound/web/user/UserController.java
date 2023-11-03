@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserMemoryRepository userRepository = new UserMemoryRepository();
+    private final UserMemoryRepository userRepository;
 
     @GetMapping("/add")
     public String addForm(@ModelAttribute User user) {
