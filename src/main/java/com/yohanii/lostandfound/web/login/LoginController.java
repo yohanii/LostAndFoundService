@@ -3,6 +3,7 @@ package com.yohanii.lostandfound.web.login;
 import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.domain.user.UserMemoryRepository;
 import com.yohanii.lostandfound.service.login.LoginService;
+import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class LoginController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("loginUser", loginUser);
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
         return "redirect:/";
     }

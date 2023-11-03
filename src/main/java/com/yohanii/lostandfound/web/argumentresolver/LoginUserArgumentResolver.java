@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound.web.argumentresolver;
 
 import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.core.MethodParameter;
@@ -27,6 +28,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
             return null;
         }
 
-        return session.getAttribute("loginUser");
+        return session.getAttribute(SessionConst.LOGIN_USER);
     }
 }
