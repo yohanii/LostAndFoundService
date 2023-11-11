@@ -16,9 +16,10 @@ public class LoginService {
     /**
      * @return null, 로그인 실패 시
      */
-    public User login(String loginId, String password) {
-        return userRepository.findByLoginId(loginId)
+    public Optional<User> login(String loginId, String password) {
+        User findUser = userRepository.findByLoginId(loginId)
                 .filter(user -> user.getPassword().equals(password))
                 .orElse(null);
+        return Optional.ofNullable(findUser);
     }
 }
