@@ -13,9 +13,6 @@ public class LoginService {
 
     private final UserMemoryRepository userRepository;
 
-    /**
-     * @return null, 로그인 실패 시
-     */
     public Optional<User> login(String loginId, String password) {
         User findUser = userRepository.findByLoginId(loginId)
                 .filter(user -> user.getPassword().equals(password))
