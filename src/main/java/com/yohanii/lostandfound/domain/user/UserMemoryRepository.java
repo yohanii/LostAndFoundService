@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.domain.user;
 
+import lombok.Builder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -11,9 +12,14 @@ public class UserMemoryRepository {
     private static long sequence = 0L;
 
     public User save(User user) {
-        user.setId(++sequence);
-        store.put(user.getId(), user);
-        return user;
+        User newUser = User.builder()
+                .id(++sequence)
+                .name(user.getName())
+                .loginId(user.getLoginId())
+                .password(user.getPassword())
+                .build();
+        store.put(newUser.getId(), newUser);
+        return newUser;
     }
 
     public User findById(Long id) {

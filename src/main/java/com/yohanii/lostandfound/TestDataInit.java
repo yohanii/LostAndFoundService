@@ -18,21 +18,38 @@ public class TestDataInit {
 
     @PostConstruct
     public void init() {
-        User user1 = new User();
-        user1.setName("yohan");
-        user1.setLoginId("test");
-        user1.setPassword("test");
+        User testUser1 = User.builder()
+                .name("yohan")
+                .loginId("test")
+                .password("test")
+                .build();
+        User testUser2 = User.builder()
+                .name("john")
+                .loginId("test2")
+                .password("test2")
+                .build();
 
-        User user2 = new User();
-        user2.setName("john");
-        user2.setLoginId("test2");
-        user2.setPassword("test2");
+        User user1 = userRepository.save(testUser1);
+        User user2 = userRepository.save(testUser2);
 
-        userRepository.save(user1);
-        userRepository.save(user2);
+        Post post1 = Post.builder()
+                .title("test1")
+                .content("testtesttest")
+                .type(PostType.FOUND)
+                .build();
+        Post post2 = Post.builder()
+                .title("test2")
+                .content("testtesttesttest")
+                .type(PostType.LOST)
+                .build();
+        Post post3 = Post.builder()
+                .title("test3")
+                .content("testtesttesttesttest")
+                .type(PostType.FOUND)
+                .build();
 
-        postRepository.save(new Post(user1, "test1", "testtesttest", PostType.FOUND));
-        postRepository.save(new Post(user1, "test2", "testtesttesttest", PostType.LOST));
-        postRepository.save(new Post(user2, "test3", "testtesttesttesttest", PostType.FOUND));
+        postRepository.save(post1, user1);
+        postRepository.save(post2, user1);
+        postRepository.save(post3, user2);
     }
 }

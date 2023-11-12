@@ -17,15 +17,17 @@ class LoginServiceTest {
 
     @Test
     void login_회원_있음() {
-        User user = new User();
-        user.setLoginId("test1");
-        user.setPassword("test2");
-        userRepository.save(user);
+        User testUser1 = User.builder()
+                .name("yohan")
+                .loginId("testId")
+                .password("testPassword")
+                .build();
+        User saveUser = userRepository.save(testUser1);
 
-        Optional<User> result = loginService.login(user.getLoginId(), user.getPassword());
+        Optional<User> result = loginService.login(saveUser.getLoginId(), saveUser.getPassword());
 
-        assertThat(result.get().getLoginId()).isEqualTo(user.getLoginId());
-        assertThat(result.get().getPassword()).isEqualTo(user.getPassword());
+        assertThat(result.get().getLoginId()).isEqualTo(saveUser.getLoginId());
+        assertThat(result.get().getPassword()).isEqualTo(saveUser.getPassword());
     }
 
     @Test

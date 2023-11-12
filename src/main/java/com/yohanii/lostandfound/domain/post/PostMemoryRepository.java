@@ -11,10 +11,17 @@ public class PostMemoryRepository {
     private static Map<Long, Post> store = new HashMap<>();
     private static long sequence = 0L;
 
-    public Post save(Post post) {
-        post.setId(++sequence);
-        store.put(post.getId(), post);
-        return post;
+    public Post save(Post post, User user) {
+        Post newPost = Post.builder()
+                .id(++sequence)
+                .user(user)
+                .title(post.getTitle())
+                .content(post.getContent())
+                .type(post.getType())
+                .build();
+
+        store.put(newPost.getId(), newPost);
+        return newPost;
     }
 
     public Post findById(Long id) {

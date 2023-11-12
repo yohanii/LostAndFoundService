@@ -53,11 +53,7 @@ public class PostController {
 
         HttpSession session = request.getSession();
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
-
-        post.setUser(loginUser);
-        postRepository.save(post);
-
-        log.info("post={}", post.getTitle(), post.getContent());
+        postRepository.save(post, loginUser);
         return "redirect:/posts";
     }
 }
