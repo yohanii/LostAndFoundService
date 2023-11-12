@@ -2,6 +2,7 @@ package com.yohanii.lostandfound.web.user;
 
 import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.domain.user.UserMemoryRepository;
+import com.yohanii.lostandfound.dto.user.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,17 +22,17 @@ public class UserController {
     private final UserMemoryRepository userRepository;
 
     @GetMapping("/add")
-    public String addForm(@ModelAttribute User user) {
+    public String addForm(@ModelAttribute UserSaveRequestDto dto) {
         return "users/addUserForm";
     }
 
     @PostMapping("/add")
-    public String save(@Validated @ModelAttribute User user, BindingResult bindingResult) {
+    public String save(@Validated @ModelAttribute UserSaveRequestDto dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "users/addUserForm";
         }
 
-        userRepository.save(user);
+        userRepository.save(dto.toEntity());
         return "redirect:/";
     }
 }

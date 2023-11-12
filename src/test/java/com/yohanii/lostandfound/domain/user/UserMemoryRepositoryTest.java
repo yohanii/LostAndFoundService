@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound.domain.user;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -8,38 +9,46 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserMemoryRepositoryTest {
-        UserMemoryRepository userRepository = new UserMemoryRepository();
+        private final UserMemoryRepository userRepository = new UserMemoryRepository();
+        private User testUser1, testUser2;
 
-        @AfterEach
-        void afterEach() {
+        @BeforeEach
+        void beforeEach() {
+            testUser1 = User.builder()
+                    .name("yohan")
+                    .loginId("testId")
+                    .password("testPassword")
+                    .build();
+            testUser2 = User.builder()
+                    .name("john")
+                    .loginId("testId2")
+                    .password("testPassword2")
+                    .build();
             userRepository.clearStore();
         }
 
         @Test
         void save() {
-            User user1 = new User();
-            User saveuser = userRepository.save(user1);
-            User result = userRepository.findById(saveuser.getId());
+            User saveUser = userRepository.save(testUser1);
 
-            assertThat(result).isEqualTo(user1);
+            assertThat(saveUser.getName()).isEqualTo(testUser1.getName());
+            assertThat(saveUser.getLoginId()).isEqualTo(testUser1.getLoginId());
+            assertThat(saveUser.getPassword()).isEqualTo(testUser1.getPassword());
         }
 
         @Test
         void findById() {
-            User user1 = new User();
-            userRepository.save(user1);
+            User saveUser = userRepository.save(testUser1);
 
-            User result = userRepository.findById(user1.getId());
+            User result = userRepository.findById(saveUser.getId());
 
-            assertThat(result).isEqualTo(user1);
+            assertThat(result).isEqualTo(saveUser);
         }
 
         @Test
         void findAll() {
-            User user1 = new User();
-            User user2 = new User();
-            userRepository.save(user1);
-            userRepository.save(user2);
+            User user1 = userRepository.save(testUser1);
+            User user2 = userRepository.save(testUser2);
 
             List<User> result = userRepository.findAll();
 
@@ -49,8 +58,7 @@ public class UserMemoryRepositoryTest {
 
         @Test
         void clearStore() {
-            User user1 = new User();
-            userRepository.save(user1);
+            userRepository.save(testUser1);
 
             userRepository.clearStore();
             List<User> storeList = userRepository.findAll();

@@ -1,7 +1,6 @@
 package com.yohanii.lostandfound.web.login;
 
 import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserMemoryRepository;
 import com.yohanii.lostandfound.service.login.LoginService;
 import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,13 +8,11 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
@@ -37,14 +34,14 @@ public class LoginController {
             return "/login/loginForm";
         }
 
-        User loginUser = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
-        if (loginUser == null) {
+        Optional<User> loginUser = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
+        if (loginUser.isEmpty()) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "/login/loginForm";
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser.get());
 
         return "redirect:/";
     }
