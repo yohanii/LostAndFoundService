@@ -15,11 +15,11 @@ public class Post {
     private User user;
     private String title;
     private String content;
-    private Integer type; //0 : 찾은 물건 게시글, 1 : 잃어버린 물건 게시글
+    private PostType type;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
 
-    public Post(User user, String title, String content, Integer type) {
+    public Post(User user, String title, String content, PostType type) {
         this.user = user;
         this.title = title;
         this.content = content;
