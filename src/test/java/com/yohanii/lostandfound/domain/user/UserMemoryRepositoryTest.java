@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound.domain.user;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,8 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserMemoryRepositoryTest {
         UserMemoryRepository userRepository = new UserMemoryRepository();
 
-        @AfterEach
-        void afterEach() {
+        @BeforeEach
+        void beforeEach() {
             userRepository.clearStore();
         }
 
