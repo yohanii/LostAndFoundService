@@ -14,11 +14,8 @@ public class Post {
     private Long id;
     private User user;
 
-    @NotBlank
     private String title;
-    @NotBlank
     private String content;
-    @NotNull
     private PostType type;
 
     private LocalDateTime createdTime;

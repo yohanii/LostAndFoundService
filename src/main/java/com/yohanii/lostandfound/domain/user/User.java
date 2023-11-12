@@ -11,11 +11,8 @@ public class User {
 
     private Long id;
 
-    @NotBlank
     private String name;
-    @NotBlank
     private String loginId;
-    @NotBlank
     private String password;
     private String nickName;
     private LocalDateTime createdTime;
