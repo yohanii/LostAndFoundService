@@ -19,7 +19,7 @@
 ![IA.png](docs/img/IA.png)
 
 ## 💾 ERD
-![ERD.png](docs/img/ERD.png)
+![ERD.png](docs/img/ERDv3.png)
 
 ## 🎯 진행 상황
 ![progress.png](docs/img/progress.png)

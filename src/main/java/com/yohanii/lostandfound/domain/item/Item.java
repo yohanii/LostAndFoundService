@@ -1,16 +1,31 @@
 package com.yohanii.lostandfound.domain.item;
 
-import com.yohanii.lostandfound.domain.itemcategory.ItemCategory;
 import com.yohanii.lostandfound.domain.post.Post;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import static jakarta.persistence.FetchType.*;
 
 @Getter
-@AllArgsConstructor
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "item_id")
+    private Long id;
+
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "post_id")
     private Post post;
-    private ItemCategory itemCategory;
+
+    @Column(name = "item_name")
     private String name;
     private String place;
+
+    @Enumerated(EnumType.STRING)
+    private ItemCategory itemCategory;
 }
