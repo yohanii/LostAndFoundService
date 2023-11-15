@@ -1,17 +1,25 @@
 package com.yohanii.lostandfound.domain.user;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Entity
 public class User {
 
+    @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
 
+    @Column(name = "user_name")
     private String name;
+
     private String loginId;
     private String password;
     private String nickName;
