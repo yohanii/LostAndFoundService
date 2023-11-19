@@ -1,7 +1,6 @@
 package com.yohanii.lostandfound.web.user;
 
-import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserMemoryRepository;
+import com.yohanii.lostandfound.domain.user.UserRepository;
 import com.yohanii.lostandfound.dto.user.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserMemoryRepository userRepository;
+    private final UserRepository userRepository;
 
     @GetMapping("/add")
     public String addForm(@ModelAttribute UserSaveRequestDto dto) {

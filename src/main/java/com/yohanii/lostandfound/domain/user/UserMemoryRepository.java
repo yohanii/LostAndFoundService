@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+//@Repository
 public class UserMemoryRepository {
 
     private static Map<Long, User> store = new HashMap<>();
