@@ -1,10 +1,7 @@
 package com.yohanii.lostandfound.service.login;
 
 import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserMemoryRepository;
 import com.yohanii.lostandfound.domain.user.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

@@ -1,7 +1,6 @@
 package com.yohanii.lostandfound.service.login;
 
 import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserMemoryRepository;
 import com.yohanii.lostandfound.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
