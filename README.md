@@ -1,7 +1,9 @@
 # LostAndFoundService
 ![Java](https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white)
 ![Spring-Boot](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white)
+![JPA](https://img.shields.io/badge/jpa-00555?style=for-the-badge&logo=jpa&logoColor=white)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
 - 1인 개발
 - 개발 기간 : 23.11.01 ~
@@ -13,7 +15,10 @@
 ## 🛠 개발 환경
 - JAVA : 17
 - Spring Boot : 3.1.5
-- Thymeleaf
+- JPA : 3.1.5
+- Thymeleaf   
+- MySQL : 8.0.34
+- Lombok : 1.18.20
 
 ## 📃 IA
 ![IA.png](docs/img/IA.png)
