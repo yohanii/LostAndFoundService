@@ -2,15 +2,17 @@ package com.yohanii.lostandfound.domain.user;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepository {
-    @PersistenceContext
-    EntityManager em;
+
+    private final EntityManager em;
 
     public Long save(User user) {
         em.persist(user);
