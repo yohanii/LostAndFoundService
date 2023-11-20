@@ -30,7 +30,7 @@ public class Room {
     private Post post;
 
     @Column(name = "user_id2")
-    private User partner;
+    private Long partnerId;
 
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;

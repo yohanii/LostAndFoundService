@@ -1,0 +1,97 @@
+package com.yohanii.lostandfound.domain.user;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+
+@SpringBootTest
+@Transactional
+class UserRepositoryTest {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Test
+    void save() {
+        User testUser = User.builder()
+                .loginId("")
+                .password("")
+                .name("userTest")
+                .build();
+
+        Long savedId = userRepository.save(testUser);
+
+        User savedUser = userRepository.find(savedId);
+        assertThat(savedId).isEqualTo(testUser.getId());
+        assertThat(savedUser.getId()).isEqualTo(testUser.getId());
+    }
+
+    @Test
+    void find() {
+        User testUser = User.builder()
+                .loginId("")
+                .password("")
+                .name("userTest")
+                .build();
+        Long savedId = userRepository.save(testUser);
+
+        User savedUser = userRepository.find(savedId);
+
+        assertThat(savedUser.getId()).isEqualTo(savedId);
+    }
+
+    @Test
+    void findAll() {
+        User user1 = User.builder()
+                .loginId("")
+                .password("")
+                .name("userA")
+                .build();
+        User user2 = User.builder()
+                .loginId("")
+                .password("")
+                .name("userB")
+                .build();
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        List<User> findUsers = userRepository.findAll();
+
+        assertThat(findUsers).contains(user1);
+        assertThat(findUsers).contains(user2);
+    }
+
+    @Test
+    void findByName() {
+        User testUser = User.builder()
+                .loginId("")
+                .password("")
+                .name("userTest")
+                .build();
+        userRepository.save(testUser);
+
+        List<User> findUser = userRepository.findByName(testUser.getName());
+
+        assertThat(findUser.size()).isEqualTo(1);
+        assertThat(findUser).contains(testUser);
+    }
+
+    @Test
+    void findByLoginId() {
+        User testUser = User.builder()
+                .loginId("test123456789")
+                .password("")
+                .name("userTest")
+                .build();
+        userRepository.save(testUser);
+
+        User findUser = userRepository.findByLoginId(testUser.getLoginId()).get();
+
+        assertThat(findUser).isEqualTo(testUser);
+    }
+}

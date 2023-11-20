@@ -1,19 +1,24 @@
 package com.yohanii.lostandfound.service.login;
 
 import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserMemoryRepository;
-import org.assertj.core.api.Assertions;
+import com.yohanii.lostandfound.domain.user.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@Transactional
 class LoginServiceTest {
 
-    private final UserMemoryRepository userRepository = new UserMemoryRepository();
-    private final LoginService loginService = new LoginService(userRepository);
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    LoginService loginService;
 
     @Test
     void login_회원_있음() {
@@ -22,7 +27,8 @@ class LoginServiceTest {
                 .loginId("testId")
                 .password("testPassword")
                 .build();
-        User saveUser = userRepository.save(testUser1);
+        Long userId = userRepository.save(testUser1);
+        User saveUser = userRepository.find(userId);
 
         Optional<User> result = loginService.login(saveUser.getLoginId(), saveUser.getPassword());
 
