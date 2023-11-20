@@ -12,14 +12,15 @@ public class UserMemoryRepository {
     private static long sequence = 0L;
 
     public User save(User user) {
-        User newUser = User.builder()
-                .id(++sequence)
-                .name(user.getName())
-                .loginId(user.getLoginId())
-                .password(user.getPassword())
-                .build();
-        store.put(newUser.getId(), newUser);
-        return newUser;
+//        User newUser = User.builder()
+//                .id(++sequence)
+//                .name(user.getName())
+//                .loginId(user.getLoginId())
+//                .password(user.getPassword())
+//                .build();
+//        store.put(newUser.getId(), newUser);
+//        return newUser;
+        return null;
     }
 
     public User findById(Long id) {
