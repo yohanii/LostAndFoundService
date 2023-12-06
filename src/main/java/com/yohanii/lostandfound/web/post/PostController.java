@@ -1,7 +1,7 @@
 package com.yohanii.lostandfound.web.post;
 
 import com.yohanii.lostandfound.domain.post.Post;
-import com.yohanii.lostandfound.domain.post.PostMemoryRepository;
+import com.yohanii.lostandfound.domain.post.PostRepository;
 import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.web.SessionConst;
@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/posts")
 public class PostController {
-    private final PostMemoryRepository postRepository;
+    private final PostRepository postRepository;
 
     @GetMapping
     public String posts(Model model) {
@@ -47,6 +48,7 @@ public class PostController {
     }
 
     @PostMapping("/add")
+    @Transactional
     public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "posts/addPostForm";
@@ -54,7 +56,7 @@ public class PostController {
 
         HttpSession session = request.getSession();
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
-        postRepository.save(dto.toEntity(), loginUser);
+        postRepository.save(dto.toEntity(loginUser));
         return "redirect:/posts";
     }
 }

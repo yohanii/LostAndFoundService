@@ -5,6 +5,7 @@ import com.yohanii.lostandfound.dto.user.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
+    @Transactional
     public String save(@Validated @ModelAttribute UserSaveRequestDto dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "users/addUserForm";
