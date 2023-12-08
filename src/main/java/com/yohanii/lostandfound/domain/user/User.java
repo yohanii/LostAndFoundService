@@ -27,9 +27,12 @@ public class User {
     private LocalDateTime updatedTime;
 
     @Builder
-    public User(String name, String loginId, String password) {
+    public User(String name, String loginId, String password, String nickName, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.name = name;
         this.loginId = loginId;
         this.password = password;
+        this.nickName = nickName;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
     }
 }

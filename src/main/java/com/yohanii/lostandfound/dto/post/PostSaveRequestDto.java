@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,19 +24,13 @@ public class PostSaveRequestDto {
     @NotNull
     private PostType type;
 
-    @Builder
-    public PostSaveRequestDto(String title, String content, PostType type) {
-        this.title = title;
-        this.content = content;
-        this.type = type;
-    }
-
     public Post toEntity(User user) {
         return Post.builder()
                 .user(user)
                 .title(title)
                 .content(content)
                 .type(type)
+                .createdTime(LocalDateTime.now())
                 .build();
     }
 }
