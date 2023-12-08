@@ -19,16 +19,18 @@ class UserRepositoryTest {
     @Test
     void save() {
         User testUser = User.builder()
-                .loginId("")
-                .password("")
+                .loginId("abc")
+                .password("abcd")
                 .name("userTest")
                 .build();
-
         Long savedId = userRepository.save(testUser);
 
-        User savedUser = userRepository.find(savedId);
-        assertThat(savedId).isEqualTo(testUser.getId());
+        User savedUser = userRepository.find(testUser.getId());
+
         assertThat(savedUser.getId()).isEqualTo(testUser.getId());
+        assertThat(savedUser.getLoginId()).isEqualTo(testUser.getLoginId());
+        assertThat(savedUser.getPassword()).isEqualTo(testUser.getPassword());
+        assertThat(savedUser.getName()).isEqualTo(testUser.getName());
     }
 
     @Test
@@ -42,7 +44,7 @@ class UserRepositoryTest {
 
         User savedUser = userRepository.find(savedId);
 
-        assertThat(savedUser.getId()).isEqualTo(savedId);
+        assertThat(savedUser).isEqualTo(testUser);
     }
 
     @Test

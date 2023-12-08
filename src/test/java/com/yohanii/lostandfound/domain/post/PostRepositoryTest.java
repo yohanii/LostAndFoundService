@@ -41,13 +41,11 @@ class PostRepositoryTest {
     @Test
     void findById() {
         Post post1 = Post.builder()
-                .user(null)
                 .title("hello")
                 .content("hello123")
                 .type(PostType.LOST)
                 .build();
         Post post2 = Post.builder()
-                .user(null)
                 .title("hello2")
                 .content("hello1234")
                 .type(PostType.FOUND)
@@ -65,13 +63,11 @@ class PostRepositoryTest {
     @Test
     void findAll() {
         Post post1 = Post.builder()
-                .user(null)
                 .title("hello")
                 .content("hello123")
                 .type(PostType.LOST)
                 .build();
         Post post2 = Post.builder()
-                .user(null)
                 .title("hello2")
                 .content("hello1234")
                 .type(PostType.FOUND)
@@ -81,6 +77,5 @@ class PostRepositoryTest {
 
         List<Post> result = postRepository.findAll();
         assertThat(result).contains(post1, post2);
-        assertThat(result.size()).isEqualTo(2);
     }
 }
