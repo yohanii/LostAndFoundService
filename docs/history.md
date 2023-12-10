@@ -1,5 +1,10 @@
 ## 기록
 
+- 23.12.10
+  - post edit 기능 추가
+    - user.name과 post.user.name이 동일할 때만 수정 가능
+
+
 - 23.12.08
   - createdTime 추가
     - Post와 User가 생성될 때, createdTime data가 입력되도록 하였다.

@@ -3,8 +3,10 @@ package com.yohanii.lostandfound.web.post;
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostRepository;
 import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.web.SessionConst;
+import com.yohanii.lostandfound.web.argumentresolver.Login;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -35,15 +37,17 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public String post(@PathVariable Long postId, Model model) {
+    public String post(@Login User loginUser, @PathVariable Long postId, Model model) {
         Post post = postRepository.findById(postId);
 
+        log.info("loginUser={}", loginUser);
+        model.addAttribute("user", loginUser);
         model.addAttribute("post", post);
         return "posts/post";
     }
 
     @GetMapping("/add")
-    public String postCreate(@ModelAttribute PostSaveRequestDto post) {
+    public String postSaveForm(@ModelAttribute PostSaveRequestDto post) {
         return "posts/addPostForm";
     }
 
@@ -58,5 +62,26 @@ public class PostController {
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
         postRepository.save(dto.toEntity(loginUser));
         return "redirect:/posts";
+    }
+
+    @GetMapping("/{postId}/edit")
+    public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto) {
+
+        Post findPost = postRepository.findById(postId);
+        dto.setTitle(findPost.getTitle());
+        dto.setContent(findPost.getContent());
+        dto.setType(findPost.getType());
+
+        return "posts/editPostForm";
+    }
+
+    @PostMapping("/{postId}/edit")
+    @Transactional
+    public String postEdit(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto) {
+
+        Post findPost = postRepository.findById(postId);
+        findPost.updatePost(dto);
+
+        return "redirect:/posts/{postId}";
     }
 }
