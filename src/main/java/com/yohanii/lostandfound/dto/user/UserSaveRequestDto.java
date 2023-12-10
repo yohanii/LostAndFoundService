@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,18 +21,12 @@ public class UserSaveRequestDto {
     @NotBlank
     private String password;
 
-    @Builder
-    public UserSaveRequestDto(String name, String loginId, String password) {
-        this.name = name;
-        this.loginId = loginId;
-        this.password = password;
-    }
-
     public User toEntity() {
         return User.builder()
                 .name(name)
                 .loginId(loginId)
                 .password(password)
+                .createdTime(LocalDateTime.now())
                 .build();
     }
 }

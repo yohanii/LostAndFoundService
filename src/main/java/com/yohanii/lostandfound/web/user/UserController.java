@@ -21,12 +21,12 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @GetMapping("/add")
+    @GetMapping("/add-form")
     public String addForm(@ModelAttribute UserSaveRequestDto dto) {
         return "users/addUserForm";
     }
 
-    @PostMapping("/add")
+    @PostMapping
     @Transactional
     public String save(@Validated @ModelAttribute UserSaveRequestDto dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

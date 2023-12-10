@@ -1,6 +1,5 @@
 package com.yohanii.lostandfound.domain.post;
 
-import com.yohanii.lostandfound.domain.user.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -27,4 +26,7 @@ public class PostRepository {
                 .getResultList();
     }
 
+    public void delete(Long postId) {
+        em.remove(findById(postId));
+    }
 }
