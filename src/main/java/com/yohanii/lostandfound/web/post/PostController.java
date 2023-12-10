@@ -65,17 +65,19 @@ public class PostController {
     }
 
     @GetMapping("/{postId}/edit")
-    public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto) {
+    public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, Model model) {
 
         Post findPost = postRepository.findById(postId);
         dto.setTitle(findPost.getTitle());
         dto.setContent(findPost.getContent());
         dto.setType(findPost.getType());
 
+        model.addAttribute("post", findPost);
+
         return "posts/editPostForm";
     }
 
-    @PostMapping("/{postId}/edit")
+    @PatchMapping("/{postId}")
     @Transactional
     public String postEdit(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto) {
 

@@ -3,6 +3,7 @@
 - 23.12.10
   - post edit 기능 추가
     - user.name과 post.user.name이 동일할 때만 수정 가능
+    - edit를 PostMapping 대신 PatchMapping으로 받게끔, 아래 delete처럼 수정함.
   - post delete 기능 추가
     - user.name과 post.user.name이 동일할 때만 삭제 가능
     - html에서 delete 요청을 보내기 위해 아래와 같이 구성함.
