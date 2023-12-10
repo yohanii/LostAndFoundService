@@ -46,12 +46,12 @@ public class PostController {
         return "posts/post";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/add-form")
     public String postSaveForm(@ModelAttribute PostSaveRequestDto post) {
         return "posts/addPostForm";
     }
 
-    @PostMapping("/add")
+    @PostMapping
     @Transactional
     public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
@@ -64,7 +64,7 @@ public class PostController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/{postId}/edit")
+    @GetMapping("/{postId}/edit-form")
     public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, Model model) {
 
         Post findPost = postRepository.findById(postId);
