@@ -3,7 +3,23 @@
 - 23.12.10
   - post edit 기능 추가
     - user.name과 post.user.name이 동일할 때만 수정 가능
-
+  - post delete 기능 추가
+    - user.name과 post.user.name이 동일할 때만 삭제 가능
+    - html에서 delete 요청을 보내기 위해 아래와 같이 구성함.
+    - ```html
+      <form id="delete_form" th:action="@{/posts/{postId}(postId=${post.id})}" method="post">
+          <input type="hidden" name="_method" value="delete"/>
+      </form>
+      <button form="delete_form" type="submit"> 게시물 삭제 </button>
+      ```
+    - hidden을 활용하는게 포인트. 대신 hidden을 제대로 받기 위해서는 application에 아래를 추가해줘야함.
+    - ```java
+      @Bean
+      public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
+        return new HiddenHttpMethodFilter();
+      }
+      ```
+      
 
 - 23.12.08
   - createdTime 추가

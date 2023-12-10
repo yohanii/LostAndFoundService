@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col">
             <button class="w-100 btn btn-primary btn-lg"
-                    th:if="${!user.name.equals(post.user.name)}"
+                    th:if="${user.name.equals(post.user.name)}"
                     onclick="location.href='editForm.html'"
                     th:onclick="|location.href='@{/posts/{postId}/edit(postId=${post.id})}'|"
                     type="button" th:text="'게시물 수정'">게시물 수정</button>
@@ -57,6 +57,17 @@
                     th:onclick="|location.href='@{/posts}'|"
                     type="button" th:text="'목록으로'">목록으로</button>
         </div>
+    </div>
+
+    <div>
+        <form id="delete_form" th:action="@{/posts/{postId}(postId=${post.id})}" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+        </form>
+        <button form="delete_form"
+                type="submit"
+                class="btn btn-outline-danger"
+                th:if="${user.name.equals(post.user.name)}"
+                th:text="'게시물 삭제'">게시물 삭제</button>
     </div>
 
 </div> <!-- /container -->

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -78,4 +79,23 @@ class PostRepositoryTest {
         List<Post> result = postRepository.findAll();
         assertThat(result).contains(post1, post2);
     }
+
+    @Test
+    void delete() {
+        Post post1 = Post.builder()
+                .title("hello")
+                .content("hello123")
+                .type(PostType.LOST)
+                .build();
+        postRepository.save(post1);
+        List<Post> postsBefore = postRepository.findAll();
+
+        postRepository.delete(post1.getId());
+        List<Post> postsAfter = postRepository.findAll();
+
+        assertThat(postsAfter.size()).isEqualTo(postsBefore.size() - 1);
+        assertThat(postsBefore).contains(post1);
+        assertThat(postsAfter).doesNotContain(post1);
+    }
+
 }
