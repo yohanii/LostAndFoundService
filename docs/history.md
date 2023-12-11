@@ -1,5 +1,10 @@
 ## 기록
 
+- 23.12.11
+  - html 구조 수정
+    - home.html 다시 만들고, postsLost, postsFound 두 경로로 따로 이어지도록 만듬.
+    - fragments를 만들어 반복되는 부분 재활용하고자 함.
+
 - 23.12.10
   - post edit 기능 추가
     - user.name과 post.user.name이 동일할 때만 수정 가능
