@@ -23,11 +23,10 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/posts")
 public class PostController {
     private final PostRepository postRepository;
 
-    @GetMapping
+    @GetMapping("/posts")
     public String posts(Model model) {
         List<Post> postList = postRepository.findAll();
 
@@ -36,7 +35,27 @@ public class PostController {
         return "posts/posts";
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/posts-lost")
+    public String postsLost(Model model, HttpServletRequest request) {
+        List<Post> postList = postRepository.findLostPosts();
+
+        model.addAttribute("posts", postList);
+        model.addAttribute("requestURI", request.getRequestURI());
+
+        return "posts/postsLost";
+    }
+
+    @GetMapping("/posts-found")
+    public String postsFound(Model model, HttpServletRequest request) {
+        List<Post> postList = postRepository.findFoundPosts();
+
+        model.addAttribute("posts", postList);
+        model.addAttribute("requestURI", request.getRequestURI());
+
+        return "posts/postsFound";
+    }
+
+    @GetMapping("/posts/{postId}")
     public String post(@Login User loginUser, @PathVariable Long postId, Model model) {
         Post post = postRepository.findById(postId);
 
@@ -46,12 +65,14 @@ public class PostController {
         return "posts/post";
     }
 
-    @GetMapping("/add-form")
-    public String postSaveForm(@ModelAttribute PostSaveRequestDto post) {
+    @GetMapping("/posts/add-form")
+    public String postSaveForm(@ModelAttribute PostSaveRequestDto post, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+        model.addAttribute("redirectURL", redirectURL);
+        
         return "posts/addPostForm";
     }
 
-    @PostMapping
+    @PostMapping("/posts")
     @Transactional
     public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
@@ -64,7 +85,7 @@ public class PostController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/{postId}/edit-form")
+    @GetMapping("/posts/{postId}/edit-form")
     public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, Model model) {
 
         Post findPost = postRepository.findById(postId);
@@ -77,7 +98,7 @@ public class PostController {
         return "posts/editPostForm";
     }
 
-    @PatchMapping("/{postId}")
+    @PatchMapping("/posts/{postId}")
     @Transactional
     public String postEdit(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto) {
 
@@ -87,7 +108,7 @@ public class PostController {
         return "redirect:/posts/{postId}";
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/posts/{postId}")
     @Transactional
     public String postDelete(@PathVariable("postId") Long postId) {
 

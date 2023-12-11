@@ -60,7 +60,7 @@
       <div class="col">
         <button class="w-100 btn btn-secondary btn-lg"
                 onclick="location.href='posts.html'"
-                th:onclick="|location.href='@{/posts}'|"
+                th:onclick="|location.href='@{${redirectURL}}'|"
                 type="button" th:text="'취소'">취소</button>
       </div>
     </div>
