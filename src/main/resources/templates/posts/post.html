@@ -19,7 +19,7 @@
     </div>
 
     <div align="right">
-        <form id="delete_form" th:action="@{/posts/{postId}(postId=${post.id})}" method="post">
+        <form id="delete_form" th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">
             <input type="hidden" name="_method" value="delete"/>
         </form>
         <button form="delete_form"
@@ -59,13 +59,13 @@
             <button class="w-100 btn btn-primary btn-lg"
                     th:if="${user.name.equals(post.user.name)}"
                     onclick="location.href='editForm.html'"
-                    th:onclick="|location.href='@{/posts/{postId}/edit-form(postId=${post.id})}'|"
+                    th:onclick="|location.href='@{/posts/{postId}/edit-form?redirectURL={url}(postId=${post.id}, url=${redirectURL})}'|"
                     type="button" th:text="'게시물 수정'">게시물 수정</button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='posts.html'"
-                    th:onclick="|location.href='@{/posts}'|"
+                    th:onclick="|location.href='@{${redirectURL}}'|"
                     type="button" th:text="'목록으로'">목록으로</button>
         </div>
     </div>

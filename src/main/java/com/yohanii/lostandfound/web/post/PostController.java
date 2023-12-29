@@ -56,12 +56,13 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String post(@Login User loginUser, @PathVariable Long postId, Model model) {
+    public String post(@Login User loginUser, @PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
         Post post = postRepository.findById(postId);
 
         log.info("loginUser={}", loginUser);
         model.addAttribute("user", loginUser);
         model.addAttribute("post", post);
+        model.addAttribute("redirectURL", redirectURL);
         return "posts/post";
     }
 
@@ -74,7 +75,7 @@ public class PostController {
 
     @PostMapping("/posts")
     @Transactional
-    public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "posts/addPostForm";
         }
@@ -82,11 +83,11 @@ public class PostController {
         HttpSession session = request.getSession();
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
         postRepository.save(dto.toEntity(loginUser));
-        return "redirect:/posts";
+        return "redirect:" + redirectURL;
     }
 
     @GetMapping("/posts/{postId}/edit-form")
-    public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, Model model) {
+    public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         Post findPost = postRepository.findById(postId);
         dto.setTitle(findPost.getTitle());
@@ -94,26 +95,27 @@ public class PostController {
         dto.setType(findPost.getType());
 
         model.addAttribute("post", findPost);
+        model.addAttribute("redirectURL", redirectURL);
 
         return "posts/editPostForm";
     }
 
     @PatchMapping("/posts/{postId}")
     @Transactional
-    public String postEdit(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto) {
+    public String postEdit(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
 
         Post findPost = postRepository.findById(postId);
         findPost.updatePost(dto);
 
-        return "redirect:/posts/{postId}";
+        return "redirect:/posts/{postId}?redirectURL=" + redirectURL;
     }
 
     @DeleteMapping("/posts/{postId}")
     @Transactional
-    public String postDelete(@PathVariable("postId") Long postId) {
+    public String postDelete(@PathVariable("postId") Long postId, @RequestParam(defaultValue = "/") String redirectURL) {
 
         postRepository.delete(postId);
 
-        return "redirect:/posts";
+        return "redirect:" + redirectURL;
     }
 }
