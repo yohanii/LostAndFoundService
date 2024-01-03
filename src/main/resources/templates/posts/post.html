@@ -39,9 +39,9 @@
         <label for="title" th:text="'게시물 제목'">게시물 제목</label>
         <input type="text" id="title" name="title" class="form-control" value="게시물 제목" th:value="${post.title}" readonly>
     </div>
-    <div>
+    <div style="overflow:hidden; height:auto;">
         <label for="content" th:text="'게시물 내용'">게시물 내용</label>
-        <input type="text" id="content" name="content" class="form-control" value="게시물 내용" th:value="${post.content}" readonly>
+        <textarea type="text" id="content" name="content" class="form-control" th:text="${post.content}" readonly> </textarea>
     </div>
     <div>
         <label for="userName" th:text="'작성자'">작성자</label>

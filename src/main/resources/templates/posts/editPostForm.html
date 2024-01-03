@@ -45,8 +45,8 @@
         </div>
         <div>
             <label for="content" th:text="'게시물 내용'">게시물 내용</label>
-            <input type="text" id="content" th:field="*{content}"
-                   th:errorclass="field-error" class="form-control" placeholder="내용을 입력하세요">
+            <textarea id="content" th:field="*{content}"
+                      th:errorclass="field-error" class="form-control" placeholder="내용을 입력하세요"></textarea>
             <div class="field-error" th:errors="*{content}">
                 게시물 내용 오류
             </div>

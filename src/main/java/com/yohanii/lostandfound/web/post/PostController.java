@@ -78,6 +78,7 @@ public class PostController {
     public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "posts/addPostForm";
+//            return "redirect:/posts/add-form?redirectURL=" + redirectURL;
         }
 
         HttpSession session = request.getSession();
