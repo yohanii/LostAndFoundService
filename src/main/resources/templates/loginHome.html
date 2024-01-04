@@ -3,31 +3,33 @@
 <head>
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+          href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container" style="max-width: 600px">
-    <div class="py-5 text-center">
-        <h2>홈 화면</h2>
-    </div>
-    <h4 class="mb-3" th:text="|로그인: ${user.name}|">로그인 사용자 이름</h4>
-    <hr class="my-4">
+<nav class="navbar navbar-light" style="background-color: #FFFFFF">
+    <a class="navbar-brand fw-bold" href="#" style="padding: 10px; padding-left: 20px;">
+        LAF
+    </a>
+    <h5 class="mb-3" style="padding: 10px;" th:text="|안녕하세요! ${user.loginId}님|">로그인 사용자 이름</h5>
+</nav>
+
+<div class="container" style="max-width: 900px; height: 450px; padding: 40px; padding-top: 50px; text-align: center; ">
     <div class="row">
-        <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/posts}'|">
-                게시판 보기
-            </button>
+        <div class="col" style="padding: 20px; margin-right: 10px;">
+            <div class="w-300 rounded-3 fw-bold"
+                 style="background-color: rgb(200, 1, 80); height: 300px; font-size: 25px; display : flex; align-items : center; justify-content : center;"
+                 th:onclick="|location.href='@{/posts-lost}'|">
+                LOST
+            </div>
         </div>
-        <div class="col">
-            <form th:action="@{/logout}" method="post">
-                <button class="w-100 btn btn-dark btn-lg" type="submit">
-                    로그아웃
-                </button>
-            </form>
+        <div class="col" style="padding: 20px; margin-left: 10px;">
+            <div class="w-300 rounded-3 fw-bold"
+                 style="background-color: rgb(255, 179, 0); height: 300px; font-size: 25px; display : flex; align-items : center; justify-content : center;"
+                 th:onclick="|location.href='@{/posts-found}'|">
+                FOUND
+            </div>
         </div>
     </div>
-    <hr class="my-4">
-</div> <!-- /container -->
+</div>
 </body>
 </html>

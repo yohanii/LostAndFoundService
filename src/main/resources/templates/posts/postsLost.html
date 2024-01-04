@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<div class="container" style="max-width: 600px; margin-top: 10px;">
+    <div class="py-5 text-center">
+        <h2 th:text="'Lost'">Lost</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='addForm.html'"
+                    th:onclick="|location.href='@{/posts/add-form?redirectURL={uri}(uri=${requestURI})}'|"
+                    type="button" th:text="'게시글 생성'">게시글 생성</button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="'게시글타입'">게시글타입</th>
+                <th th:text="'게시글제목'">게시글제목</th>
+                <th th:text="'작성자'">작성자</th>
+                <th th:text="'작성날짜'">작성날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.type}">게시글타입</a></td>
+                <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.title}">게시글제목</a></td>
+                <td th:text="${post.user.loginId}">작성자</td>
+                <td th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">작성날짜</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>

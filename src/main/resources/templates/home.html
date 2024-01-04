@@ -6,26 +6,52 @@
           href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container" style="max-width: 600px">
-    <div class="py-5 text-center">
-        <h2>홈 화면</h2>
+<nav class="navbar navbar-light" style="background-color: #FFFFFF">
+    <a class="navbar-brand fw-bold" href="#" style="padding: 10px; padding-left: 20px;">
+        LAF
+    </a>
+</nav>
+
+<div class="container" style="max-width: 900px; height: 450px; padding: 40px; padding-top: 50px; text-align: center; ">
+    <div class="row">
+        <div class="col" style="padding: 20px; margin-right: 10px;">
+            <div class="w-300 rounded-3 fw-bold"
+                 style="background-color: rgb(200, 1, 80); height: 300px; font-size: 25px; display : flex; align-items : center; justify-content : center;"
+                 th:onclick="|location.href='@{/posts-lost}'|">
+                LOST
+            </div>
+        </div>
+        <div class="col" style="padding: 20px; margin-left: 10px;">
+            <div class="w-300 rounded-3 fw-bold"
+                 style="background-color: rgb(255, 179, 0); height: 300px; font-size: 25px; display : flex; align-items : center; justify-content : center;"
+                 th:onclick="|location.href='@{/posts-found}'|">
+                FOUND
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container rounded-3" style="max-width: 200px; background-color: #CCCCCC; padding: 10px">
+    <div class="py-2 text-center">
+        <h5>LAF가 처음이세요?</h5>
     </div>
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/users/add-form}'|">
-                회원 가입
-            </button>
-        </div>
-        <div class="col">
-            <button class="w-100 btn btn-dark btn-lg"
+            <button class="w-100 btn btn-primary btn-dark btn-sm"
                     onclick="location.href='items.html'"
+                    style="font-size: 13px;"
                     th:onclick="|location.href='@{/login}'|" type="button">
                 로그인
             </button>
         </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-sm" type="button"
+                    style="font-size: 13px;"
+                    th:onclick="|location.href='@{/users/add-form}'|">
+                회원 가입
+            </button>
+        </div>
     </div>
-    <hr class="my-4">
 </div> <!-- /container -->
 </body>
 </html>

@@ -29,4 +29,17 @@ public class PostRepository {
     public void delete(Long postId) {
         em.remove(findById(postId));
     }
+
+    public List<Post> findLostPosts() {
+        return em.createQuery("select p from Post p where p.type =: type", Post.class)
+                .setParameter("type", PostType.LOST)
+                .getResultList();
+    }
+
+    public List<Post> findFoundPosts() {
+        return em.createQuery("select p from Post p where p.type =: type", Post.class)
+                .setParameter("type", PostType.FOUND)
+                .getResultList();
+    }
+
 }
