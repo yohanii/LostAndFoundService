@@ -26,6 +26,7 @@ public class UserSaveRequestDto {
                 .name(name)
                 .loginId(loginId)
                 .password(password)
+                .nickName("EMPTY")
                 .createdTime(LocalDateTime.now())
                 .build();
     }
