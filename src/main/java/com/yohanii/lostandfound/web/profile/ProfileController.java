@@ -2,14 +2,15 @@ package com.yohanii.lostandfound.web.profile;
 
 import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.domain.user.UserRepository;
+import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
+import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
 import com.yohanii.lostandfound.web.argumentresolver.Login;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -22,23 +23,39 @@ public class ProfileController {
     private final UserRepository userRepository;
 
     @GetMapping("/{nickName}")
-    public String profile(@Login User loginUser, @PathVariable String nickName, Model model) {
+    public String profile(@Login User loginUser, @PathVariable String nickName, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
         //nickname -> user
         User findUser = userRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
-        log.info("findUser = " + findUser);
+        log.info("findUser.name() = " + findUser.getName());
         log.info("findUser.nickName = " + findUser.getNickName());
 
         model.addAttribute("user", findUser);
+        model.addAttribute("redirectURL", redirectURL);
 
-        if (loginUser.equals(findUser)) {
+        if (loginUser.getId().equals(findUser.getId())) {
+            log.info("ProfileController.profile isLoginUser = true");
             model.addAttribute("isLoginUser", true);
         }
         return "profile/profile";
     }
 
-//    @GetMapping("/edit-form/{nickName}")
-//    public String editForm(@PathVariable String nickName, Model model) {
-//        model.addAttribute("nickName", nickName);
-//        return "";
-//    }
+    @GetMapping("/edit-form/{nickName}")
+    public String profileEditForm(@PathVariable String nickName, @ModelAttribute ProfileEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+        User findUser = userRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
+        dto.setName(findUser.getName());
+        dto.setNickName(findUser.getNickName());
+
+        model.addAttribute("redirectURL", redirectURL);
+        return "profile/editProfileForm";
+    }
+
+    @PatchMapping("/{nickName}")
+    @Transactional
+    public String profileEdit(@PathVariable("nickName") String nickName, @ModelAttribute ProfileEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
+        User findUser = userRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
+        findUser.updateUser(dto);
+
+        System.out.println("ProfileController.profileEdit");
+        return "redirect:/profiles/" + dto.getNickName() + "?redirectURL=" + redirectURL;
+    }
 }
