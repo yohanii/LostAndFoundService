@@ -26,16 +26,16 @@
 ## 💾 ERD
 ![ERD.png](docs/img/ERDv3.png)
 
-## 🎯 진행 상황
-![progress.png](docs/img/progress.png)
+## 💡 아키텍쳐
+![architecture_goal.png](docs%2Fimg%2Farchitecture_goal.png)
+![architecture_current.png](docs%2Fimg%2Farchitecture_current.png)
 
-- 구현된 기능
-  - 회원가입, 로그인
-  - 게시글 CRUD
-    - 게시글 목록 보기, 게시글 생성, 게시글 보기
+## 🎯 진행 상황
+![progress2.png](docs%2Fimg%2Fprogress2.png)
 
 ## 💎 기능 소개
-### 1. 회원가입, 로그인
+
+- PRG 패턴을 사용해, POST 요청의 중복을 막음
 - Interceptor 활용한 로그인 여부 체크 기능
   - 로그인 시 Session에 유저 객체가 담기기 때문에, LoginCheckInterceptor에서 Session을 확인해 로그인 여부를 체크
   - 비로그인 시, 로그인 화면으로 redirect
@@ -44,6 +44,11 @@
   - @Login 커스텀 어노테이션으로 로그인 회원 정보 조회 가능
   - @SessionAttribute 대신 커스텀 어노테이션으로 더 깔끔하고 편하게 사용 가능
 
-
-## 📆 추후 계획
-![plan.png](docs/img/plan.png)
+## 📷 결과 화면
+![view1.png](docs%2Fimg%2Fview1.png)
+![view2.png](docs%2Fimg%2Fview2.png)
+![view3.png](docs%2Fimg%2Fview3.png)
+![view4.png](docs%2Fimg%2Fview4.png)
+![view5.png](docs%2Fimg%2Fview5.png)
+![view6.png](docs%2Fimg%2Fview6.png)
+![view7.png](docs%2Fimg%2Fview7.png)
