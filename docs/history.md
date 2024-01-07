@@ -1,5 +1,15 @@
 ## 기록
 
+- 24.1.3
+  - 게시물 내용 tag를 input에서 textarea로 수정
+    - tag를 input에 type='text'로 사용했었는데, 내용이 길어도 한 줄밖에 볼 수 없는 문제가 있어서 textarea로 바꿈. 
+
+- 23.12.29
+  - redirect url 연결 수정
+    - post Create, Read, Update url에 이전 페이지 url을 redirect url로 붙여줌.
+  - 작성자 이름 대신 loginId 보이게 하기
+    - 추후에 nickName으로 바꿀 예정.
+
 - 23.12.11
   - html 구조 수정
     - home.html 다시 만들고, postsLost, postsFound 두 경로로 따로 이어지도록 만듬.
