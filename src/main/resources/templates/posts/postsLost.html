@@ -34,7 +34,7 @@
             <tr th:each="post : ${posts}">
                 <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.type}">게시글타입</a></td>
                 <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.title}">게시글제목</a></td>
-                <td><a th:href="@{|/profiles/${post.user.nickName}?redirectURL=${requestURI}|}" th:text="${post.user.loginId}">작성자</a></td>
+                <td><a th:href="@{|/profiles/${post.user.nickName}?redirectURL=${requestURI}|}" th:text="${post.user.nickName}">작성자</a></td>
                 <td th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">작성날짜</td>
             </tr>
             </tbody>
