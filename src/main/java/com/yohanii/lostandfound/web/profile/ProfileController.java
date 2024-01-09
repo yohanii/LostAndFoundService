@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class ProfileController {
     }
 
     @GetMapping("/edit-form/{nickName}")
-    public String profileEditForm(@PathVariable String nickName, @ModelAttribute ProfileEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public String profileEditForm(@PathVariable String nickName, @ModelAttribute ProfileEditRequestDto dto, BindingResult bindingResult,@RequestParam(defaultValue = "/") String redirectURL, Model model) {
         User findUser = userRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
         dto.setName(findUser.getName());
         dto.setNickName(findUser.getNickName());
@@ -51,8 +52,21 @@ public class ProfileController {
 
     @PatchMapping("/{nickName}")
     @Transactional
-    public String profileEdit(@PathVariable("nickName") String nickName, @ModelAttribute ProfileEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String profileEdit(@PathVariable("nickName") String nickName, @ModelAttribute ProfileEditRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL) {
         User findUser = userRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
+
+        //dto.nickName 중복 시 reject
+        if (userRepository.findByNickName(dto.getNickName()).isPresent()) {
+            bindingResult.reject("errorCode입니다", "닉네임 중복입니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            dto.setNickName(nickName);
+            return "profile/editProfileForm";
+//            return "redirect:/profiles/edit-form/" + nickName + "?redirectURL=" + redirectURL;
+        }
+
         findUser.updateUser(dto);
 
         System.out.println("ProfileController.profileEdit");

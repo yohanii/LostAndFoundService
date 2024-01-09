@@ -23,6 +23,9 @@
                 <div>
                     <label for="nickName" th:text="'닉네임'">닉네임</label>
                     <input type="text" id="nickName" name="nickName" class="form-control" value="" th:value="*{nickName}">
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                           th:text="${err}">글로벌 오류 메시지</p> </div>
                 </div>
 
             </div>
