@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.web.user;
 
+import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.domain.user.UserRepository;
 import com.yohanii.lostandfound.dto.user.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,10 @@ public class UserController {
     @PostMapping
     @Transactional
     public String save(@Validated @ModelAttribute UserSaveRequestDto dto, BindingResult bindingResult) {
+
+        if (userRepository.findByNickName(dto.getNickName()).isPresent()) {
+            bindingResult.reject("errorCode입니다", "닉네임 중복입니다.");
+        }
 
         if (bindingResult.hasErrors()) {
             return "users/addUserForm";
