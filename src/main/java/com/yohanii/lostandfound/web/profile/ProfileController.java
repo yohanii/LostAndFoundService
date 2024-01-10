@@ -52,7 +52,7 @@ public class ProfileController {
 
     @PatchMapping("/{nickName}")
     @Transactional
-    public String profileEdit(@PathVariable("nickName") String nickName, @ModelAttribute ProfileEditRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String profileEdit(@PathVariable("nickName") String nickName, @ModelAttribute ProfileEditRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
         User findUser = userRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
 
         //dto.nickName 중복 시 reject
@@ -62,6 +62,7 @@ public class ProfileController {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
+            model.addAttribute("redirectURL", redirectURL);
             dto.setNickName(nickName);
             return "profile/editProfileForm";
 //            return "redirect:/profiles/edit-form/" + nickName + "?redirectURL=" + redirectURL;
