@@ -29,11 +29,13 @@ public class UserController {
     @PostMapping
     @Transactional
     public String save(@Validated @ModelAttribute UserSaveRequestDto dto, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return "users/addUserForm";
         }
 
         userRepository.save(dto.toEntity());
+
         return "redirect:/";
     }
 }

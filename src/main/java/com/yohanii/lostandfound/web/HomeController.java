@@ -18,6 +18,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(@Login User loginUser, Model model) {
+
         if (loginUser == null) {
             return "home";
         }
@@ -26,6 +27,7 @@ public class HomeController {
 
         log.info("loginUser={}", loginUser);
         model.addAttribute("user", findUser);
+
         return "loginHome";
     }
 }
