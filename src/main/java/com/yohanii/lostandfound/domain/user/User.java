@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.domain.user;
 
+import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,5 +35,11 @@ public class User {
         this.nickName = nickName;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
+    }
+
+    public void updateUser(ProfileEditRequestDto dto) {
+        this.name = dto.getName();
+        this.nickName = dto.getNickName();
+        this.updatedTime = LocalDateTime.now();
     }
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+
+<body>
+
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:if="${isLoginUser}"
+            th:text="'마이프로필'">마이프로필</h2>
+        <h2 th:if="!${isLoginUser}"
+            th:text="'프로필'">프로필</h2>
+
+        <div style="padding: 20px; max-width: 600px; margin: 0 auto;">
+            <div>
+                <label for="name" th:text="'이름'">이름</label>
+                <input type="text" id="name" name="name" class="form-control" value="" th:value="${user.name}" readonly>
+            </div>
+
+            <div>
+                <label for="nickName" th:text="'닉네임'">닉네임</label>
+                <input type="text" id="nickName" name="nickName" class="form-control" value="" th:value="${user.nickName}" readonly>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    th:if="${isLoginUser}"
+                    onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/profiles/edit-form/{nickName}?redirectURL={url}(nickName=${user.nickName}, url=${redirectURL})}'|"
+                    type="button" th:text="'게시물 수정'">게시물 수정</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='profile.html'"
+                    th:onclick="|location.href='@{${redirectURL}}'|"
+                    type="button" th:text="'목록으로'">목록으로</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

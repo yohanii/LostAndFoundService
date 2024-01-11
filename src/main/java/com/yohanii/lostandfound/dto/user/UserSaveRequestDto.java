@@ -20,12 +20,15 @@ public class UserSaveRequestDto {
     private String loginId;
     @NotBlank
     private String password;
+    @NotBlank
+    private String nickName;
 
     public User toEntity() {
         return User.builder()
                 .name(name)
                 .loginId(loginId)
                 .password(password)
+                .nickName(nickName)
                 .createdTime(LocalDateTime.now())
                 .build();
     }

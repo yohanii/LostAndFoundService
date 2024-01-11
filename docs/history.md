@@ -1,5 +1,42 @@
 ## 기록
 
+- 24.1.11
+  - 누락된 test 추가
+    - User.updateUser test, UserRepository.findByNickName test
+
+- 24.1.10
+  - nickName 중복 여러번 시 redirectURL 연결 안되는 문제 해결
+    - redirectURL을 model에 저장해줌
+  - 회원가입 시 닉네임 입력 구현
+    - 중복 확인도 한다.
+
+- 24.1.9
+  - home과 post에서 name 대신 nickName으로 볼 수 있게 수정
+  - home에서 nickName 변경 반영 안되는 문제 해결
+    - HomeController에서 loginUser를 바로 보내지 말고, loginUser.id로 user 객체 찾아서 전송
+  - nickName 중복 막고 error message 보여주기 구현
+    - bindingResult.reject 사용
+  - loginHome에 logout button 추가
+
+- 24.1.7
+  - profile 수정 구현
+    - ProfileEditRequestDto 생성
+    - PRG 패턴으로 edit-form에서 submit하면 post로 보내고, 통과 시 redirect get, 불통 시 edit-form 연결
+
+- 24.1.5
+  - profile 보기 구현
+    - ProfileController 생성
+
+- 24.1.3
+  - 게시물 내용 tag를 input에서 textarea로 수정
+    - tag를 input에 type='text'로 사용했었는데, 내용이 길어도 한 줄밖에 볼 수 없는 문제가 있어서 textarea로 바꿈. 
+
+- 23.12.29
+  - redirect url 연결 수정
+    - post Create, Read, Update url에 이전 페이지 url을 redirect url로 붙여줌.
+  - 작성자 이름 대신 loginId 보이게 하기
+    - 추후에 nickName으로 바꿀 예정.
+
 - 23.12.11
   - html 구조 수정
     - home.html 다시 만들고, postsLost, postsFound 두 경로로 따로 이어지도록 만듬.

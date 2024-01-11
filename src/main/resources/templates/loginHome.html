@@ -10,7 +10,12 @@
     <a class="navbar-brand fw-bold" href="#" style="padding: 10px; padding-left: 20px;">
         LAF
     </a>
-    <h5 class="mb-3" style="padding: 10px;" th:text="|안녕하세요! ${user.loginId}님|">로그인 사용자 이름</h5>
+    <div style="float: right">
+        <a style="display: inline-block;" th:href="@{|/profiles/${user.nickName}|}"><h5 class="mb-3" style="padding: 10px;" th:text="|안녕하세요! ${user.nickName}님|">로그인 사용자 이름</h5></a>
+        <form style="display: inline-block; padding: 10px" th:action="@{/logout}" th:method="post">
+            <button class="btn btn-outline-danger" th:type="submit" th:text="'로그아웃'">로그아웃</button>
+        </form>
+    </div>
 </nav>
 
 <div class="container" style="max-width: 900px; height: 450px; padding: 40px; padding-top: 50px; text-align: center; ">

@@ -28,6 +28,7 @@ public class PostController {
 
     @GetMapping("/posts")
     public String posts(Model model) {
+
         List<Post> postList = postRepository.findAll();
 
         model.addAttribute("posts", postList);
@@ -37,6 +38,7 @@ public class PostController {
 
     @GetMapping("/posts-lost")
     public String postsLost(Model model, HttpServletRequest request) {
+
         List<Post> postList = postRepository.findLostPosts();
 
         model.addAttribute("posts", postList);
@@ -47,6 +49,7 @@ public class PostController {
 
     @GetMapping("/posts-found")
     public String postsFound(Model model, HttpServletRequest request) {
+
         List<Post> postList = postRepository.findFoundPosts();
 
         model.addAttribute("posts", postList);
@@ -57,17 +60,20 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public String post(@Login User loginUser, @PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+
         Post post = postRepository.findById(postId);
 
         log.info("loginUser={}", loginUser);
         model.addAttribute("user", loginUser);
         model.addAttribute("post", post);
         model.addAttribute("redirectURL", redirectURL);
+
         return "posts/post";
     }
 
     @GetMapping("/posts/add-form")
     public String postSaveForm(@ModelAttribute PostSaveRequestDto post, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+
         model.addAttribute("redirectURL", redirectURL);
         
         return "posts/addPostForm";
@@ -76,14 +82,15 @@ public class PostController {
     @PostMapping("/posts")
     @Transactional
     public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
+
         if (bindingResult.hasErrors()) {
             return "posts/addPostForm";
-//            return "redirect:/posts/add-form?redirectURL=" + redirectURL;
         }
 
         HttpSession session = request.getSession();
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
         postRepository.save(dto.toEntity(loginUser));
+
         return "redirect:" + redirectURL;
     }
 

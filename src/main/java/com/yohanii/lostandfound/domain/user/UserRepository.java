@@ -39,4 +39,10 @@ public class UserRepository {
                 .filter(user -> user.getLoginId().equals(loginId))
                 .findFirst();
     }
+
+    public Optional<User> findByNickName(String nickName) {
+        return findAll().stream()
+                .filter(user -> user.getNickName().equals(nickName))
+                .findFirst();
+    }
 }

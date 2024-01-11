@@ -96,4 +96,17 @@ class UserRepositoryTest {
 
         assertThat(findUser).isEqualTo(testUser);
     }
+
+    @Test
+    void findByNickName() {
+        User testUser = User.builder()
+                .nickName("testNickName")
+                .build();
+
+        userRepository.save(testUser);
+
+        User findUser = userRepository.findByNickName(testUser.getNickName()).get();
+
+        assertThat(findUser).isEqualTo(testUser);
+    }
 }

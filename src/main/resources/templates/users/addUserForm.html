@@ -22,23 +22,31 @@
   <h4 class="mb-3">회원 정보 입력</h4>
   <form action="" th:action="@{/users}" th:object="${userSaveRequestDto}" method="post">
     <div>
-      <label for="loginId">로그인 ID</label>
+      <label for="loginId" class="row" style="padding-left : 15px">로그인 ID</label>
       <input type="text" id="loginId" th:field="*{loginId}" class="formcontrol"
              th:errorclass="field-error">
       <div class="field-error" th:errors="*{loginId}" />
     </div>
     <div>
-      <label for="password">비밀번호</label>
-      <input type="password" id="password" th:field="*{password}"
-             class="form-control"
+      <label for="password" class="row" style="padding-left : 15px">비밀번호</label>
+      <input type="password" id="password" th:field="*{password}" class="form-control"
              th:errorclass="field-error">
       <div class="field-error" th:errors="*{password}" />
     </div>
     <div>
-      <label for="name">이름</label>
+      <label for="name" class="row" style="padding-left : 15px">이름</label>
       <input type="text" id="name" th:field="*{name}" class="formcontrol"
              th:errorclass="field-error">
       <div class="field-error" th:errors="*{name}" />
+    </div>
+    <div>
+      <label for="nickName" class="row" style="padding-left : 15px">닉네임</label>
+      <input type="text" id="nickName" th:field="*{nickName}" class="formcontrol"
+             th:errorclass="field-error">
+      <div class="field-error" th:errors="*{nickName}" />
+      <div th:if="${#fields.hasGlobalErrors()}">
+        <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+           th:text="${err}">글로벌 오류 메시지</p> </div>
     </div>
     <hr class="my-4">
     <div class="row">

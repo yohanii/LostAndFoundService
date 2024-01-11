@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+
+<body>
+
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<div class="container">
+
+    <form action="post.html" th:action="@{/profiles/{nickName}?redirectURL={url}(nickName=${profileEditRequestDto.nickName}, url=${redirectURL})}" th:object="${profileEditRequestDto}" method="post">
+        <input type="hidden" name="_method" value="patch"/>
+
+        <div class="py-5 text-center">
+            <h2 th:text="'프로필 수정'">프로필 수정</h2>
+
+            <div style="padding: 20px; max-width: 600px; margin: 0 auto;">
+                <div>
+                    <label for="name" th:text="'이름'">이름</label>
+                    <input type="text" id="name" name="name" class="form-control" value="" th:value="*{name}">
+                </div>
+
+                <div>
+                    <label for="nickName" th:text="'닉네임'">닉네임</label>
+                    <input type="text" id="nickName" name="nickName" class="form-control" value="" th:value="*{nickName}">
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                           th:text="${err}">글로벌 오류 메시지</p> </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="'저장'">저장</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='profile.html'"
+                        th:onclick="|location.href='@{/profiles/{url}?redirectURL={redirectURL}(url=${profileEditRequestDto.nickName}, redirectURL=${redirectURL})}'|"
+                        type="button" th:text="'취소'">취소</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
