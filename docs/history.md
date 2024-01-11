@@ -1,5 +1,9 @@
 ## 기록
 
+- 24.1.11
+  - 누락된 test 추가
+    - User.updateUser test, UserRepository.findByNickName test
+
 - 24.1.10
   - nickName 중복 여러번 시 redirectURL 연결 안되는 문제 해결
     - redirectURL을 model에 저장해줌
