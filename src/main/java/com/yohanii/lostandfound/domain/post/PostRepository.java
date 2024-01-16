@@ -1,8 +1,11 @@
 package com.yohanii.lostandfound.domain.post;
 
+import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
 
@@ -40,6 +43,44 @@ public class PostRepository {
         return em.createQuery("select p from Post p where p.type =: type", Post.class)
                 .setParameter("type", PostType.FOUND)
                 .getResultList();
+    }
+
+    public List<Post> findAll(PostSearchRequestDto dto) {
+
+        String jpql = "select p from Post p";
+        boolean isFirstCondition = true;
+
+        if (dto.getType() != null) {
+            if (isFirstCondition) {
+                jpql += " where ";
+                isFirstCondition = false;
+            } else {
+                jpql += " and ";
+            }
+            jpql += "p.type = :type";
+        }
+
+        if (!StringUtils.isEmptyOrWhitespace(dto.getContent())) {
+            if (isFirstCondition) {
+                jpql += " where ";
+                isFirstCondition = false;
+            } else {
+                jpql += " and ";
+            }
+            jpql += "p.content like concat('%', :content, '%')";
+        }
+
+        TypedQuery<Post> query = em.createQuery(jpql, Post.class)
+                .setMaxResults(1000);
+
+        if (dto.getType() != null) {
+            query = query.setParameter("type", dto.getType());
+        }
+        if (!StringUtils.isEmptyOrWhitespace(dto.getContent())) {
+            query = query.setParameter("content", dto.getContent());
+        }
+
+        return query.getResultList();
     }
 
 }
