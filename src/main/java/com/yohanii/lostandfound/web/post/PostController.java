@@ -5,6 +5,7 @@ import com.yohanii.lostandfound.domain.post.PostRepository;
 import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
+import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
 import com.yohanii.lostandfound.web.SessionConst;
 import com.yohanii.lostandfound.web.argumentresolver.Login;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,12 +33,13 @@ public class PostController {
         List<Post> postList = postRepository.findAll();
 
         model.addAttribute("posts", postList);
+        model.addAttribute("isSearch", false);
 
         return "posts/posts";
     }
 
     @GetMapping("/posts-lost")
-    public String postsLost(Model model, HttpServletRequest request) {
+    public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         List<Post> postList = postRepository.findLostPosts();
 
@@ -48,7 +50,7 @@ public class PostController {
     }
 
     @GetMapping("/posts-found")
-    public String postsFound(Model model, HttpServletRequest request) {
+    public String postsFound(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         List<Post> postList = postRepository.findFoundPosts();
 
@@ -125,5 +127,15 @@ public class PostController {
         postRepository.delete(postId);
 
         return "redirect:" + redirectURL;
+    }
+
+    @PostMapping("/posts/search")
+    public String postSearch(@ModelAttribute PostSearchRequestDto dto, Model model) {
+        log.info("posts search");
+        List<Post> searchPosts = postRepository.findAll(dto);
+        model.addAttribute("posts", searchPosts);
+        model.addAttribute("isSearch", true);
+
+        return "posts/posts";
     }
 }

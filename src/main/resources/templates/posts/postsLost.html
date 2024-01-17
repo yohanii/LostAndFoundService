@@ -20,6 +20,34 @@
     </div>
 
     <hr class="my-4">
+
+    <div>
+        <form th:action="|/posts/search|" th:object="${postSearchRequestDto}" method="post">
+            <div class="row">
+                <div class="col-8 container-fluid row">
+                    <label for="search-input"></label>
+                    <input type="text" id="search-input" th:field="*{content}"
+                           class="form-control" placeholder="검색어를 입력하세요">
+                </div>
+                <div class="col align-self-center">
+                    <select th:field="*{type}" class="form-select">
+                        <option value="">타입</option>
+                        <option th:each="type : ${T(com.yohanii.lostandfound.domain.post.PostType).values()}" th:value="${type}"
+                                th:text="${type.name}">FOUND</option>
+                    </select>
+                </div>
+                <div class="col align-self-center">
+                    <button class="btn btn-primary"
+                            onclick="location.href='addForm.html'"
+                            th:onclick="|location.href='@{/posts/add-form?redirectURL={uri}(uri=${requestURI})}'|"
+                            type="submit" th:text="'검색'">검색</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <hr class="my-4">
+
     <div>
         <table class="table">
             <thead>
