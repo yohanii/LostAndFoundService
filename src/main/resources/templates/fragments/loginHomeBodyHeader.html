@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="header" th:fragment="loginHomeBodyHeader">
+    <nav class="navbar navbar-light" style="background-color: #FFFFFF">
+        <a class="navbar-brand fw-bold" href="#" style="padding: 10px; padding-left: 20px;">
+            LAF
+        </a>
+        <div style="float: right">
+            <a style="display: inline-block;" th:href="@{|/profiles/${user.nickName}|}"><h5 class="mb-3" style="padding: 10px;" th:text="|안녕하세요! ${user.nickName}님|">로그인 사용자 이름</h5></a>
+            <div class="dropdown" style="display: inline-block;">
+                <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    마이페이지
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">프로필</a></li>
+                    <li><a class="dropdown-item" href="#">내가 쓴 게시물</a></li>
+                </ul>
+            </div>
+            <form style="display: inline-block; padding: 10px" th:action="@{/logout}" th:method="post">
+                <button class="btn btn-outline-danger" th:type="submit" th:text="'로그아웃'">로그아웃</button>
+            </form>
+        </div>
+    </nav>
+</div>

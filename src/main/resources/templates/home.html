@@ -1,16 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="css/bootstrap.min.css" rel="stylesheet">
-</head>
+<head th:replace="fragments/header :: header" />
 <body>
-<nav class="navbar navbar-light" style="background-color: #FFFFFF">
-    <a class="navbar-brand fw-bold" href="#" style="padding: 10px; padding-left: 20px;">
-        LAF
-    </a>
-</nav>
+
+<div th:replace="fragments/unLoginBodyHeader :: unLoginBodyHeader"/>
 
 <div class="container" style="max-width: 900px; height: 450px; padding: 40px; padding-top: 50px; text-align: center; ">
     <div class="row">
