@@ -1,5 +1,10 @@
 ## 기록
 
+- 24.1.16
+  - 게시물 검색 기능 추가
+    - JPQL로 쿼리 작성 (추후에 QueryDSL로 바꿀 예정)
+    - 게시물 내용과 게시물 타입으로 검색
+
 - 24.1.11
   - 누락된 test 추가
     - User.updateUser test, UserRepository.findByNickName test
