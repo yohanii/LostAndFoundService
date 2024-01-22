@@ -19,16 +19,17 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 public class LoginUserAOP {
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.post..*(..))")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.post..*(..)) " +
+            "&& (@annotation(org.springframework.web.bind.annotation.GetMapping) || execution(* com.yohanii.lostandfound.web.post.PostController.postSearch(..)))")
     private void webPost() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..))")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     private void webProfile() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.user..*(..))")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.user..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     private void webUser() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.HomeController..*(..))")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.HomeController..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     private void webHome() {}
 
     @Around("webPost() || webProfile() || webUser() || webHome()")
