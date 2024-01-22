@@ -6,10 +6,8 @@ import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
-import com.yohanii.lostandfound.web.SessionConst;
 import com.yohanii.lostandfound.web.argumentresolver.Login;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -61,12 +59,10 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String post(@Login User loginUser, @PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public String post(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         Post post = postRepository.findById(postId);
 
-        log.info("loginUser={}", loginUser);
-        model.addAttribute("user", loginUser);
         model.addAttribute("post", post);
         model.addAttribute("redirectURL", redirectURL);
 
@@ -83,14 +79,12 @@ public class PostController {
 
     @PostMapping("/posts")
     @Transactional
-    public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
+    public String postSave(@Login User loginUser, @Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL) {
 
         if (bindingResult.hasErrors()) {
             return "posts/addPostForm";
         }
 
-        HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
         postRepository.save(dto.toEntity(loginUser));
 
         return "redirect:" + redirectURL;
