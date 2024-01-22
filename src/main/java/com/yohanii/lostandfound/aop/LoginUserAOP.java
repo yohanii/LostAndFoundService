@@ -28,7 +28,10 @@ public class LoginUserAOP {
     @Pointcut("execution(* com.yohanii.lostandfound.web.user..*(..))")
     private void webUser() {}
 
-    @Around("webPost() || webProfile() || webUser()")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.HomeController..*(..))")
+    private void webHome() {}
+
+    @Around("webPost() || webProfile() || webUser() || webHome()")
     public Object getLoginUser(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
