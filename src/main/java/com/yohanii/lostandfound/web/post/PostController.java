@@ -91,7 +91,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/edit-form")
-    public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public String postEditForm(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         Post findPost = postRepository.findById(postId);
         dto.setTitle(findPost.getTitle());
@@ -106,7 +106,7 @@ public class PostController {
 
     @PatchMapping("/posts/{postId}")
     @Transactional
-    public String postEdit(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String postEdit(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
 
         Post findPost = postRepository.findById(postId);
         findPost.updatePost(dto);
@@ -116,7 +116,7 @@ public class PostController {
 
     @DeleteMapping("/posts/{postId}")
     @Transactional
-    public String postDelete(@PathVariable("postId") Long postId, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String postDelete(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL) {
 
         postRepository.delete(postId);
 
