@@ -1,8 +1,13 @@
 ## 기록
 
-- 24.1.21
-  - aop
-    - nav의 마이페이지로 연결하기 위해 모든 controller에 user를 받아와야하나 고민
+- 24.1.22
+  - LoginUserAOP 구현
+    - 문제: nav의 마이페이지로 연결하기 위해 모든 controller에 user를 받아와야하나 고민
+    - 해결: AOP에서 loginUser를 model에 담기
+    - web.post, web.profile, web.user 내부의 GetMapping methods + web.HomeController + PostController.postSearch(PostMapping이라 따로 추가해줌)에 적용됨
+    - PointCut을 따로 분리해놔서 재활용 가능하게 함
+    - @Login 어노테이션으로 일일히 추가헀던 코드들 수정
+
 - 24.1.16
   - 게시물 검색 기능 추가
     - JPQL로 쿼리 작성 (추후에 QueryDSL로 바꿀 예정)
