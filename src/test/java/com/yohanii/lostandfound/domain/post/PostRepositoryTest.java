@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound.domain.post;
 
 import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.user.UserRepository;
 import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -23,6 +23,8 @@ class PostRepositoryTest {
 
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     void save() {
@@ -154,5 +156,29 @@ class PostRepositoryTest {
 
 //        assertThat(searchPosts.size()).isEqualTo(3);
         assertThat(searchPosts).contains(post1, post2, post3);
+    }
+
+    @Test
+    void findAllByUserId() {
+        User user = User.builder().build();
+        userRepository.save(user);
+
+        Post post1 = Post.builder()
+                .user(user)
+                .build();
+        Post post2 = Post.builder()
+                .user(user)
+                .build();
+        Post post3 = Post.builder().build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+        postRepository.save(post3);
+
+        List<Post> findPosts = postRepository.findAll(user.getId());
+
+        assertThat(findPosts.size()).isEqualTo(2);
+        assertThat(findPosts).contains(post1, post2);
+        assertThat(findPosts).doesNotContain(post3);
     }
 }
