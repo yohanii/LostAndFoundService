@@ -25,13 +25,12 @@ import java.util.List;
 public class PostController {
     private final PostRepository postRepository;
 
-    @GetMapping("/posts")
+//    @GetMapping("/posts")
     public String posts(Model model) {
 
         List<Post> postList = postRepository.findAll();
 
         model.addAttribute("posts", postList);
-        model.addAttribute("isSearch", false);
 
         return "posts/posts";
     }
@@ -125,10 +124,24 @@ public class PostController {
 
     @PostMapping("/posts/search")
     public String postSearch(@ModelAttribute PostSearchRequestDto dto, Model model) {
+
         log.info("posts search");
         List<Post> searchPosts = postRepository.findAll(dto);
         model.addAttribute("posts", searchPosts);
-        model.addAttribute("isSearch", true);
+
+        return "posts/postsSearch";
+    }
+
+    @GetMapping("/posts/my-posts")
+    public String MyPosts(Model model) {
+
+        User loginUser = (User) model.getAttribute("user");
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+
+        List<Post> myPosts = postRepository.findAll(loginUser.getId());
+        model.addAttribute("posts", myPosts);
 
         return "posts/posts";
     }

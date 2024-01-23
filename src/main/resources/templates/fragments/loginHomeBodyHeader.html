@@ -13,7 +13,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#" th:href="@{|/profiles/${user.nickName}|}">프로필</a></li>
-                    <li><a class="dropdown-item" href="#">내가 쓴 게시물</a></li>
+                    <li><a class="dropdown-item" href="#" th:href="@{|/posts/my-posts|}">내가 쓴 게시물</a></li>
                 </ul>
             </div>
             <form style="display: inline-block; padding: 10px" th:action="@{/logout}" th:method="post">

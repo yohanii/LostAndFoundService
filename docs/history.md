@@ -1,5 +1,11 @@
 ## 기록
 
+- 24.1.23
+  - 문제: posts, postSearch, MyPosts 모두 같은 템플릿을 사용하는데, postSearch 때문에 'PostSearchRequestDto', 'isSearch'를 항상 보내줘야한다.
+  - 해결1: thymeleaf에서 no input이여도 가능한가?
+    - 검색 결과 불가능이라고 판단
+  - 해결2: posts, MyPosts / postSearch 이렇게 템플릿 2개로 분리하기로 결정
+
 - 24.1.22
   - LoginUserAOP 구현
     - 문제: nav의 마이페이지로 연결하기 위해 모든 controller에 user를 받아와야하나 고민
