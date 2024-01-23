@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="header" th:fragment="bodyHeader">
-    <nav class="navbar navbar-light" style="background-color: #D9D9D9">
-        <a class="navbar-brand fw-bold" href="/" style="padding: 10px; padding-left: 20px;">
+<div class="header" th:fragment="loginHomeBodyHeader">
+    <nav class="navbar navbar-light" style="background-color: #FFFFFF">
+        <a class="navbar-brand fw-bold" href="#" style="padding: 10px; padding-left: 20px;">
             LAF
         </a>
         <div style="float: right">
+            <a style="display: inline-block;"><h5 class="mb-3" style="padding: 10px;" th:text="|안녕하세요! ${user.nickName}님|">로그인 사용자 이름</h5></a>
             <div class="dropdown" style="display: inline-block;">
-                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     마이페이지
                 </button>
                 <ul class="dropdown-menu">
@@ -16,7 +17,7 @@
                 </ul>
             </div>
             <form style="display: inline-block; padding: 10px" th:action="@{/logout}" th:method="post">
-                <button class="btn btn-danger" th:type="submit" th:text="'로그아웃'">로그아웃</button>
+                <button class="btn btn-outline-danger" th:type="submit" th:text="'로그아웃'">로그아웃</button>
             </form>
         </div>
     </nav>

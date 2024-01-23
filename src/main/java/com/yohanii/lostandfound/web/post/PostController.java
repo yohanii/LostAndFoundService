@@ -6,10 +6,8 @@ import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
-import com.yohanii.lostandfound.web.SessionConst;
 import com.yohanii.lostandfound.web.argumentresolver.Login;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,13 +25,12 @@ import java.util.List;
 public class PostController {
     private final PostRepository postRepository;
 
-    @GetMapping("/posts")
+//    @GetMapping("/posts")
     public String posts(Model model) {
 
         List<Post> postList = postRepository.findAll();
 
         model.addAttribute("posts", postList);
-        model.addAttribute("isSearch", false);
 
         return "posts/posts";
     }
@@ -61,12 +58,10 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String post(@Login User loginUser, @PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public String post(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         Post post = postRepository.findById(postId);
 
-        log.info("loginUser={}", loginUser);
-        model.addAttribute("user", loginUser);
         model.addAttribute("post", post);
         model.addAttribute("redirectURL", redirectURL);
 
@@ -83,21 +78,19 @@ public class PostController {
 
     @PostMapping("/posts")
     @Transactional
-    public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
+    public String postSave(@Login User loginUser, @Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL) {
 
         if (bindingResult.hasErrors()) {
             return "posts/addPostForm";
         }
 
-        HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
         postRepository.save(dto.toEntity(loginUser));
 
         return "redirect:" + redirectURL;
     }
 
     @GetMapping("/posts/{postId}/edit-form")
-    public String postEditForm(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public String postEditForm(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         Post findPost = postRepository.findById(postId);
         dto.setTitle(findPost.getTitle());
@@ -112,7 +105,7 @@ public class PostController {
 
     @PatchMapping("/posts/{postId}")
     @Transactional
-    public String postEdit(@PathVariable("postId") Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String postEdit(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
 
         Post findPost = postRepository.findById(postId);
         findPost.updatePost(dto);
@@ -122,7 +115,7 @@ public class PostController {
 
     @DeleteMapping("/posts/{postId}")
     @Transactional
-    public String postDelete(@PathVariable("postId") Long postId, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String postDelete(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL) {
 
         postRepository.delete(postId);
 
@@ -131,10 +124,25 @@ public class PostController {
 
     @PostMapping("/posts/search")
     public String postSearch(@ModelAttribute PostSearchRequestDto dto, Model model) {
+
         log.info("posts search");
         List<Post> searchPosts = postRepository.findAll(dto);
         model.addAttribute("posts", searchPosts);
-        model.addAttribute("isSearch", true);
+
+        return "posts/postsSearch";
+    }
+
+    @GetMapping("/posts/my-posts")
+    public String MyPosts(Model model, HttpServletRequest request) {
+
+        User loginUser = (User) model.getAttribute("user");
+        if (loginUser == null) {
+            return "redirect:/";
+        }
+
+        List<Post> myPosts = postRepository.findAll(loginUser.getId());
+        model.addAttribute("posts", myPosts);
+        model.addAttribute("requestURI", request.getRequestURI());
 
         return "posts/posts";
     }

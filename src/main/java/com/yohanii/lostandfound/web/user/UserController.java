@@ -1,6 +1,5 @@
 package com.yohanii.lostandfound.web.user;
 
-import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.domain.user.UserRepository;
 import com.yohanii.lostandfound.dto.user.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;

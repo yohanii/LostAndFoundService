@@ -1,5 +1,21 @@
 ## 기록
 
+- 24.1.23
+  - 문제: posts, postSearch, MyPosts 모두 같은 템플릿을 사용하는데, postSearch 때문에 'PostSearchRequestDto', 'isSearch'를 항상 보내줘야한다.
+    - 해결1: thymeleaf에서 no input이여도 가능한가?
+      - 검색 결과 불가능이라고 판단
+    - 해결2: posts, MyPosts / postSearch 이렇게 템플릿 2개로 분리하기로 결정
+  - 마이페이지 구현 완료
+    - 관심 목록은 추후에 개발 예정
+
+- 24.1.22
+  - LoginUserAOP 구현
+    - 문제: nav의 마이페이지로 연결하기 위해 모든 controller에 user를 받아와야하나 고민
+    - 해결: AOP에서 loginUser를 model에 담기
+    - web.post, web.profile, web.user 내부의 GetMapping methods + web.HomeController + PostController.postSearch(PostMapping이라 따로 추가해줌)에 적용됨
+    - PointCut을 따로 분리해놔서 재활용 가능하게 함
+    - @Login 어노테이션으로 일일히 추가헀던 코드들 수정
+
 - 24.1.16
   - 게시물 검색 기능 추가
     - JPQL로 쿼리 작성 (추후에 QueryDSL로 바꿀 예정)
