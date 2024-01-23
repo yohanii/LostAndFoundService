@@ -133,7 +133,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/my-posts")
-    public String MyPosts(Model model) {
+    public String MyPosts(Model model, HttpServletRequest request) {
 
         User loginUser = (User) model.getAttribute("user");
         if (loginUser == null) {
@@ -142,6 +142,7 @@ public class PostController {
 
         List<Post> myPosts = postRepository.findAll(loginUser.getId());
         model.addAttribute("posts", myPosts);
+        model.addAttribute("requestURI", request.getRequestURI());
 
         return "posts/posts";
     }
