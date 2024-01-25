@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.domain.post;
 
+import com.yohanii.lostandfound.domain.item.Item;
 import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import jakarta.persistence.*;
@@ -23,6 +24,9 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
+    private Item item;
+
     @Column(name = "post_title")
     private String title;
 
@@ -37,8 +41,9 @@ public class Post {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Post(User user, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public Post(User user, Item item, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.user = user;
+        this.item = item;
         this.title = title;
         this.content = content;
         this.type = type;
