@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class PostRepositoryTest {
 
     @Autowired
@@ -84,6 +85,7 @@ class PostRepositoryTest {
 
         List<Post> result = postRepository.findAll();
         assertThat(result).contains(post1, post2);
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @Test
@@ -154,7 +156,7 @@ class PostRepositoryTest {
 
         List<Post> searchPosts = postRepository.findAll(new PostSearchRequestDto("", null));
 
-//        assertThat(searchPosts.size()).isEqualTo(3);
+        assertThat(searchPosts.size()).isEqualTo(3);
         assertThat(searchPosts).contains(post1, post2, post3);
     }
 

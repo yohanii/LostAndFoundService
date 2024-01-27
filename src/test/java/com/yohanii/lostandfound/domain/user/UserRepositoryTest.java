@@ -2,6 +2,8 @@ package com.yohanii.lostandfound.domain.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class UserRepositoryTest {
 
     @Autowired
@@ -64,8 +67,8 @@ class UserRepositoryTest {
 
         List<User> findUsers = userRepository.findAll();
 
-        assertThat(findUsers).contains(user1);
-        assertThat(findUsers).contains(user2);
+        assertThat(findUsers).contains(user1, user2);
+        assertThat(findUsers.size()).isEqualTo(2);
     }
 
     @Test
