@@ -1,7 +1,7 @@
 package com.yohanii.lostandfound.domain.chatting;
 
 import com.yohanii.lostandfound.domain.post.Post;
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,14 +22,14 @@ public class Room {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @Column(name = "user_id2")
+    @Column(name = "member_id2")
     private Long partnerId;
 
     private LocalDateTime createdTime;

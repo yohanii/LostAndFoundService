@@ -1,18 +1,18 @@
-package com.yohanii.lostandfound.dto.user;
+package com.yohanii.lostandfound.dto.member;
 
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserSaveRequestDto {
+public class MemberSaveRequestDto {
 
     @NotBlank
     private String name;
@@ -23,8 +23,10 @@ public class UserSaveRequestDto {
     @NotBlank
     private String nickName;
 
-    public User toEntity() {
-        return User.builder()
+    private MultipartFile profileImage;
+
+    public Member toEntity() {
+        return Member.builder()
                 .name(name)
                 .loginId(loginId)
                 .password(password)

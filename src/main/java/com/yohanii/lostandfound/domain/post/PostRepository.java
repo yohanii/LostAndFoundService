@@ -83,9 +83,9 @@ public class PostRepository {
         return query.getResultList();
     }
 
-    public List<Post> findAll(long userId) {
-        return em.createQuery("select p from Post p where p.user.id =: userId", Post.class)
-                .setParameter("userId", userId)
+    public List<Post> findAll(long memberId) {
+        return em.createQuery("select p from Post p where p.member.id =: memberId", Post.class)
+                .setParameter("memberId", memberId)
                 .getResultList();
     }
 }

@@ -10,7 +10,7 @@
     <h2>회원 가입</h2>
   </div>
   <h4 class="mb-3">회원 정보 입력</h4>
-  <form action="" th:action="@{/users}" th:object="${userSaveRequestDto}" method="post">
+  <form action="" th:action="@{/members}" th:object="${memberSaveRequestDto}" method="post" enctype="multipart/form-data">
     <div>
       <label for="loginId" class="row" style="padding-left : 15px">로그인 ID</label>
       <input type="text" id="loginId" th:field="*{loginId}" class="formcontrol"
@@ -37,6 +37,11 @@
       <div th:if="${#fields.hasGlobalErrors()}">
         <p class="field-error" th:each="err : ${#fields.globalErrors()}"
            th:text="${err}">글로벌 오류 메시지</p> </div>
+    </div>
+    <div>
+      <label for="profileImage" class="row" style="padding-left : 15px">프로필 이미지</label>
+      <input type="file" id="profileImage" th:field="*{profileImage}" class="formcontrol"
+             th:errorclass="field-error">
     </div>
     <hr class="my-4">
     <div class="row">

@@ -1,6 +1,5 @@
 package com.yohanii.lostandfound.web.interceptor;
 
-import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +12,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         HttpSession session = request.getSession();
-        if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null) {
+        if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             response.sendRedirect("/login?redirectURL=" + request.getRequestURI());
             return false;
         }

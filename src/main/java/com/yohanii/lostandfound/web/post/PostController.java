@@ -2,7 +2,7 @@ package com.yohanii.lostandfound.web.post;
 
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostRepository;
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
@@ -78,13 +78,13 @@ public class PostController {
 
     @PostMapping("/posts")
     @Transactional
-    public String postSave(@Login User loginUser, @Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String postSave(@Login Member loginMember, @Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL) {
 
         if (bindingResult.hasErrors()) {
             return "posts/addPostForm";
         }
 
-        postRepository.save(dto.toEntity(loginUser));
+        postRepository.save(dto.toEntity(loginMember));
 
         return "redirect:" + redirectURL;
     }
@@ -135,12 +135,12 @@ public class PostController {
     @GetMapping("/posts/my-posts")
     public String MyPosts(Model model, HttpServletRequest request) {
 
-        User loginUser = (User) model.getAttribute("user");
-        if (loginUser == null) {
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
             return "redirect:/";
         }
 
-        List<Post> myPosts = postRepository.findAll(loginUser.getId());
+        List<Post> myPosts = postRepository.findAll(loginMember.getId());
         model.addAttribute("posts", myPosts);
         model.addAttribute("requestURI", request.getRequestURI());
 

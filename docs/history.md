@@ -1,5 +1,12 @@
 ## 기록
 
+- 24.1.30
+  - user -> member 이름 변경
+    - h2 db에서 user가 예약어로 설정되어있어서, db에서만 users로 되도록 바꿨었는데, 이와 관련해 계속 문제가 생길 것 같아 member로 이름변경을 해줬다.
+    - 미처 제대로 못 바꾼 부분은 계속 바꿀 예정
+  - ImageStore 관련 service, dto 추가
+  - 회원가입 시 userProfile 저장 기능 구현
+
 - 24.1.27
   - test db 분리
     - 해결을 위해 3일 사용

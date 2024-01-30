@@ -2,10 +2,9 @@ package com.yohanii.lostandfound.dto.post;
 
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostType;
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,9 +23,9 @@ public class PostSaveRequestDto {
     @NotNull
     private PostType type;
 
-    public Post toEntity(User user) {
+    public Post toEntity(Member member) {
         return Post.builder()
-                .user(user)
+                .member(member)
                 .title(title)
                 .content(content)
                 .type(type)

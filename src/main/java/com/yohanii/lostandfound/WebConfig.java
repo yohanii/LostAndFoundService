@@ -1,6 +1,6 @@
 package com.yohanii.lostandfound;
 
-import com.yohanii.lostandfound.web.argumentresolver.LoginUserArgumentResolver;
+import com.yohanii.lostandfound.web.argumentresolver.LoginMemberArgumentResolver;
 import com.yohanii.lostandfound.web.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginUserArgumentResolver());
+        resolvers.add(new LoginMemberArgumentResolver());
     }
 
     @Override
@@ -22,6 +22,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/users", "/users/add-form", "/login", "/logout", "/css/**", "*.ico", "/error");
+                .excludePathPatterns("/", "/members", "/members/add-form", "/login", "/logout", "/css/**", "*.ico", "/error");
     }
 }
