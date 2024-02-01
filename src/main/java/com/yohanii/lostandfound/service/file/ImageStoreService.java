@@ -29,9 +29,8 @@ public class ImageStoreService {
 
     public Long saveImage(ProfileImageSaveDto dto){
 
-        if (dto.getProfileImage().isEmpty()) {
-            log.info("ProfileImage is Empty");
-            return null;
+        if (dto.getProfileImage() == null) {
+            throw new IllegalArgumentException("ProfileImage is Empty");
         }
 
         String uploadFileName = dto.getProfileImage().getOriginalFilename();
@@ -53,7 +52,7 @@ public class ImageStoreService {
         return imageRepository.save(saveImage);
     }
 
-    public String getFullPath(String filename) {
+    private String getFullPath(String filename) {
         return fileDir + filename;
     }
 

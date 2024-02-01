@@ -77,7 +77,7 @@ class ImageRepositoryTest {
     }
 
     @Test
-    void    findByStoreFileName_해당하는_storeFileName_없을경우() {
+    void findByStoreFileName_해당하는_storeFileName_없을경우() {
         Optional<Image> findImage = imageRepository.findByStoreFileName("testtesttesttesttest");
 
         assertThat(findImage).isNotPresent();
