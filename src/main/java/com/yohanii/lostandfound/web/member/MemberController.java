@@ -48,7 +48,9 @@ public class MemberController {
         Long savedMemberId = memberRepository.save(dto.toEntity());
         Member savedMember = memberRepository.find(savedMemberId);
 
-        imageStoreService.saveImage(new ProfileImageSaveDto(savedMember, dto.getProfileImage()));
+        if (!dto.getProfileImage().isEmpty()) {
+            imageStoreService.saveImage(new ProfileImageSaveDto(savedMember, dto.getProfileImage()));
+        }
         log.info("Save Success!!!!!!!!!");
         return "redirect:/";
     }
