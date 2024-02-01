@@ -52,7 +52,7 @@ public class ImageStoreService {
         return imageRepository.save(saveImage);
     }
 
-    private String getFullPath(String filename) {
+    public String getFullPath(String filename) {
         return fileDir + filename;
     }
 

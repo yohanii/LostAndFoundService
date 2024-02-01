@@ -3,13 +3,18 @@ package com.yohanii.lostandfound.web.profile;
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.member.MemberRepository;
 import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
+import com.yohanii.lostandfound.service.file.ImageStoreService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.MalformedURLException;
 
 @Slf4j
 @Controller
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileController {
 
     private final MemberRepository memberRepository;
+    private final ImageStoreService imageStoreService;
 
     @GetMapping("/{nickName}")
     public String profile(@PathVariable String nickName, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
@@ -69,5 +75,11 @@ public class ProfileController {
         findMember.updateMember(dto);
 
         return "redirect:/profiles/" + dto.getNickName() + "?redirectURL=" + redirectURL;
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + imageStoreService.getFullPath(filename));
     }
 }
