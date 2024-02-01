@@ -37,6 +37,11 @@ public class ProfileController {
             log.info("ProfileController.profile isLoginmember = true");
             model.addAttribute("isLoginmember", true);
         }
+        if (findMember.getProfileImage() == null) {
+            model.addAttribute("isPresentProfileImage", false);
+        } else {
+            model.addAttribute("isPresentProfileImage", true);
+        }
         model.addAttribute("member", findMember);
         model.addAttribute("redirectURL", redirectURL);
 
