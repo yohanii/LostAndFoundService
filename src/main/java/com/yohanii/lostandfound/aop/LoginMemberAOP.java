@@ -26,12 +26,12 @@ public class LoginMemberAOP {
     private void webProfile() {}
 
     @Pointcut("execution(* com.yohanii.lostandfound.web.member..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
-    private void webmember() {}
+    private void webMember() {}
 
     @Pointcut("execution(* com.yohanii.lostandfound.web.HomeController..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     private void webHome() {}
 
-    @Around("webPost() || webProfile() || webmember() || webHome()")
+    @Around("webPost() || webProfile() || webMember() || webHome()")
     public Object getLoginMember(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

@@ -26,8 +26,8 @@
 
             <div>
                 <label for="profileImage" th:text="'프로필 이미지'">프로필 이미지</label>
-                <img id="profileImage" th:if="${isPresentProfileImage}" th:src="|/profiles/images/${member.profileImage.getStoreFileName()}|" width="300" height="300"/>
-                <img id="defaultProfileImage" th:if="!${isPresentProfileImage}" th:src="'/profiles/images/default.png'" width="300" height="300"/>
+                <img id="profileImage" th:if="${member.profileImage}" th:src="|/profiles/images/${member.profileImage.getStoreFileName()}|" width="300" height="300"/>
+                <img id="defaultProfileImage" th:if="!${member.profileImage}" th:src="'/profiles/images/default.png'" width="300" height="300"/>
             </div>
 
         </div>

@@ -1,6 +1,20 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
+<script type="text/javascript">
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('preview').src = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      document.getElementById('preview').src = "";
+    }
+  }
+
+</script>
 <body>
 
 <div th:replace="fragments/unLoginBodyHeader :: unLoginBodyHeader"/>
@@ -13,7 +27,7 @@
   <form action="" th:action="@{/members}" th:object="${memberSaveRequestDto}" method="post" enctype="multipart/form-data">
     <div>
       <label for="loginId" class="row" style="padding-left : 15px">로그인 ID</label>
-      <input type="text" id="loginId" th:field="*{loginId}" class="formcontrol"
+      <input type="text" id="loginId" th:field="*{loginId}" class="form-control"
              th:errorclass="field-error">
       <div class="field-error" th:errors="*{loginId}" />
     </div>
@@ -25,13 +39,13 @@
     </div>
     <div>
       <label for="name" class="row" style="padding-left : 15px">이름</label>
-      <input type="text" id="name" th:field="*{name}" class="formcontrol"
+      <input type="text" id="name" th:field="*{name}" class="form-control"
              th:errorclass="field-error">
       <div class="field-error" th:errors="*{name}" />
     </div>
     <div>
       <label for="nickName" class="row" style="padding-left : 15px">닉네임</label>
-      <input type="text" id="nickName" th:field="*{nickName}" class="formcontrol"
+      <input type="text" id="nickName" th:field="*{nickName}" class="form-control"
              th:errorclass="field-error">
       <div class="field-error" th:errors="*{nickName}" />
       <div th:if="${#fields.hasGlobalErrors()}">
@@ -40,8 +54,10 @@
     </div>
     <div>
       <label for="profileImage" class="row" style="padding-left : 15px">프로필 이미지</label>
-      <input type="file" id="profileImage" th:field="*{profileImage}" class="formcontrol"
-             th:errorclass="field-error">
+      <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
+    </div>
+    <div>
+      <img id="preview" />
     </div>
     <hr class="my-4">
     <div class="row">

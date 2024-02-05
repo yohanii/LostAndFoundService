@@ -32,16 +32,11 @@ public class ProfileController {
         log.info("findMember.name() = " + findMember.getName());
         log.info("findMember.nickName = " + findMember.getNickName());
 
-        Member loginmember = (Member) model.getAttribute("member");
-        if (loginmember != null && loginmember.getId().equals(findMember.getId())) {
-            log.info("ProfileController.profile isLoginmember = true");
-            model.addAttribute("isLoginmember", true);
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember != null && loginMember.getId().equals(findMember.getId())) {
+            model.addAttribute("isLoginMember", true);
         }
-        if (findMember.getProfileImage() == null) {
-            model.addAttribute("isPresentProfileImage", false);
-        } else {
-            model.addAttribute("isPresentProfileImage", true);
-        }
+
         model.addAttribute("member", findMember);
         model.addAttribute("redirectURL", redirectURL);
 
@@ -54,6 +49,7 @@ public class ProfileController {
         Member findMember = memberRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
         dto.setName(findMember.getName());
         dto.setNickName(findMember.getNickName());
+        dto.setProfileImage(findMember.getProfileImage());
 
         model.addAttribute("redirectURL", redirectURL);
 

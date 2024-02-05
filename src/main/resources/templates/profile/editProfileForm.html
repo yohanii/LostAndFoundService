@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
+<script type="text/javascript" th:inline="javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
+</script>
 <body>
 
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -28,6 +39,13 @@
                            th:text="${err}">글로벌 오류 메시지</p> </div>
                 </div>
 
+                <div>
+                    <label for="profileImage" th:text="'프로필 이미지'">프로필 이미지</label>
+                    <input type="file" id="profileImage" th:value="*{profileImage}" class="form-control" onchange="readURL(this);">
+                </div>
+                <div>
+                    <img id="preview" th:src="|/profiles/images/${member.profileImage.getStoreFileName()}|" width="300" height="300" />
+                </div>
             </div>
         </div>
 
