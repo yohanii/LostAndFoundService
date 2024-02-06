@@ -17,7 +17,6 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 @PropertySource("classpath:application.properties")
 public class ImageStoreService {
@@ -27,6 +26,7 @@ public class ImageStoreService {
     @Value("${file.dir}")
     private String fileDir;
 
+    @Transactional
     public Long saveImage(ProfileImageSaveDto dto){
 
         if (dto.getProfileImage() == null) {
@@ -40,6 +40,12 @@ public class ImageStoreService {
             dto.getProfileImage().transferTo(new File(getFullPath(storeFileName)));
         } catch (IOException e) {
             log.error(e.getMessage());
+        }
+
+        Image profileImage = dto.getMember().getProfileImage();
+        if (profileImage != null) {
+            profileImage.changeFileName(uploadFileName, storeFileName);
+            return profileImage.getId();
         }
 
         Image saveImage = Image.builder()

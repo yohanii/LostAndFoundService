@@ -43,4 +43,9 @@ public class Image {
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
     }
+
+    public void changeFileName(String uploadFileName, String storeFileName) {
+        this.uploadFileName = uploadFileName;
+        this.storeFileName = storeFileName;
+    }
 }

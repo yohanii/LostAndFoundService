@@ -2,6 +2,7 @@ package com.yohanii.lostandfound.web.profile;
 
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.member.MemberRepository;
+import com.yohanii.lostandfound.dto.image.ProfileImageSaveDto;
 import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
 import com.yohanii.lostandfound.service.file.ImageStoreService;
 import jakarta.transaction.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -27,6 +29,7 @@ public class ProfileController {
 
     @GetMapping("/{nickName}")
     public String profile(@PathVariable String nickName, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+        log.info("ProfileController.profile");
 
         Member findMember = memberRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
         log.info("findMember.name() = " + findMember.getName());
@@ -45,11 +48,11 @@ public class ProfileController {
 
     @GetMapping("/edit-form/{nickName}")
     public String profileEditForm(@PathVariable String nickName, @ModelAttribute ProfileEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+        log.info("ProfileController.profileEditForm");
 
         Member findMember = memberRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
         dto.setName(findMember.getName());
         dto.setNickName(findMember.getNickName());
-        dto.setProfileImage(findMember.getProfileImage());
 
         model.addAttribute("redirectURL", redirectURL);
 
@@ -59,10 +62,12 @@ public class ProfileController {
     @PatchMapping("/{nickName}")
     @Transactional
     public String profileEdit(@PathVariable String nickName, @ModelAttribute ProfileEditRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+        log.info("ProfileController.profileEdit");
 
         Member findMember = memberRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
 
-        if (memberRepository.findByNickName(dto.getNickName()).isPresent()) {
+        Optional<Member> memberOfDto = memberRepository.findByNickName(dto.getNickName());
+        if (memberOfDto.isPresent() && !memberOfDto.get().getId().equals(findMember.getId())) {
             bindingResult.reject("errorCode입니다", "닉네임 중복입니다.");
         }
 
@@ -73,6 +78,9 @@ public class ProfileController {
             return "profile/editProfileForm";
         }
 
+        if (!dto.getProfileImage().isEmpty()) {
+            imageStoreService.saveImage(new ProfileImageSaveDto(findMember, dto.getProfileImage()));
+        }
         findMember.updateMember(dto);
 
         return "redirect:/profiles/" + dto.getNickName() + "?redirectURL=" + redirectURL;
@@ -81,6 +89,7 @@ public class ProfileController {
     @ResponseBody
     @GetMapping("/images/{filename}")
     public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        log.info("ProfileController.downloadImage");
         return new UrlResource("file:" + imageStoreService.getFullPath(filename));
     }
 }

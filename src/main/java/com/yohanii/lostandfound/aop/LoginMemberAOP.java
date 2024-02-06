@@ -22,7 +22,7 @@ public class LoginMemberAOP {
             "&& (@annotation(org.springframework.web.bind.annotation.GetMapping) || execution(* com.yohanii.lostandfound.web.post.PostController.postSearch(..)))")
     private void webPost() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..))")
     private void webProfile() {}
 
     @Pointcut("execution(* com.yohanii.lostandfound.web.member..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
