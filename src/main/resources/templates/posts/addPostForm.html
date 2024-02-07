@@ -11,7 +11,7 @@
     <h2 th:text="'게시물 등록'">게시물 등록</h2>
   </div>
 
-  <form action="post.html" th:action="|/posts?redirectURL=${redirectURL}|" th:object="${postSaveRequestDto}" method="post">
+  <form action="post.html" th:action="|/posts?redirectURL=${redirectURL}|" th:object="${postSaveRequestDto}" method="post" enctype="multipart/form-data">
     <div>
       <div>타입</div>
       <select th:field="*{type}" class="form-select">
@@ -31,6 +31,30 @@
         게시물 제목 오류
       </div>
     </div>
+
+    <div class="container-fluid bg-warning" style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+      <div>
+        <label for="item-name" th:text="'물건 이름'">물건 이름</label>
+        <input type="text" id="item-name" th:field="*{itemName}" class="form-control" placeholder="물건 이름">
+      </div>
+      <div>
+        <label for="item-place" th:text="'찾은 혹은 잃어버린 장소'">찾은 혹은 잃어버린 장소</label>
+        <input type="text" id="item-place" th:field="*{itemPlace}" class="form-control" placeholder="찾은 혹은 잃어버린 장소를 입력해주세요">
+      </div>
+      <div>
+        <div>물건 종류</div>
+        <select th:field="*{itemCategory}" class="form-select">
+          <option value="">==물건 종류 선택==</option>
+          <option th:each="itemCategory : ${T(com.yohanii.lostandfound.domain.item.ItemCategory).values()}" th:value="${itemCategory}"
+                  th:text="${itemCategory.name}">스마트폰</option>
+        </select>
+      </div>
+      <div>
+        <label for="itemImages" th:text="'물건 사진'">물건 사진</label>
+        <input type="file" id="itemImages" multiple="multiple" th:field="*{itemImages}" class="form-control">
+      </div>
+    </div>
+
     <div>
       <label for="content" th:text="'게시물 내용'">게시물 내용</label>
       <textarea id="content" th:field="*{content}"

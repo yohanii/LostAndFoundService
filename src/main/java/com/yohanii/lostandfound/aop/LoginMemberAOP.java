@@ -18,8 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 public class LoginMemberAOP {
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.post..*(..)) " +
-            "&& (@annotation(org.springframework.web.bind.annotation.GetMapping) || execution(* com.yohanii.lostandfound.web.post.PostController.postSearch(..)))")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.post..*(..)) ")
     private void webPost() {}
 
     @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..))")
