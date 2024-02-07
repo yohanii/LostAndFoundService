@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
+<head th:replace="fragments/imageJSScript :: imageJSScript">
 <body>
 
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -51,7 +52,9 @@
       </div>
       <div>
         <label for="itemImages" th:text="'물건 사진'">물건 사진</label>
-        <input type="file" id="itemImages" multiple="multiple" th:field="*{itemImages}" class="form-control">
+        <input type="file" id="itemImages" multiple="multiple" th:field="*{itemImages}" class="form-control" onchange="readURLs(this);">
+      </div>
+      <div id="previews">
       </div>
     </div>
 
