@@ -82,4 +82,31 @@ class ImageRepositoryTest {
 
         assertThat(findImage).isNotPresent();
     }
+
+    @Test
+    void deleteAll() {
+        Image image1 = Image.builder().build();
+        Image image2 = Image.builder().build();
+        imageRepository.save(image1);
+        imageRepository.save(image2);
+
+        int affectedRows = imageRepository.deleteAll(List.of(image1, image2));
+
+        List<Image> images = imageRepository.findAll();
+        assertThat(images).doesNotContain(image1, image2);
+        assertThat(affectedRows).isEqualTo(2);
+    }
+
+    @Test
+    void deleteAll_저장안된_image가_섞여있는경우() {
+        Image image1 = Image.builder().build();
+        Image image2 = Image.builder().build();
+        imageRepository.save(image1);
+
+        int affectedRows = imageRepository.deleteAll(List.of(image1, image2));
+
+        List<Image> images = imageRepository.findAll();
+        assertThat(images).doesNotContain(image1, image2);
+        assertThat(affectedRows).isEqualTo(1);
+    }
 }

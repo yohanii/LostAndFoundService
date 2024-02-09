@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,4 +42,14 @@ public class ImageRepository {
                 .findFirst();
     }
 
+    public int deleteAll(List<Image> images) {
+        List<Long> ids = images.stream()
+                .map(Image::getId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        return em.createQuery("delete from Image i where i.id in :ids")
+                .setParameter("ids", ids)
+                .executeUpdate();
+    }
 }

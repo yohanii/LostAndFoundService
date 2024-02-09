@@ -113,6 +113,9 @@ public class PostController {
         dto.setTitle(findPost.getTitle());
         dto.setContent(findPost.getContent());
         dto.setType(findPost.getType());
+        dto.setItemName(findPost.getItem().getName());
+        dto.setItemPlace(findPost.getItem().getPlace());
+        dto.setItemCategory(findPost.getItem().getItemCategory());
 
         model.addAttribute("post", findPost);
         model.addAttribute("redirectURL", redirectURL);
@@ -126,6 +129,11 @@ public class PostController {
 
         Post findPost = postRepository.findById(postId);
         findPost.updatePost(dto);
+        findPost.getItem().updateItem(dto);
+
+        if (!dto.getItemImages().isEmpty()) {
+            imageStoreService.saveImages(new ItemImagesSaveDto(findPost.getItem(), dto.getItemImages()));
+        }
 
         return "redirect:/posts/{postId}?redirectURL=" + redirectURL;
     }

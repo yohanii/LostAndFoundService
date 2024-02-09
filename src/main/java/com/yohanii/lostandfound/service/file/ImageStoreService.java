@@ -71,6 +71,12 @@ public class ImageStoreService {
             throw new IllegalArgumentException("ProfileImage is Empty");
         }
 
+        List<Image> itemImages = dto.getItem().getImages();
+        if (!itemImages.isEmpty()) {
+            log.info("deleteAll");
+            imageRepository.deleteAll(itemImages);
+        }
+
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : dto.getImages()) {
             String uploadFileName = file.getOriginalFilename();

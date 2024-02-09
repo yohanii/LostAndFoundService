@@ -2,6 +2,7 @@ package com.yohanii.lostandfound.domain.item;
 
 import com.yohanii.lostandfound.domain.image.Image;
 import com.yohanii.lostandfound.domain.post.Post;
+import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -47,5 +48,11 @@ public class Item {
         this.place = place;
         this.occurredTime = occurredTime;
         this.itemCategory = itemCategory;
+    }
+
+    public void updateItem(PostEditRequestDto dto) {
+        this.name = dto.getItemName();
+        this.place = dto.getItemPlace();
+        this.itemCategory = dto.getItemCategory();
     }
 }
