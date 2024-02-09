@@ -23,12 +23,15 @@
         }
     }
     function imageLoader(input) {
+        var img_style = 'width:300px;height:300px;';
+
         if (input) {
             var reader = new FileReader();
             var previews = document.getElementById("previews");
 
             reader.onload = function(e) {
                 let img = document.createElement('img')
+                img.setAttribute('style', img_style)
                 img.src = e.target.result;
                 previews.appendChild(img);
             };
