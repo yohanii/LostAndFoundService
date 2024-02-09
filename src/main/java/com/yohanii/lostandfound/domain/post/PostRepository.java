@@ -25,7 +25,7 @@ public class PostRepository {
     }
 
     public List<Post> findAll() {
-        return em.createQuery("select p from Post p", Post.class)
+        return em.createQuery("select p from Post p order by p.createdTime desc", Post.class)
                 .getResultList();
     }
 
@@ -34,13 +34,13 @@ public class PostRepository {
     }
 
     public List<Post> findLostPosts() {
-        return em.createQuery("select p from Post p where p.type =: type", Post.class)
+        return em.createQuery("select p from Post p where p.type =: type order by p.createdTime desc", Post.class)
                 .setParameter("type", PostType.LOST)
                 .getResultList();
     }
 
     public List<Post> findFoundPosts() {
-        return em.createQuery("select p from Post p where p.type =: type", Post.class)
+        return em.createQuery("select p from Post p where p.type =: type order by p.createdTime desc", Post.class)
                 .setParameter("type", PostType.FOUND)
                 .getResultList();
     }
@@ -70,6 +70,7 @@ public class PostRepository {
             jpql += "p.content like concat('%', :content, '%')";
         }
 
+        jpql += " order by p.createdTime desc";
         TypedQuery<Post> query = em.createQuery(jpql, Post.class)
                 .setMaxResults(1000);
 
@@ -84,7 +85,7 @@ public class PostRepository {
     }
 
     public List<Post> findAll(long memberId) {
-        return em.createQuery("select p from Post p where p.member.id =: memberId", Post.class)
+        return em.createQuery("select p from Post p where p.member.id =: memberId order by p.createdTime desc", Post.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
