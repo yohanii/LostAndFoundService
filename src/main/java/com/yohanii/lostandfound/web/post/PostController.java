@@ -4,6 +4,7 @@ import com.yohanii.lostandfound.domain.item.ItemRepository;
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostRepository;
 import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.post.PostType;
 import com.yohanii.lostandfound.dto.image.ItemImagesSaveDto;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
@@ -74,8 +75,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/add-form")
-    public String postSaveForm(@ModelAttribute PostSaveRequestDto post, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public String postSaveForm(@ModelAttribute PostSaveRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
+        setDtoPostTypeByRedirectURL(dto, redirectURL);
         model.addAttribute("redirectURL", redirectURL);
         
         return "posts/addPostForm";
@@ -160,5 +162,14 @@ public class PostController {
         model.addAttribute("requestURI", request.getRequestURI());
 
         return "posts/posts";
+    }
+
+    private static void setDtoPostTypeByRedirectURL(PostSaveRequestDto dto, String redirectURL) {
+        if (redirectURL.contains("lost")) {
+            dto.setType(PostType.LOST);
+        }
+        if (redirectURL.contains("found")) {
+            dto.setType(PostType.FOUND);
+        }
     }
 }
