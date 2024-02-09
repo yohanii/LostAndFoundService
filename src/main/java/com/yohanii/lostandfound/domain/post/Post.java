@@ -24,7 +24,7 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Item item;
 
     @Column(name = "post_title")

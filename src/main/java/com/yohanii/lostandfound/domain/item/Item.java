@@ -28,7 +28,7 @@ public class Item {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
 
     @Column(name = "item_name")

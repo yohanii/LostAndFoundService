@@ -19,7 +19,7 @@ public class Member {
     @Column(name = "member_name")
     private String name;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Image profileImage;
 
     private String loginId;
