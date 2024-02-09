@@ -44,6 +44,7 @@ public class PostSaveRequestDto {
 
     public Item toItemEntity(Post post) {
         return Item.builder()
+                .post(post)
                 .name(itemName)
                 .place(itemPlace)
                 .itemCategory(itemCategory)
