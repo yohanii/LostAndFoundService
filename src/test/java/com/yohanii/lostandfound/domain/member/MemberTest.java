@@ -1,28 +1,27 @@
-package com.yohanii.lostandfound.domain.user;
+package com.yohanii.lostandfound.domain.member;
 
 import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class UserTest {
+public class MemberTest {
 
     @Test
-    void updateUser() {
+    void updateMember() {
         ProfileEditRequestDto dto = new ProfileEditRequestDto();
         dto.setName("testName");
         dto.setNickName("testNickName");
 
-        User user = User.builder()
+        Member member = Member.builder()
                 .name("name")
                 .nickName("nickName")
                 .build();
 
-        user.updateUser(dto);
+        member.updateMember(dto);
 
-        assertThat(user.getName()).isEqualTo(dto.getName());
-        assertThat(user.getNickName()).isEqualTo(dto.getNickName());
-        assertThat(user.getUpdatedTime()).isNotNull();
+        assertThat(member.getName()).isEqualTo(dto.getName());
+        assertThat(member.getNickName()).isEqualTo(dto.getNickName());
+        assertThat(member.getUpdatedTime()).isNotNull();
     }
 }

@@ -1,6 +1,6 @@
 package com.yohanii.lostandfound.web.login;
 
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.service.login.LoginService;
 import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,14 +36,14 @@ public class LoginController {
             return "/login/loginForm";
         }
 
-        Optional<User> loginUser = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
-        if (loginUser.isEmpty()) {
+        Optional<Member> loginMember = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
+        if (loginMember.isEmpty()) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "/login/loginForm";
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_USER, loginUser.get());
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember.get());
 
         return "redirect:" + redirectURL;
     }

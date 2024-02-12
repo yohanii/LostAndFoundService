@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script type="text/javascript" th:fragment="imageJSScript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            document.getElementById('preview').src = "";
+        }
+    }
+
+    function readURLs(e){
+        var files = e.files;
+        var fileArr = Array.prototype.slice.call(files)
+        document.getElementById("previews").innerHTML = "";
+
+        for(f of fileArr){
+            imageLoader(f);
+        }
+    }
+    function imageLoader(input) {
+        var img_style = 'width:300px;height:300px;';
+
+        if (input) {
+            var reader = new FileReader();
+            var previews = document.getElementById("previews");
+
+            reader.onload = function(e) {
+                let img = document.createElement('img')
+                img.setAttribute('style', img_style)
+                img.src = e.target.result;
+                previews.appendChild(img);
+            };
+            reader.readAsDataURL(input);
+        }
+    }
+
+</script>

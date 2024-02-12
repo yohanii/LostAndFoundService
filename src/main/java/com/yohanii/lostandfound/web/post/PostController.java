@@ -1,12 +1,15 @@
 package com.yohanii.lostandfound.web.post;
 
+import com.yohanii.lostandfound.domain.item.ItemRepository;
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostRepository;
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.post.PostType;
+import com.yohanii.lostandfound.dto.image.ItemImagesSaveDto;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
-import com.yohanii.lostandfound.web.argumentresolver.Login;
+import com.yohanii.lostandfound.service.file.ImageStoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +28,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostRepository postRepository;
+    private final ItemRepository itemRepository;
+    private final ImageStoreService imageStoreService;
 
 //    @GetMapping("/posts")
     public String posts(Model model) {
@@ -69,8 +75,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/add-form")
-    public String postSaveForm(@ModelAttribute PostSaveRequestDto post, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public String postSaveForm(@ModelAttribute PostSaveRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
+        setDtoPostTypeByRedirectURL(dto, redirectURL);
         model.addAttribute("redirectURL", redirectURL);
         
         return "posts/addPostForm";
@@ -78,13 +85,23 @@ public class PostController {
 
     @PostMapping("/posts")
     @Transactional
-    public String postSave(@Login User loginUser, @Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL) {
+    public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         if (bindingResult.hasErrors()) {
+            log.info("PostController.postSave bindingResult.hasErrors");
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                log.info(error.getDefaultMessage());
+            }
             return "posts/addPostForm";
         }
 
-        postRepository.save(dto.toEntity(loginUser));
+        Post savePost = dto.toPostEntity((Member) model.getAttribute("member"));
+        postRepository.save(savePost);
+        Long savedItemId = itemRepository.save(dto.toItemEntity(savePost));
+
+        if (!dto.getItemImages().isEmpty()) {
+            imageStoreService.saveImages(new ItemImagesSaveDto(itemRepository.find(savedItemId), dto.getItemImages()));
+        }
 
         return "redirect:" + redirectURL;
     }
@@ -96,6 +113,9 @@ public class PostController {
         dto.setTitle(findPost.getTitle());
         dto.setContent(findPost.getContent());
         dto.setType(findPost.getType());
+        dto.setItemName(findPost.getItem().getName());
+        dto.setItemPlace(findPost.getItem().getPlace());
+        dto.setItemCategory(findPost.getItem().getItemCategory());
 
         model.addAttribute("post", findPost);
         model.addAttribute("redirectURL", redirectURL);
@@ -109,6 +129,11 @@ public class PostController {
 
         Post findPost = postRepository.findById(postId);
         findPost.updatePost(dto);
+        findPost.getItem().updateItem(dto);
+
+        if (!dto.getItemImages().isEmpty()) {
+            imageStoreService.saveImages(new ItemImagesSaveDto(findPost.getItem(), dto.getItemImages()));
+        }
 
         return "redirect:/posts/{postId}?redirectURL=" + redirectURL;
     }
@@ -135,15 +160,24 @@ public class PostController {
     @GetMapping("/posts/my-posts")
     public String MyPosts(Model model, HttpServletRequest request) {
 
-        User loginUser = (User) model.getAttribute("user");
-        if (loginUser == null) {
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
             return "redirect:/";
         }
 
-        List<Post> myPosts = postRepository.findAll(loginUser.getId());
+        List<Post> myPosts = postRepository.findAll(loginMember.getId());
         model.addAttribute("posts", myPosts);
         model.addAttribute("requestURI", request.getRequestURI());
 
         return "posts/posts";
+    }
+
+    private static void setDtoPostTypeByRedirectURL(PostSaveRequestDto dto, String redirectURL) {
+        if (redirectURL.contains("lost")) {
+            dto.setType(PostType.LOST);
+        }
+        if (redirectURL.contains("found")) {
+            dto.setType(PostType.FOUND);
+        }
     }
 }

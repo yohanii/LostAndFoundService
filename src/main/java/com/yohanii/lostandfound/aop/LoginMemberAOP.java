@@ -1,6 +1,5 @@
 package com.yohanii.lostandfound.aop;
 
-import com.yohanii.lostandfound.domain.user.User;
 import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -17,33 +16,32 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Slf4j
 @Component
 @Aspect
-public class LoginUserAOP {
+public class LoginMemberAOP {
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.post..*(..)) " +
-            "&& (@annotation(org.springframework.web.bind.annotation.GetMapping) || execution(* com.yohanii.lostandfound.web.post.PostController.postSearch(..)))")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.post..*(..)) ")
     private void webPost() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..))")
     private void webProfile() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.user..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
-    private void webUser() {}
+    @Pointcut("execution(* com.yohanii.lostandfound.web.member..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
+    private void webMember() {}
 
     @Pointcut("execution(* com.yohanii.lostandfound.web.HomeController..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     private void webHome() {}
 
-    @Around("webPost() || webProfile() || webUser() || webHome()")
-    public Object getLoginUser(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("webPost() || webProfile() || webMember() || webHome()")
+    public Object getLoginMember(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         HttpSession session = request.getSession(false);
-        log.info("LoginUserAOP.getLoginUser");
+        log.info("LoginmemberAOP.getLoginmember");
 
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
             if (arg instanceof Model model) {
                 if (session != null) {
-                    model.addAttribute("user", session.getAttribute(SessionConst.LOGIN_USER));
+                    model.addAttribute("member", session.getAttribute(SessionConst.LOGIN_MEMBER));
                 }
             }
         }

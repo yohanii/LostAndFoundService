@@ -1,7 +1,7 @@
 package com.yohanii.lostandfound.web;
 
-import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserRepository;
+import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     @GetMapping("/")
     public String home(Model model) {
 
-        User loginUser = (User) model.getAttribute("user");
-        if (loginUser == null) {
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
             return "home";
         }
 
-        User findUser = userRepository.find(loginUser.getId());
-        model.addAttribute("user", findUser);
+        Member findMember = memberRepository.find(loginMember.getId());
+        model.addAttribute("member", findMember);
 
         return "loginHome";
     }

@@ -1,9 +1,11 @@
 package com.yohanii.lostandfound.service.login;
 
-import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserRepository;
+import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,32 +15,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class LoginServiceTest {
 
     @Autowired
-    UserRepository userRepository;
+    MemberRepository memberRepository;
     @Autowired
     LoginService loginService;
 
     @Test
     void login_회원_있음() {
-        User testUser1 = User.builder()
+        Member testMember1 = Member.builder()
                 .name("yohan")
                 .loginId("testId")
                 .password("testPassword")
                 .build();
-        Long userId = userRepository.save(testUser1);
-        User saveUser = userRepository.find(userId);
+        Long memberId = memberRepository.save(testMember1);
+        Member saveMember = memberRepository.find(memberId);
 
-        Optional<User> result = loginService.login(saveUser.getLoginId(), saveUser.getPassword());
+        Optional<Member> result = loginService.login(saveMember.getLoginId(), saveMember.getPassword());
 
-        assertThat(result.get().getLoginId()).isEqualTo(saveUser.getLoginId());
-        assertThat(result.get().getPassword()).isEqualTo(saveUser.getPassword());
+        assertThat(result.get().getLoginId()).isEqualTo(saveMember.getLoginId());
+        assertThat(result.get().getPassword()).isEqualTo(saveMember.getPassword());
     }
 
     @Test
     void login_회원_없음() {
-        Optional<User> result = loginService.login("123", "123");
+        Optional<Member> result = loginService.login("123", "123");
 
         assertThat(result.isEmpty()).isTrue();
     }

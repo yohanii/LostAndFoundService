@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
-
+<head th:replace="fragments/imageJSScript :: imageJSScript">
 <body>
 
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
 <div class="container">
 
-    <form action="post.html" th:action="@{/profiles/{nickName}?redirectURL={url}(nickName=${profileEditRequestDto.nickName}, url=${redirectURL})}" th:object="${profileEditRequestDto}" method="post">
+    <form action="post.html" th:action="@{/profiles/{nickName}?redirectURL={url}(nickName=${profileEditRequestDto.nickName}, url=${redirectURL})}" th:object="${profileEditRequestDto}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="patch"/>
 
         <div class="py-5 text-center">
@@ -28,6 +28,13 @@
                            th:text="${err}">글로벌 오류 메시지</p> </div>
                 </div>
 
+                <div>
+                    <label for="profileImage" th:text="'프로필 이미지'">프로필 이미지</label>
+                    <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
+                </div>
+                <div>
+                    <img id="preview" th:src="|/profiles/images/${member.profileImage.getStoreFileName()}|" class="img-thumbnail" style="width: 300px; height: 300px" />
+                </div>
             </div>
         </div>
 

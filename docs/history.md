@@ -1,5 +1,62 @@
 ## 기록
 
+- 24.1.30
+  - user -> member 이름 변경
+    - h2 db에서 user가 예약어로 설정되어있어서, db에서만 users로 되도록 바꿨었는데, 이와 관련해 계속 문제가 생길 것 같아 member로 이름변경을 해줬다.
+    - 미처 제대로 못 바꾼 부분은 계속 바꿀 예정
+  - ImageStore 관련 service, dto 추가
+  - 회원가입 시 userProfile 저장 기능 구현
+
+- 24.1.27
+  - test db 분리
+    - 해결을 위해 3일 사용
+    - 방법
+      - build.gradle에 설정 추가
+        - `runtimeOnly 'com.h2database:h2'` 추가
+      - test resources에 따로 application.yml 추가
+        - ```
+          spring:
+            datasource:
+              url: jdbc:h2:mem:testdb;MODE=MYSQL;
+              username: sa
+              password:
+              driver-class-name: org.h2.Driver
+            jpa:
+              hibernate:
+                ddl-auto: create
+              properties:
+                hibernate:
+                format_sql: true
+            
+          logging:
+            level:
+              org.hibernate.SQL: debug
+          ```
+        - url : `jdbc:h2:mem:{db이름}`으로 In-Memory mode로 사용한다. spring boot 2.1.10 이후로 `MODE=MYSQL`를 써줘야 MySQL을 인식한다.
+        - In-Memory mode : 스프링 부트 실행할 때 함께 H2를 띄운다. H2 DB 데이터를 로컬에 저장하지 않고 메모리에만 가지고있다.
+      - db를 사용하는 test class에 `@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)`를 붙여줌
+        - 설정시, 테스트용 클래스에서 사용할 데이터베이스를 적용되게 하는 Annotation이다.
+
+    - 문제
+      - `Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user..` 발생
+        - H2 데이터베이스 2.1.214 버전에서 user 키워드가 예약어로 지정되어 있어서 발생한 문제
+        - User Entitiy에 `@Table(name = "users")` 써줘서 해결
+      - `dialect: org.hibernate.dialect.MySQL5InnoDBDialect` 사용시 에러
+        - `MySQL5InnoDBDialect`는 deprecated되었고 따라서 `MySQL57Dialect`을 사용해야 한다고 한다.
+        - `MySQL8Dialect`이 있지만 아직 공식적으로 사용하는지 모르겠음
+        - 아마 schema.sql로 table 설정을 해줘야 하는 것 같았고, 없어도 해결가능해서 사용 안 함
+      - In-Memory mode가 아닌 Server mode로 했을 때 문제
+        - 처음엔 url로 `jdbc:h2:tcp://localhost/~/test`를 사용해 Server mode로 사용하려 했었다.
+          - 하지만, test용 h2 db를 쓰지 않고, 원래 db를 계속 참조하는 문제 해결을 못했고, In-Memory가 자료 접근이 훨씬 빠르기 때문에 갈아탔다.
+          - 데이터 양의 빠른 증가로 데이터베이스 응답 속도가 떨어지는 문제를 해결할 수 있는 대안이 인 메모리 데이터베이스이다.
+
+  - default 이미지 생성
+    - 문제 : DB Image table에 항상 default image가 있었으면 좋겠음 
+    - 해결 : `@EventListener(ApplicationReadyEvent.class)`을 사용해 application 시작할 때마다 db 체크하고 없을 경우 추가
+      - `ApplicationReadyEvent`는 스프링 컨테이너가 모두 띄워졌을 때 발생하는 이벤트다.
+      - 스프링 컨테이너가 모두 완전히 떴다는 의미는 스프링 AOP, 트랜잭션 등등 모든 것을 완성한 Applicaiton Context가 완성되었다는 의미이다. 
+      - 따라서 init() 메서드를 호출하면, 프록시를 통해 만들어진 스프링 빈을 통해서 해당 메서드가 호출되기 때문에 트랜잭션이 적용된다.
+      
 - 24.1.23
   - 문제: posts, postSearch, MyPosts 모두 같은 템플릿을 사용하는데, postSearch 때문에 'PostSearchRequestDto', 'isSearch'를 항상 보내줘야한다.
     - 해결1: thymeleaf에서 no input이여도 가능한가?

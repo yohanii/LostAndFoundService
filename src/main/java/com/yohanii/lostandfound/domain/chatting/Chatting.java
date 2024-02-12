@@ -1,6 +1,6 @@
 package com.yohanii.lostandfound.domain.chatting;
 
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,8 +21,8 @@ public class Chatting {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "room_id")

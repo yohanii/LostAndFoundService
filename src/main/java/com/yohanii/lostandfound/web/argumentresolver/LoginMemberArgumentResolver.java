@@ -1,6 +1,6 @@
 package com.yohanii.lostandfound.web.argumentresolver;
 
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -10,15 +10,15 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
 
         boolean hasLoginAnnotation = parameter.hasParameterAnnotation(Login.class);
-        boolean hasUserType = User.class.isAssignableFrom(parameter.getParameterType());
+        boolean hasMemberType = Member.class.isAssignableFrom(parameter.getParameterType());
 
-        return hasLoginAnnotation && hasUserType;
+        return hasLoginAnnotation && hasMemberType;
     }
 
     @Override
@@ -30,6 +30,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
             return null;
         }
 
-        return session.getAttribute(SessionConst.LOGIN_USER);
+        return session.getAttribute(SessionConst.LOGIN_MEMBER);
     }
 }

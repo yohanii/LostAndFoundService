@@ -1,16 +1,19 @@
 package com.yohanii.lostandfound.dto.post;
 
+import com.yohanii.lostandfound.domain.item.Item;
+import com.yohanii.lostandfound.domain.item.ItemCategory;
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostType;
-import com.yohanii.lostandfound.domain.user.User;
+import com.yohanii.lostandfound.domain.member.Member;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,13 +27,27 @@ public class PostSaveRequestDto {
     @NotNull
     private PostType type;
 
-    public Post toEntity(User user) {
+    private String itemName;
+    private String itemPlace;
+    private ItemCategory itemCategory;
+    private List<MultipartFile> itemImages;
+
+    public Post toPostEntity(Member member) {
         return Post.builder()
-                .user(user)
+                .member(member)
                 .title(title)
                 .content(content)
                 .type(type)
                 .createdTime(LocalDateTime.now())
+                .build();
+    }
+
+    public Item toItemEntity(Post post) {
+        return Item.builder()
+                .post(post)
+                .name(itemName)
+                .place(itemPlace)
+                .itemCategory(itemCategory)
                 .build();
     }
 }

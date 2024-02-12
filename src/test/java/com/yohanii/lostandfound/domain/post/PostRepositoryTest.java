@@ -1,16 +1,13 @@
 package com.yohanii.lostandfound.domain.post;
 
-import com.yohanii.lostandfound.domain.user.User;
-import com.yohanii.lostandfound.domain.user.UserRepository;
+import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.member.MemberRepository;
 import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,18 +16,19 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class PostRepositoryTest {
 
     @Autowired
     PostRepository postRepository;
     @Autowired
-    UserRepository userRepository;
+    MemberRepository memberRepository;
 
     @Test
     void save() {
-        User user = User.builder().build();
+        Member member = Member.builder().build();
         Post post = Post.builder()
-                .user(user)
+                .member(member)
                 .title("hello")
                 .content("hello123")
                 .type(PostType.LOST)
@@ -39,7 +37,7 @@ class PostRepositoryTest {
         Long savedId = postRepository.save(post);
 
         Post savedPost = postRepository.findById(savedId);
-        assertThat(savedPost.getUser()).isEqualTo(user);
+        assertThat(savedPost.getMember()).isEqualTo(member);
         assertThat(savedPost.getTitle()).isEqualTo("hello");
         assertThat(savedPost.getContent()).isEqualTo("hello123");
         assertThat(savedPost.getType()).isEqualTo(PostType.LOST);
@@ -84,6 +82,7 @@ class PostRepositoryTest {
 
         List<Post> result = postRepository.findAll();
         assertThat(result).contains(post1, post2);
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @Test
@@ -154,20 +153,20 @@ class PostRepositoryTest {
 
         List<Post> searchPosts = postRepository.findAll(new PostSearchRequestDto("", null));
 
-//        assertThat(searchPosts.size()).isEqualTo(3);
+        assertThat(searchPosts.size()).isEqualTo(3);
         assertThat(searchPosts).contains(post1, post2, post3);
     }
 
     @Test
-    void findAllByUserId() {
-        User user = User.builder().build();
-        userRepository.save(user);
+    void findAllByMemberId() {
+        Member member = Member.builder().build();
+        memberRepository.save(member);
 
         Post post1 = Post.builder()
-                .user(user)
+                .member(member)
                 .build();
         Post post2 = Post.builder()
-                .user(user)
+                .member(member)
                 .build();
         Post post3 = Post.builder().build();
 
@@ -175,7 +174,7 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        List<Post> findPosts = postRepository.findAll(user.getId());
+        List<Post> findPosts = postRepository.findAll(member.getId());
 
         assertThat(findPosts.size()).isEqualTo(2);
         assertThat(findPosts).contains(post1, post2);
