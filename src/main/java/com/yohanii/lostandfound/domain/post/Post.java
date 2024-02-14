@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.domain.post;
 
+import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.item.Item;
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
@@ -27,6 +28,9 @@ public class Post {
     @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Item item;
 
+    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
+    private Room room;
+
     @Column(name = "post_title")
     private String title;
 
@@ -41,9 +45,10 @@ public class Post {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Post(Member member, Item item, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public Post(Member member, Item item, Room room, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.member = member;
         this.item = item;
+        this.room = room;
         this.title = title;
         this.content = content;
         this.type = type;

@@ -30,7 +30,10 @@ public class LoginMemberAOP {
     @Pointcut("execution(* com.yohanii.lostandfound.web.HomeController..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     private void webHome() {}
 
-    @Around("webPost() || webProfile() || webMember() || webHome()")
+    @Pointcut("execution(* com.yohanii.lostandfound.web.chatting..*(..))")
+    private void webChatting() {}
+
+    @Around("webPost() || webProfile() || webMember() || webHome() || webChatting()")
     public Object getLoginMember(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

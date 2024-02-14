@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<script th:inline="javascript">
+    function enterRoom(socket){
+        var enterMsg={"type" : "ENTER","roomId":[[${room.id}]],"memberId":[[${member.id}]],"content":""}; //sender는  글쓸때 수정하자.
+        socket.send(JSON.stringify(enterMsg));
+    }
+    let socket = new WebSocket("ws://localhost:8080/ws/chat");
+
+    socket.onopen = function (e) {
+        console.log('open server!')
+        enterRoom(socket);
+    };
+    socket.onclose=function(e){
+        console.log('disconnet');
+    }
+
+    socket.onerror = function (e){
+        console.log(e);
+    }
+
+    //메세지 수신했을 때 이벤트.
+    socket.onmessage = function (e) {
+        console.log(e.data);
+        let messages = document.querySelector('#messages');
+        let newMsg = document.createElement('div');
+        newMsg.style.height = "50px";
+        newMsg.innerText=e.data;
+        messages.append(newMsg);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+
+    //메세지 보내기 버튼 눌렀을 떄..
+    function sendMsg() {
+        let content=document.querySelector('#message').value;
+        var talkMsg={"type" : "TALK","roomId":[[${room.id}]] ,"memberId":[[${member.id}]],"content":content};
+        socket.send(JSON.stringify(talkMsg));
+    }
+
+    function quit(){
+        var quitMsg={"type" : "QUIT","roomId":[[${room.id}]] ,"memberId":[[${member.id}]],"content":""};
+        socket.send(JSON.stringify(quitMsg));
+        socket.close();
+        location.href="/";
+    }
+
+</script>
+
+<body>
+
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:text="'채팅'">채팅</h2>
+    </div>
+
+    <div style="background-color: yellowgreen" >
+        <div id="messages" style="height: 500px; width: 100%; overflow-y: auto"></div>
+    </div>
+    <div class="row">
+        <input id="message" class="col" type="text" placeholder="보낼 메세지를 입력하세요." >
+        <button id="sendButton" class="w-25 btn btn-primary" type="button" value="전송" onclick="sendMsg()">전송</button>
+    </div>
+
+    <button id="quitButton" class="w-100 btn btn-secondary" type="button" value="방나가기" onclick="quit()">방 나가기</button>
+</div>
+
+</body>
+</html>
