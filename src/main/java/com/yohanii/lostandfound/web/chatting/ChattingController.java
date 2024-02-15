@@ -52,4 +52,9 @@ public class ChattingController {
 
         return "chat/chattingRoom";
     }
+
+    @GetMapping("/chat/rooms")
+    public String chattingRooms(Model model) {
+        return "chat/chattingRooms";
+    }
 }

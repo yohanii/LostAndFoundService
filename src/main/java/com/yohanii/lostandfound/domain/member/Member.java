@@ -1,11 +1,14 @@
 package com.yohanii.lostandfound.domain.member;
 
+import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.image.Image;
 import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -21,6 +24,9 @@ public class Member {
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Image profileImage;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    private List<Room> rooms = new ArrayList<>();
 
     private String loginId;
     private String password;

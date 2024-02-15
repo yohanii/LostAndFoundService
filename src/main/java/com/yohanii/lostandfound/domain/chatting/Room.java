@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,7 +31,7 @@ public class Room {
 
     private String storeRoomName;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "member_id")
     private Member member;
 
