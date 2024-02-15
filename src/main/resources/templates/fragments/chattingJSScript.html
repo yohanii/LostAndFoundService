@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script type="text/javascript" th:fragment="chattingJSScript">
+
+    function enterRoom(socket){
+        var enterMsg={"type" : "ENTER","roomId":[[${room.id}]],"memberId":[[${member.id}]],"content":""}; //sender는  글쓸때 수정하자.
+        socket.send(JSON.stringify(enterMsg));
+    }
+    let socket = new WebSocket("ws://localhost:8080/ws/chat");
+
+    socket.onopen = function (e) {
+        console.log('open server!')
+        enterRoom(socket);
+    };
+    socket.onclose=function(e){
+        console.log('disconnet');
+    }
+
+    socket.onerror = function (e){
+        console.log(e);
+    }
+
+    //메세지 수신했을 때 이벤트.
+    socket.onmessage = function (e) {
+        console.log(e.data);
+        let messageBox = document.querySelector('#messageBox');
+        let messages = document.querySelector('#messages');
+        let newMsg = document.createElement('div');
+        newMsg.style.height = "50px";
+        newMsg.innerText=e.data;
+        messages.append(newMsg);
+        messageBox.scrollTop = messageBox.scrollHeight;
+    }
+
+
+    //메세지 보내기 버튼 눌렀을 떄..
+    function sendMsg() {
+        let content=document.querySelector('#message').value;
+        var talkMsg={"type" : "TALK","roomId":[[${room.id}]] ,"memberId":[[${member.id}]],"content":content};
+        socket.send(JSON.stringify(talkMsg));
+    }
+
+    function quit(){
+        var quitMsg={"type" : "QUIT","roomId":[[${room.id}]] ,"memberId":[[${member.id}]],"content":""};
+        socket.send(JSON.stringify(quitMsg));
+        socket.close();
+        location.href="/";
+    }
+
+</script>
