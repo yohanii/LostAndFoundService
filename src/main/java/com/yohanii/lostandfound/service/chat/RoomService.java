@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,6 +36,18 @@ public class RoomService {
 
     public String getStoreRoomNameById(Long id) {
         return roomRepository.find(id).getStoreRoomName();
+    }
+
+    public List<Room> findRoomByMemberId(Long id) {
+        List<Room> result = new ArrayList<>();
+        result.addAll(roomRepository.findByMemberId(id));
+        result.addAll(roomRepository.findByPartnerId(id));
+
+        return result;
+    }
+
+    public Optional<Room> findRoomByIds(Long memberId, Long partnerId) {
+        return roomRepository.findByIds(memberId, partnerId);
     }
     private String createStoreRoomName() {
         return UUID.randomUUID().toString();

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,6 +31,25 @@ public class RoomRepository {
     public Optional<Room> findByStoreRoomName(String name) {
         return findAll().stream()
                 .filter(room -> room.getStoreRoomName().equals(name))
+                .findFirst();
+    }
+
+    public List<Room> findByMemberId(Long id) {
+        return findAll().stream()
+                .filter(room -> room.getMember().getId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+    public List<Room> findByPartnerId(Long id) {
+        return findAll().stream()
+                .filter(room -> room.getPartnerId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<Room> findByIds(Long memberId, Long partnerId) {
+        return findAll().stream()
+                .filter(room -> (room.getMember().getId().equals(memberId) && room.getPartnerId().equals(partnerId))
+                || (room.getMember().getId().equals(partnerId) && room.getPartnerId().equals(memberId)))
                 .findFirst();
     }
 }

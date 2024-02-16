@@ -11,8 +11,10 @@
         <h2 th:text="'채팅 목록'">채팅 목록</h2>
     </div>
 
-    <div id="rooms" th:each="room: ${member.rooms}">
-        <button class="btn-lg btn-primary w-100" th:text="${room.partnerId}" th:onclick="|location.href='@{/chat/room/{name}(name=${room.storeRoomName})}'|"></button>
+    <div id="rooms" th:each="room: ${rooms}">
+        <button class="btn-lg btn-primary w-100"
+                th:text="|게시물 제목 : ${room.post.title}, 참여자id : ${room.member.id}, ${room.partnerId}|"
+                th:onclick="|location.href='@{/chat/room/{name}(name=${room.storeRoomName})}'|"></button>
     </div>
 
 </div>
