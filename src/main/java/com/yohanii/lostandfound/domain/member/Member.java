@@ -25,9 +25,6 @@ public class Member {
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Image profileImage;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
-    private List<Room> rooms = new ArrayList<>();
-
     private String loginId;
     private String password;
     private String nickName;

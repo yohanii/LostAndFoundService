@@ -35,7 +35,7 @@ public class Room {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 

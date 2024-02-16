@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.*;
 
@@ -28,8 +30,8 @@ public class Post {
     @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Item item;
 
-    @OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
-    private Room room;
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Room> rooms = new ArrayList<>();
 
     @Column(name = "post_title")
     private String title;
@@ -45,10 +47,9 @@ public class Post {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Post(Member member, Item item, Room room, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public Post(Member member, Item item, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.member = member;
         this.item = item;
-        this.room = room;
         this.title = title;
         this.content = content;
         this.type = type;
