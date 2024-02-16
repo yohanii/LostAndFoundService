@@ -12,6 +12,12 @@
     </div>
 
     <div align="right">
+        <button th:if="${!member.name.equals(post.member.name)}"
+                th:onclick="|location.href='@{/chat/{id}(id=${post.id})}'|"
+                class="btn btn-outline-warning"
+                th:text="'채팅하기'">채팅하기</button>
+    </div>
+    <div align="right">
         <form id="delete_form" th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">
             <input type="hidden" name="_method" value="delete"/>
         </form>

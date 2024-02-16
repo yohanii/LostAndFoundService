@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.domain.post;
 
+import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.item.Item;
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
@@ -7,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.*;
 
@@ -26,6 +29,9 @@ public class Post {
 
     @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Item item;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Room> rooms = new ArrayList<>();
 
     @Column(name = "post_title")
     private String title;

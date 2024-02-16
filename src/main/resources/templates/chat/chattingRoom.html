@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<script th:replace="fragments/chattingJSScript :: chattingJSScript" />
+<body>
+
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:text="'채팅'">채팅</h2>
+    </div>
+
+    <div id="messageBox" style="background-color: yellowgreen; height: 500px; width: 100%; overflow-y: auto" >
+        <div id="history" th:each="chat: ${room.chattings}">
+            <th:block th:text="|${chat.member.id}님 : ${chat.content}|" style="height: 50px"></th:block>
+        </div>
+        <div id="messages"></div>
+    </div>
+    <div class="row">
+        <input id="message" class="col" type="text" placeholder="보낼 메세지를 입력하세요." >
+        <button id="sendButton" class="w-25 btn btn-primary" type="button" value="전송" onclick="sendMsg()">전송</button>
+    </div>
+
+    <button id="quitButton" class="w-100 btn btn-secondary" type="button" value="방나가기" onclick="quit()">방 나가기</button>
+</div>
+
+</body>
+</html>
