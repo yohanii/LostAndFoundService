@@ -15,6 +15,9 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,5 +66,37 @@ class RoomServiceTest {
         String storeRoomName = roomService.getStoreRoomNameById(savedRoomId);
 
         assertThat(storeRoomName).isEqualTo(room.getStoreRoomName());
+    }
+
+    @Test
+    void findRoomByMemberId() {
+        Member member = Member.builder().build();
+        Member otherMember1 = Member.builder().build();
+        Member otherMember2 = Member.builder().build();
+        memberRepository.save(member);
+        memberRepository.save(otherMember1);
+        memberRepository.save(otherMember2);
+
+        Room saveRoom1 = Room.builder()
+                .member(member)
+                .partnerId(10001L)
+                .build();
+
+        Room saveRoom2 = Room.builder()
+                .member(otherMember1)
+                .partnerId(member.getId())
+                .build();
+
+        Room saveRoom3 = Room.builder()
+                .member(otherMember2)
+                .partnerId(member.getId())
+                .build();
+        roomRepository.save(saveRoom1);
+        roomRepository.save(saveRoom2);
+        roomRepository.save(saveRoom3);
+
+        List<Room> findRooms = roomService.findRoomByMemberId(member.getId());
+        assertThat(findRooms.size()).isEqualTo(3);
+        assertThat(findRooms).contains(saveRoom1, saveRoom2, saveRoom3);
     }
 }
