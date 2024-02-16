@@ -1,10 +1,120 @@
 ## 기록
 
+- 24.2.16
+  - findRoom 관련 test들 작성
+  - entity 수정
+    - Post (One) <-> Room (Many)
+    - Member.rooms 제거
+  - 채팅방, 채팅 목록 제대로 연결 안 된 문제 해결
+    - RoomRepository, RoomService에 member가 속한 Room들 찾는 methods 구현
+    - 찾은 Room List 객체를 넘겨줘, 채팅 목록 보여줌
+
+- 24.2.15
+  - chatting, room tests 추가
+  - chatting JavaScript code를 fragment화
+  - chatting history 보여주기 구현
+  - 채팅 목록 구현
+    - `Member.rooms`로 객체 전달. 그런데, 해당 member가 `room.partnerId`에 해당하는 경우는 채팅 목록을 볼 수 없는 문제 있음. 
+
+- 24.2.14
+  - 일대일 chatting 기능 구현
+    - chat은 webSocket을 사용하기 때문에, 관련 Config, Handler 추가
+    - Chatting, Room의 Controller, Service, Repository 구현
+    - Room에 `storeRoomName`을 추가해, Room 생성 시 임의의 random UUID를 할당.
+    Chatting room GetMapping url에 사용된다.
+    
+
+- 24.2.9
+  - entity 연관관계 cascade 추가
+    - Item -> Image, Member -> Image, Post -> Item : CascadeType.ALL
+  - 게시물 화면에서 아이템, 이미지 보기 구현
+  - post 최신순으로 보여주기
+    - PostRepository 해당하는 쿼리에 `order by p.createdTime desc` 추가
+  - post 추가 시 post type 자동 설정
+    - `redirectURL`를 활용해,  Lost에서 접근 시 `PostType.LOST`, Found에서 접근 시 `PostType.FOUND`
+  - 게시글 아이템 이미지 수정 구현
+    - 수정 요청 시, 기존 아이템 이미지 모두 제거 후, dto로 받은 이미지로 저장
+
+- 24.2.7
+  - 게시글 아이템, 이미지 등록 구현
+    - 이제 게시물 추가 시, 아이템 정보도 입력
+    - 아이템엔 프로필 이미지와 달리, 이미지 여러 장 추가 가능
+    - ItemRepository 추가
+    - ItemRepository, ImageStoreService 추가된 함수에 대한 테스트 작성
+  - image file 여러 개 미리보기 구현
+    - JS
+    ```javascript
+    function readURLs(e){
+      var files = e.files;
+      var fileArr = Array.prototype.slice.call(files)
+      document.getElementById("previews").innerHTML = "";
+
+      for(f of fileArr){
+        imageLoader(f);
+      }
+    }
+    
+    function imageLoader(input) {
+      if (input) {
+        var reader = new FileReader();
+        var previews = document.getElementById("previews");
+
+        reader.onload = function(e) {
+          let img = document.createElement('img')
+          img.src = e.target.result;
+          previews.appendChild(img);
+        };
+        reader.readAsDataURL(input);
+      }
+    }
+    ```
+    - `readURLs()`에서 파일들을 파일로 나눠서 `imageLoader()` 실행. 파일 개수만큼 실행.
+    - `imageLoader()`에서 src 넣어주고, 보여주기
+    - script 코드는 fragment로 만들어서 활용 ex) `<head th:replace="fragments/imageJSScript :: imageJSScript">`
+
+- 24.2.6
+  - 프로필 이미지 수정 구현
+    - Controller -> Service에서 `ProfileEditRequestDto`를 이용
+    - `ImageStoreService.saveImage`에서 ProfileImage update도 해준다. save와 많은 코드가 겹쳐서 재활용 했다.
+
+- 24.2.5
+  - 회원가입 화면, 프로필 수정 화면에서 이미지 미리보기 구현
+    - JS
+    ```javascript
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById('preview').src = "";
+        }
+      }
+      ```
+    - HTML
+    ```html
+    <input type="file" id="profileImage" th:value="*{profileImage}" class="form-control" onchange="readURL(this);">
+    ```
+    - profile image 등록하면, `onchange`로 `readURL()` 실행
+    - `readURL()`에서 등록한 Image file의 url을 src에 등록해줌으로서 Image 보여줌.
+    - `e` : 이벤트 객체. ex) `ProgressEvent {isTrusted: true, lengthComputable: true, loaded: 10046, total: 10046, type: 'load', …}`
+    - `e.target` : 이벤트가 발생된 대상. ex) `FileReader {readyState: 2, result: 'data:image/jpeg;base64,/…', error: null, onloadstart: null, onprogress: null, …}`
+    - `e.target.result` : blob 등이 특수하게 가공된 URL (보통  MIME 타입 선언뒤  BASE64로 처리된 문자열 형식). ex) `'data:image/jpeg;base64,/…'`
+
+- 24.2.1
+  - 프로필 이미지 보기 구현
+  - 예외처리 : 회원가입 시 profileImage 없을 때, 빈 Image 객체 저장되는 부분
+  - 프로필에서 profileImage 없을 시, default Image 보여주기 구현
+
 - 24.1.30
   - user -> member 이름 변경
     - h2 db에서 user가 예약어로 설정되어있어서, db에서만 users로 되도록 바꿨었는데, 이와 관련해 계속 문제가 생길 것 같아 member로 이름변경을 해줬다.
     - 미처 제대로 못 바꾼 부분은 계속 바꿀 예정
   - ImageStore 관련 service, dto 추가
+    - Image는 MultipartFile로 받아서, 중간에서 Image로 변환해주는 작업 있다.
+    - image file은 일단 로컬에 저장. 추후엔 s3에 저장할 예정.
   - 회원가입 시 userProfile 저장 기능 구현
 
 - 24.1.27
