@@ -7,6 +7,7 @@ import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostRepository;
 import com.yohanii.lostandfound.dto.chatting.RoomSaveRequestDto;
 import com.yohanii.lostandfound.service.chat.RoomService;
+import com.yohanii.lostandfound.service.notify.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ public class ChattingController {
     private final RoomService roomService;
     private final PostRepository postRepository;
     private final RoomRepository roomRepository;
+    private final NotificationService notificationService;
 
     @GetMapping("/chat/{postId}")
     public String chat(@PathVariable Long postId, Model model) {
@@ -48,6 +50,7 @@ public class ChattingController {
         Long savedRoomId = roomService.createRoom(dto);
 
         String storeRoomName = roomService.getStoreRoomNameById(savedRoomId);
+        notificationService.notify(post.getMember().getId(), loginMember.getNickName() + "님이 채팅을 새로 걸었습니다.");
 
         return "redirect:/chat/room/" + storeRoomName;
     }

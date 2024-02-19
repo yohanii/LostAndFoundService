@@ -1,5 +1,17 @@
 ## 기록
 
+- 24.2.19
+  - 채팅방 생성 알림 기능 구현
+    - 새로운 채팅 요청 들어올 시 alert 발생
+    - SSE(Server-Sent-Event) 사용
+    - `NotificationType`은 `GENERAL, CHATTING` 두 가지 종류
+    - 로그인 시 Emitter 생성하고, `NotificationType.GENERAL` 타입의 더미 이벤트 보낸다.
+      - 아무런 이벤트도 보내지 않으면 재연결 요청을 보내거나, 연결 요청 자체에서 오류가 발생하기 때문.
+      - EventListener로 event 받아서, 보여줌
+      - SSEEmitter 안 올라가 있으면, 어떤 알림도 받을 수 없음. 로그아웃 상태에서도 알림 저장되도록 추후 수정 예정.
+    - 유저가 '채팅하기' 버튼을 통해, 새로운 채팅 방 개설 시, 상대방 MemberId로 `NotificationType.CHATTING` 타입의 event를 `SseEmitter::send`
+    - templates/fragments의 header, loginHeader 분리
+
 - 24.2.16
   - findRoom 관련 test들 작성
   - entity 수정
