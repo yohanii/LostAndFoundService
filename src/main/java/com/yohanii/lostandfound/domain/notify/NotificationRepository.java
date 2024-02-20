@@ -25,4 +25,10 @@ public class NotificationRepository{
         return em.createQuery("select n from Notification n", Notification.class)
                 .getResultList();
     }
+
+    public List<Notification> findAll(Long memberId) {
+        return findAll().stream()
+                .filter(n -> n.getReceiver().getId().equals(memberId))
+                .toList();
+    }
 }
