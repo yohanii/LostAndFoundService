@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -28,10 +30,13 @@ public class Notification {
     @Column(nullable = false)
     private NotificationType notificationType;
 
+    private LocalDateTime createdTime;
+
     @Builder
     public Notification(Member receiver, String content, NotificationType notificationType) {
         this.receiver = receiver;
         this.content = content;
         this.notificationType = notificationType;
+        this.createdTime = LocalDateTime.now();
     }
 }
