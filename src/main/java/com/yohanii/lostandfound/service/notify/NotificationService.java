@@ -32,7 +32,6 @@ public class NotificationService {
         return emitter;
     }
 
-
     public void notify(Long memberId, Object event) {
         log.info("NotificationService.notify");
         sendToClient(memberId, event, NotificationType.CHATTING);
@@ -46,11 +45,6 @@ public class NotificationService {
             try {
                 if (type.equals(NotificationType.CHATTING)) {
                     emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sseChatting").data(data));
-                    notificationRepository.save(Notification.builder()
-                            .receiver(receiver)
-                            .content(data.toString())
-                            .notificationType(type)
-                            .build());
                 }
                 if (type.equals(NotificationType.GENERAL)) {
                     emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sseGeneral").data(data));
@@ -59,6 +53,14 @@ public class NotificationService {
                 emitterRepository.deleteById(id);
                 emitter.completeWithError(exception);
             }
+        }
+
+        if (type.equals(NotificationType.CHATTING)) {
+            notificationRepository.save(Notification.builder()
+                    .receiver(receiver)
+                    .content(data.toString())
+                    .notificationType(type)
+                    .build());
         }
     }
 
