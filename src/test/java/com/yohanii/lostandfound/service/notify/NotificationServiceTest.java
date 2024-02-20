@@ -74,4 +74,20 @@ class NotificationServiceTest {
         assertThat(notifications.get(0).getContent()).isEqualTo(testData);
         assertThat(notifications.get(0).getNotificationType()).isEqualTo(NotificationType.CHATTING);
     }
+
+    @Test
+    void readAllNotifications() {
+        Member testMember = Member.builder().build();
+        Long memberId = memberRepository.save(testMember);
+        String testData = "test data";
+
+        notificationService.notify(memberId, testData);
+        notificationService.notify(memberId, testData);
+        notificationService.readAllNotifications(memberId);
+
+        List<Notification> notifications = notificationRepository.findAll(memberId);
+        assertThat(notifications.size()).isEqualTo(2);
+        assertThat(notifications.get(0).getIsRead()).isTrue();
+        assertThat(notifications.get(1).getIsRead()).isTrue();
+    }
 }
