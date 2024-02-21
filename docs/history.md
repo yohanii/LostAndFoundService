@@ -1,5 +1,17 @@
 ## 기록
 
+- 24.2.21
+  - 로그아웃 상태에서도 notification 저장되도록 수정
+    - `NotificationService.notify` 로직 수정
+  - Member, Notifiacation Entity 수정
+    - `Member` <> `Notification` : OneToMany
+    - `Member` : `notifications` 추가, `@OrderBy("createdTime desc")` 어노테이션 추가
+    - `Notification` : `createdTime` 추가
+  - 알림 목록 구현
+    - `memberId`에 해당하는 Notifications 가져와서 보여준다.
+  - Member Entity에 FetchType 설정
+    - nav에서 알림 보여줘야하기 때문에, `Member`의 `notifications`에 `fetch = FetchType.EAGER` 설정
+
 - 24.2.19
   - 채팅방 생성 알림 기능 구현
     - 새로운 채팅 요청 들어올 시 alert 발생
