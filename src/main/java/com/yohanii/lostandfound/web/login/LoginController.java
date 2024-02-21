@@ -2,6 +2,7 @@ package com.yohanii.lostandfound.web.login;
 
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.service.login.LoginService;
+import com.yohanii.lostandfound.service.notify.NotificationService;
 import com.yohanii.lostandfound.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class LoginController {
 
     private final LoginService loginService;
+    private final NotificationService notificationService;
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute LoginForm loginForm) {
@@ -44,6 +46,7 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember.get());
+        notificationService.subscribe(loginMember.get().getId());
 
         return "redirect:" + redirectURL;
     }

@@ -8,6 +8,20 @@
         <div style="float: right">
             <a style="display: inline-block;"><h5 class="mb-3" style="padding: 10px;" th:text="|안녕하세요! ${member.nickName}님|">로그인 사용자 이름</h5></a>
             <div class="dropdown" style="display: inline-block;">
+                <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    알림
+                </button>
+                <ul class="dropdown-menu" th:if="${!#lists.isEmpty(member.notifications)}">
+                    <li th:each="noti: ${member.notifications}" th:if="${notiStat.count} <= 5">
+                        <span class="dropdown-item" th:text="${noti.content}"></span>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu" th:if="${#lists.isEmpty(member.notifications)}">
+                    <li><a class="dropdown-item">알림 없음</a></li>
+                </ul>
+            </div>
+
+            <div class="dropdown" style="display: inline-block;">
                 <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     마이페이지
                 </button>

@@ -2,6 +2,7 @@ package com.yohanii.lostandfound.domain.member;
 
 import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.image.Image;
+import com.yohanii.lostandfound.domain.notify.Notification;
 import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,10 @@ public class Member {
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Image profileImage;
+
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderBy("createdTime desc")
+    private List<Notification> notifications;
 
     private String loginId;
     private String password;

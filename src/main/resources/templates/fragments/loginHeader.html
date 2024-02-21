@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="loginHeader">
+    <meta charset="utf-8">
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <script>
+        const eventSource = new EventSource(
+            `/notifications/subscribe/[[${member.id}]]`
+        );
+
+        eventSource.addEventListener("sseChatting", function (e) {
+            alert(e.data);
+        })
+
+    </script>
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
