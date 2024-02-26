@@ -1,5 +1,23 @@
 ## 기록
 
+- 24.2.25
+  - Hikari Connection 문제
+    - `HikariPool-1 - Connection is not available, request timed out after 30007ms.`
+    - 상황
+      - 로그인 상태에서 새로고침 몇 번하거나, 페이지 이동 몇 번하면 멈추면서 위의 에러 발생함.
+      - hikariPool에서 이용 가능한 커넥션이 없어서 Thread가 handOffQueue에서 기다리다가 30초가 지나서 발생하는 것으로 보임.
+    - 원인
+      - eventSource로 `/notifications/subscribe/[[${member.id}]]`경로를 받을 때, 해당 경로로 GetMapping이 나가서 `NotificationService.subscribe`가 매번 실행되고 있음.
+    - 해결 1
+      - `/notifications/accept/{id}`경로의 GetMapping 만들어서, EmitterRepository의 Map에 저장되어있는 SseEmitter 가져다주게 했는데,
+      동작 안됨. -> 실패
+    - 해결 2
+      - SSE 통신을 하는 동안은 HTTP Connection이 계속 열려 있어서, JPA 사용시 open-in-view 속성이 true 이면 DB Connection도 지속된다고 한다.
+      - 그래서, Connection이 부족했고, open-in-view 속성 false로 했다.
+      - Connection 부족 문제는 해결되었으나, 지연로딩(LAZY)가 안 됨. -> 실패
+    - 결과
+      - 알림 기능 임시로 꺼둔 상태이다.
+
 - 24.2.21
   - 로그아웃 상태에서도 notification 저장되도록 수정
     - `NotificationService.notify` 로직 수정

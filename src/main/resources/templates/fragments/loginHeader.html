@@ -3,16 +3,16 @@
 <head th:fragment="loginHeader">
     <meta charset="utf-8">
     <script th:src="@{/js/bootstrap.bundle.js}"></script>
-    <script>
-        const eventSource = new EventSource(
-            `/notifications/subscribe/[[${member.id}]]`
-        );
+<!--    <script>-->
+<!--        const eventSource = new EventSource(-->
+<!--            `/notifications/subscribe/[[${member.id}]]`-->
+<!--        );-->
 
-        eventSource.addEventListener("sseChatting", function (e) {
-            alert(e.data);
-        })
+<!--        eventSource.addEventListener("sseChatting", function (e) {-->
+<!--            alert(e.data);-->
+<!--        })-->
 
-    </script>
+<!--    </script>-->
     <link th:href="@{/css/bootstrap.min.css}"
           href="css/bootstrap.min.css" rel="stylesheet">
     <style>
