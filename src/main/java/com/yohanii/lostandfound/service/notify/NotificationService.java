@@ -65,6 +65,8 @@ public class NotificationService {
     }
 
     private SseEmitter createEmitter(Long id) {
+        emitterRepository.deleteById(id);
+
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         emitterRepository.save(id, emitter);
 
