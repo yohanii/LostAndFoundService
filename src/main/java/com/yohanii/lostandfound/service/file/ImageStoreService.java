@@ -22,7 +22,6 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@PropertySource("classpath:application.properties")
 public class ImageStoreService {
 
     private final ImageRepository imageRepository;

@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lostandfound?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: guest
+    password: 1234
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+#    open-in-view: false
+  config:
+    activate:
+      on-profile: local
+
+file:
+  dir: /Users/kim-yohan/Desktop/images/

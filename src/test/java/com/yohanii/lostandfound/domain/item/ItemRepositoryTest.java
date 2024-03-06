@@ -2,21 +2,16 @@ package com.yohanii.lostandfound.domain.item;
 
 import com.yohanii.lostandfound.domain.post.Post;
 import jakarta.transaction.Transactional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class ItemRepositoryTest {
 
     @Autowired
