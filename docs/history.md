@@ -1,5 +1,23 @@
 ## 기록
 
+- 24.3.6
+  - application.yml로 변환
+    - 설정파일의 가독성을 높이기위해서 application.properties에서 application.yml로 변환해주었다.
+  - 설정파일 profile 설정
+    - 임시로 profile을 local로 설정해두었고, 설정파일을 로컬&개발과 운영으로 local, prod로 나누어서 관리할 예정이다.
+  - test AutoConfigureTestDatabase annotation 제거
+    - `IllegalStateException: Failed to load ApplicationContext..` 에러가 떠서 살펴봤더니, `file.dir`을 가져오지 못하고있었다.
+    - main의 application.properties에서 더 이상 가져오지 못해서 그런 것이였고, main과 test의 설정파일이 제대로 분리되었다는 것을 보여주는 것이다.
+    - test application.yml에 `file.dir`을 설정해주면서 해결되었다.
+    - 이제 AutoConfigureTestDatabase annotation을 붙이지 않아도, h2 db를 제대로 사용하기 때문에 제거해주었다.
+  - 운영/로컬 설정파일 분리
+    - application.yml에서 profile 설정해준다.
+      - `application-{spring:profiles:active(local/prod)}.yml` 설정파일에 레벨별로 환경변수 설정
+      - Intellij Edit Configurations의 Active Profiles를 `local`로 설정
+    - application-local.yml, application-prod.yml로 분리
+      - application-prod.yml에는 RDS url, username, password가 적혀야하는데, 보안때문에 변수로 설정하고, ec2에서 환경변수를 설정한다.
+      - ec2에 shell 시작될 때마다 실행되도록 `vi ~/.bashrc`를 실행하고 `.bashrc` 파일에 적어둔다.
+
 - 24.2.25
   - Hikari Connection 문제
     - `HikariPool-1 - Connection is not available, request timed out after 30007ms.`

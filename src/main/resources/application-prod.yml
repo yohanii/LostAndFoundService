@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${RDS_DATABASE_URL}
+    username: ${RDS_DATABASE_USERNAME}
+    password: ${RDS_DATABASE_PASSWORD}
+
+file:
+  dir: /Users/kim-yohan/Desktop/images/
