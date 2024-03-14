@@ -33,7 +33,7 @@
                     <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
                 </div>
                 <div>
-                    <img id="preview" th:src="|/profiles/images/${member.profileImage.getStoreFileName()}|" class="img-thumbnail" style="width: 300px; height: 300px" />
+                    <img id="preview" th:src="|/images/${member.profileImage.getStoreFileName()}|" class="img-thumbnail" style="width: 300px; height: 300px" />
                 </div>
             </div>
         </div>

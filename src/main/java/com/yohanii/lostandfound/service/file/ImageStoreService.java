@@ -1,5 +1,8 @@
 package com.yohanii.lostandfound.service.file;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.yohanii.lostandfound.domain.image.Image;
 import com.yohanii.lostandfound.domain.image.ImageRepository;
 import com.yohanii.lostandfound.domain.image.ImageType;
@@ -10,11 +13,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,8 +32,13 @@ public class ImageStoreService {
 
     private final ImageRepository imageRepository;
 
-    @Value("${file.dir}")
-    private String fileDir;
+    private final AmazonS3 s3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    @Value("${cloud.aws.s3.folder}")
+    private String folder;
 
     @Transactional
     public Image saveImage(ProfileImageSaveDto dto){
@@ -37,13 +48,9 @@ public class ImageStoreService {
         }
 
         String uploadFileName = dto.getProfileImage().getOriginalFilename();
-        String storeFileName = createStoreFileName(uploadFileName);
+        String storeFileName = createStoreFileName(uploadFileName, ImageType.MEMBER);
 
-        try {
-            dto.getProfileImage().transferTo(new File(getFullPath(storeFileName)));
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
+        saveFileS3(storeFileName, dto.getProfileImage(), ImageType.MEMBER);
 
         Image profileImage = dto.getMember().getProfileImage();
         if (profileImage != null) {
@@ -67,7 +74,7 @@ public class ImageStoreService {
     public List<Image> saveImages(ItemImagesSaveDto dto) {
 
         if (dto.getImages().isEmpty()) {
-            throw new IllegalArgumentException("ProfileImage is Empty");
+            throw new IllegalArgumentException("ItemImage is Empty");
         }
 
         List<Image> itemImages = dto.getItem().getImages();
@@ -79,13 +86,9 @@ public class ImageStoreService {
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : dto.getImages()) {
             String uploadFileName = file.getOriginalFilename();
-            String storeFileName = createStoreFileName(uploadFileName);
+            String storeFileName = createStoreFileName(uploadFileName, ImageType.ITEM);
 
-            try {
-                file.transferTo(new File(getFullPath(storeFileName)));
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
+            saveFileS3(storeFileName, file, ImageType.ITEM);
 
             Image saveImage = Image.builder()
                     .item(dto.getItem())
@@ -101,14 +104,24 @@ public class ImageStoreService {
         return images;
     }
 
-    public String getFullPath(String filename) {
-        return fileDir + filename;
+    private void saveFileS3(String storeFileName, MultipartFile file, ImageType type) {
+        final String path = folder + type.getS3Path() + storeFileName;
+        final ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
+
+        try (final InputStream inputStream = file.getInputStream()) {
+            s3Client.putObject(bucket, path, inputStream, metadata);
+        } catch (AmazonServiceException | IOException e) {
+            log.error(e.getMessage());
+            throw new IllegalStateException("파일 업로드에 실패했습니다.");
+        }
     }
 
-    private String createStoreFileName(String originalFilename) {
+    private String createStoreFileName(String originalFilename, ImageType type) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
+        return type.name() + "_" + uuid + "." + ext;
     }
 
     private String extractExt(String originalFilename) {

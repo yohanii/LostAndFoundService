@@ -15,3 +15,13 @@ spring:
 
 file:
   dir: /Users/kim-yohan/Desktop/images/
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: laf-s3-bucket
+      folder: local/images/
+    stack:
+      auto: false

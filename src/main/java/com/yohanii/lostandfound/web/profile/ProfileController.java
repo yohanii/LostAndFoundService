@@ -85,11 +85,4 @@ public class ProfileController {
 
         return "redirect:/profiles/" + dto.getNickName() + "?redirectURL=" + redirectURL;
     }
-
-    @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
-        log.info("ProfileController.downloadImage");
-        return new UrlResource("file:" + imageStoreService.getFullPath(filename));
-    }
 }
