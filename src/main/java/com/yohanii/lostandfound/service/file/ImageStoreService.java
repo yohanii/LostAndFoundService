@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.service.file;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.yohanii.lostandfound.domain.image.Image;
@@ -47,7 +48,7 @@ public class ImageStoreService {
         }
 
         String uploadFileName = dto.getProfileImage().getOriginalFilename();
-        String storeFileName = createStoreFileName(uploadFileName);
+        String storeFileName = createStoreFileName(uploadFileName, ImageType.MEMBER);
 
         saveFileS3(storeFileName, dto.getProfileImage(), ImageType.MEMBER);
 
@@ -85,7 +86,7 @@ public class ImageStoreService {
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : dto.getImages()) {
             String uploadFileName = file.getOriginalFilename();
-            String storeFileName = createStoreFileName(uploadFileName);
+            String storeFileName = createStoreFileName(uploadFileName, ImageType.ITEM);
 
             saveFileS3(storeFileName, file, ImageType.ITEM);
 
@@ -111,16 +112,16 @@ public class ImageStoreService {
 
         try (final InputStream inputStream = file.getInputStream()) {
             s3Client.putObject(bucket, path, inputStream, metadata);
-        } catch (IOException e) {
+        } catch (AmazonServiceException | IOException e) {
             log.error(e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+            throw new IllegalStateException("파일 업로드에 실패했습니다.");
         }
     }
 
-    private String createStoreFileName(String originalFilename) {
+    private String createStoreFileName(String originalFilename, ImageType type) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
+        return type.name() + "_" + uuid + "." + ext;
     }
 
     private String extractExt(String originalFilename) {
