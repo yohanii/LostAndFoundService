@@ -90,6 +90,7 @@ public class ProfileController {
     @GetMapping("/images/{filename}")
     public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
         log.info("ProfileController.downloadImage");
-        return new UrlResource("file:" + imageStoreService.getFullPath(filename));
+//        return new UrlResource("file:" + imageStoreService.getFullPath(filename));
+        return null;
     }
 }
