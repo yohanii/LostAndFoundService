@@ -13,9 +13,6 @@ spring:
         format_sql: true
 #    open-in-view: false
 
-file:
-  dir: /Users/kim-yohan/Desktop/images/
-
 cloud:
   aws:
     region:

@@ -8,9 +8,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-file:
-  dir: /Users/kim-yohan/Desktop/images/
-
 cloud:
   aws:
     region:

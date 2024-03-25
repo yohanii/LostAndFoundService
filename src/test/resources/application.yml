@@ -16,9 +16,6 @@ logging:
   level:
     org.hibernate.SQL: debug
 
-file:
-  dir: /Users/kim-yohan/Desktop/images/
-
 cloud:
   aws:
     region:
