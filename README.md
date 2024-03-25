@@ -6,14 +6,14 @@
 ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
 ## 📌 사이트 주소
-http://ec2-13-125-3-8.ap-northeast-2.compute.amazonaws.com:8080/
+https://www.wanna-find.com/
 
-준비되면, 새 도메인 연결할 예정
 
 ## 📖 개요
   - 1인 개발
   - 개발 기간 : 23.11.01 ~
   - 잃어버린 물건의 주인을 찾아주는 게시판 형태의 **분실물 서비스** 입니다.
+  - AWS(EC2, RDS, S3)환경으로 배포한 상태입니다.
 
 ## 🛠 개발 환경
 - JAVA : 17
@@ -41,6 +41,8 @@ http://ec2-13-125-3-8.ap-northeast-2.compute.amazonaws.com:8080/
 - 테스트 코드
   - JUnit5를 활용하여 단위/통합 테스트 작성
   - 테스트용 H2 db 분리
+- Nginx를 이용한 포트포워딩
+- Let's Encrypt를 이용한 HTTPS 사용
 
 ## 💾 ERD
 ![ERD.png](docs/img/ERDv6.png)

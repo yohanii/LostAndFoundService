@@ -1,5 +1,11 @@
 ## 기록
 
+- 24.3.25
+  - Nginx를 이용한 포트포워딩
+  - Let's Encrypt를 이용한 HTTPS 사용
+- 24.3.14
+  - 이미지 s3에 저장,다운로드 구현
+    - 기존 file로 local에 저장하는 방식에서, s3 사용으로 전환
 - 24.3.6
   - application.yml로 변환
     - 설정파일의 가독성을 높이기위해서 application.properties에서 application.yml로 변환해주었다.
