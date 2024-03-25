@@ -5,6 +5,10 @@
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
+## 📌 사이트 주소
+http://ec2-13-125-3-8.ap-northeast-2.compute.amazonaws.com:8080/
+
+준비되면, 새 도메인 연결할 예정
 
 ## 📖 개요
   - 1인 개발
@@ -21,7 +25,7 @@
 ## 💎 Main Features
 - 기본적인 게시판 CRUD
   - 게시글 CRUD
-  - 이미지 등록, 수정
+  - S3에 이미지 저장
 - 비로그인 시 페이지 접근 제한
   - Interceptor를 활용한 로그인 여부 체크 및 페이지 접근 제한
 - 검색 기능
