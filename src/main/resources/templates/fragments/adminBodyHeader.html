@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="header" th:fragment="adminBodyHeader">
+    <nav class="navbar navbar-light" style="background-color: #D9D9D9">
+        <a class="navbar-brand fw-bold" href="/" style="padding: 10px; padding-left: 20px;">
+            LAF
+        </a>
+        <a>
+            관리자 페이지
+        </a>
+        <div style="float: right">
+            <form style="display: inline-block; padding: 10px" th:action="@{/logout}" th:method="post">
+                <button class="btn btn-danger" th:type="submit" th:text="'로그아웃'">로그아웃</button>
+            </form>
+        </div>
+    </nav>
+</div>

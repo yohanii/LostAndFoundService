@@ -1,0 +1,25 @@
+<div th:fragment="adminSidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; min-height: 100vh">
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a id="nav-item1" href="#" th:href="@{/admin}" class="nav-link text-white">
+                Home
+            </a>
+        </li>
+        <li>
+            <a id="nav-item2" href="#" th:href="@{/admin/members}" class="nav-link text-white">
+                회원 관리
+            </a>
+        </li>
+        <li>
+            <a id="nav-item3" href="#" th:href="@{/admin/posts}" class="nav-link text-white">
+                게시글 관리
+            </a>
+        </li>
+        <li>
+            <a id="nav-item4" href="#" th:href="@{/admin/chattingRooms}" class="nav-link text-white">
+                채팅방 관리
+            </a>
+        </li>
+    </ul>
+    <hr>
+</div>
