@@ -109,4 +109,19 @@ class MemberRepositoryTest {
 
         assertThat(findMember).isEqualTo(testMember);
     }
+
+    @Test
+    void deleteAll() {
+        Member member1 = Member.builder().build();
+        Member member2 = Member.builder().build();
+        Member member3 = Member.builder().build();
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+
+        memberRepository.deleteAll(List.of(member1.getId(), member2.getId(), member3.getId()));
+
+        assertThat(memberRepository.findAll().size()).isEqualTo(0);
+    }
 }

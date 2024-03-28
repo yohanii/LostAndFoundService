@@ -44,4 +44,10 @@ public class MemberRepository {
                 .filter(member -> member.getNickName().equals(nickName))
                 .findFirst();
     }
+
+    public void deleteAll(List<Long> memberIds) {
+        em.createQuery("delete from Member m where m.id in :ids")
+            .setParameter("ids", memberIds)
+            .executeUpdate();
+    }
 }
