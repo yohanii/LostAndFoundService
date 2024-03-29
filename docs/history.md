@@ -1,5 +1,13 @@
 ## 기록
 
+- 24.3.29
+  - `Member.notifications` FetchType.EAGER -> FetchType.LAZY 바꿈
+    - 24.2.21에 nav에서 알림을 보여줄 때, `LazyInitializationException`이 발생했다.
+    - FetchType.LAZY로 설정할 경우에 notifications를 들고 올 수 없어서, 당시엔 FetchType.EAGER로 설정해서 해결했었다.
+    - 하지만, member를 조회할 때마다 notifications도 같이 조회하기 때문에 비효율적이었다.
+    - 그러다가 최근에 Transaction 관련 강의를 들으면서 새로운 해결법을 알게되었다.
+    - 기존엔 template에서 notifications를 조회했기 때문에, Transaction이 걸려있지 않아서 지연로딩을 할 수 없어던 것이다.
+    - 그래서, FetchType.LAZY로 바꿔주고, notifications는 Transaction이 걸려있을 때 가져올 수 있도록, NotificationService에서 받아오게 해서 해결했다.
 - 24.3.25
   - Nginx를 이용한 포트포워딩
   - Let's Encrypt를 이용한 HTTPS 사용

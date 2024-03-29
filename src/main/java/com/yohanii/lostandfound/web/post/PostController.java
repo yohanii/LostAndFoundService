@@ -10,6 +10,7 @@ import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
 import com.yohanii.lostandfound.service.file.ImageStoreService;
+import com.yohanii.lostandfound.service.notify.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class PostController {
     private final PostRepository postRepository;
     private final ItemRepository itemRepository;
     private final ImageStoreService imageStoreService;
+    private final NotificationService notificationService;
 
 //    @GetMapping("/posts")
     public String posts(Model model) {
@@ -48,6 +50,9 @@ public class PostController {
 
         model.addAttribute("posts", postList);
         model.addAttribute("requestURI", request.getRequestURI());
+
+        Member loginMember = (Member) model.getAttribute("member");
+        model.addAttribute("notifications", notificationService.findNotificationsById(loginMember.getId()));
 
         return "posts/postsLost";
     }

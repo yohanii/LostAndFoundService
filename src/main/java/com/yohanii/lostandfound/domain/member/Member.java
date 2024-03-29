@@ -3,6 +3,7 @@ package com.yohanii.lostandfound.domain.member;
 import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.image.Image;
 import com.yohanii.lostandfound.domain.notify.Notification;
+import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,10 +24,13 @@ public class Member {
     @Column(name = "member_name")
     private String name;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Image profileImage;
 
-    @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdTime desc")
     private List<Notification> notifications;
 
