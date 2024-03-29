@@ -46,8 +46,8 @@ public class MemberRepository {
     }
 
     public void deleteAll(List<Long> memberIds) {
-        em.createQuery("delete from Member m where m.id in :ids")
-            .setParameter("ids", memberIds)
-            .executeUpdate();
+        findAll().stream()
+                .filter(member -> memberIds.contains(member.getId()))
+                .forEach(em::remove);
     }
 }

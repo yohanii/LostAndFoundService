@@ -1,6 +1,20 @@
 ## 기록
 
 - 24.3.29
+  - 맴버 삭제 불가능 문제 해결
+    - Member 객체 삭제시 `Cannot delete or update a parent row: a foreign key constraint fails cascade` error 발생
+    - 원인 : 다른 테이블에 해당 데이터를 참조하고 있는 외래키가 있어서 발생한 문제.
+    - 시도
+      - 연관관계의 부모에 `cascade = CascadeType.ALL, orphanRemoval = true`을 모두 추가해줌
+        - `cascade = CascadeType.ALL` : 부모가 자식의 전체 생명 주기를 관리한다. 부모가 영속화되면, 자식도 영속화된다. + 부모객체가 삭제되면, 자식 객체도 삭제된다.
+          단, 부모와 자식의 연관관계가 끊어질 경우, 자식을 미처 제거하지 못한다.
+        - `orphanRemoval = true` : 부모와 자식의 연관관계가 끊어질 경우, 자식 엔티디들을 삭제한다.
+      - 그러나, 계속 실패해서 자식측에 `optional = false` 추가
+        - `optional = false` : 해당 객체가 null이 아님을 보장
+      - 그래도 실패
+    - 해결
+      - JPQL로 쿼리를 날려서 delete한 것이 원인이었다. 그러면, cascade가 적용안된다.
+      - `em.remove`를 통해 삭제해줘서 해결함.
   - `Member.notifications` FetchType.EAGER -> FetchType.LAZY 바꿈
     - 24.2.21에 nav에서 알림을 보여줄 때, `LazyInitializationException`이 발생했다.
     - FetchType.LAZY로 설정할 경우에 notifications를 들고 올 수 없어서, 당시엔 FetchType.EAGER로 설정해서 해결했었다.
