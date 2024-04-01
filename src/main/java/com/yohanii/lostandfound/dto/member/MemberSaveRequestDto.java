@@ -32,6 +32,7 @@ public class MemberSaveRequestDto {
                 .password(password)
                 .nickName(nickName)
                 .createdTime(LocalDateTime.now())
+                .updatedTime(LocalDateTime.now())
                 .build();
     }
 }

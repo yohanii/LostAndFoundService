@@ -39,6 +39,7 @@ public class PostSaveRequestDto {
                 .content(content)
                 .type(type)
                 .createdTime(LocalDateTime.now())
+                .updatedTime(LocalDateTime.now())
                 .build();
     }
 
