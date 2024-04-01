@@ -2,6 +2,8 @@ package com.yohanii.lostandfound.service.admin;
 
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.member.MemberRepository;
+import com.yohanii.lostandfound.domain.post.Post;
+import com.yohanii.lostandfound.domain.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import java.util.List;
 public class AdminService {
 
     private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
 
     public List<Member> findAllMembers() {
         return memberRepository.findAll();
@@ -25,5 +28,18 @@ public class AdminService {
         }
 
         memberRepository.deleteAll(memberIds);
+    }
+
+    public List<Post> findAllPosts() {
+        return postRepository.findAll();
+    }
+
+    @Transactional
+    public void deletePosts(List<Long> postIds) {
+        if (postIds.isEmpty()) {
+            return;
+        }
+
+        postRepository.deleteAll(postIds);
     }
 }

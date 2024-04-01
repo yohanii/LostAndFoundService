@@ -177,4 +177,18 @@ class PostRepositoryTest {
         assertThat(findPosts).contains(post1, post2);
         assertThat(findPosts).doesNotContain(post3);
     }
+
+    @Test
+    void deleteAll() {
+        Post post1 = Post.builder().build();
+        Post post2 = Post.builder().build();
+        Post post3 = Post.builder().build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+        postRepository.save(post3);
+
+        postRepository.deleteAll(List.of(post1.getId(), post2.getId(), post3.getId()));
+        assertThat(postRepository.findAll().size()).isEqualTo(0);
+    }
 }

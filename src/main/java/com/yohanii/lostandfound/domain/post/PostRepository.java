@@ -89,4 +89,10 @@ public class PostRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    public void deleteAll(List<Long> postIds) {
+        findAll().stream()
+                .filter(post -> postIds.contains(post.getId()))
+                .forEach(em::remove);
+    }
 }

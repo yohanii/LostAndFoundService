@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound.web.admin;
 
 import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +45,21 @@ public class AdminController {
     }
 
     @GetMapping("/posts")
-    public String adminPosts() {
+    public String adminPosts(Model model) {
+
+        List<Post> posts = adminService.findAllPosts();
+        model.addAttribute("posts", posts);
+
         return "admin/adminPosts";
+    }
+
+    @PostMapping("/posts")
+    public String deletePosts(@RequestParam List<Long> postIds) {
+
+        log.info("postIds: " + postIds);
+        adminService.deletePosts(postIds);
+
+        return "redirect:/admin/posts";
     }
 
     @GetMapping("/chattingRooms")

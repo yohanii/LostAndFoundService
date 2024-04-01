@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="header">
+<head th:fragment="adminHeader">
     <meta charset="utf-8">
     <script th:src="@{/js/bootstrap.bundle.js}"></script>
     <link th:href="@{/css/bootstrap.min.css}"
@@ -9,9 +9,19 @@
         .container {
             max-width: 560px;
         }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
+        main {
+            min-height: 100vh;
+            display: flex;
+        }
+        td {
+            min-width: 50px;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        th {
+            min-width: 50px;
+            padding-left: 30px;
+            padding-right: 30px;
         }
     </style>
 </head>
