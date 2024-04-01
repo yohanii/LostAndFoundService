@@ -1,5 +1,12 @@
 ## 기록
 
+- 24.4.1
+  - 관리자 페이지 구현
+    - 회원, 게시글, 채팅룸 현황 화면 생성
+    - delete Members, Posts, Rooms 구현
+  - createdTime, updatedTime 제대로 기록되도록 refactoring
+    - save시 createdTime, updatedTime 같아야한다.
+    - room의 경우는 방 생성 후, ENTER 채팅이 보내져서, room의 createdTime, updatedTime 같지 않고, 해당 채팅 createdTime과 room의 updatedTime이 같다.
 - 24.3.29
   - 맴버 삭제 불가능 문제 해결
     - Member 객체 삭제시 `Cannot delete or update a parent row: a foreign key constraint fails cascade` error 발생

@@ -41,6 +41,16 @@ class PostRepositoryTest {
     }
 
     @Test
+    void save_CreatedTime_UpdatedTime_같음() {
+        Post post = Post.builder().build();
+
+        postRepository.save(post);
+
+        Post findPost = postRepository.findById(post.getId());
+        assertThat(findPost.getCreatedTime()).isEqualTo(findPost.getUpdatedTime());
+    }
+
+    @Test
     void findById() {
         Post post1 = Post.builder()
                 .title("hello")

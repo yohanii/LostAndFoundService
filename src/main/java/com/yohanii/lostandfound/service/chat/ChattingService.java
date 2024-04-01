@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ChattingService {
@@ -24,11 +26,13 @@ public class ChattingService {
         Member member = memberRepository.find(dto.getMemberId());
         Room room = roomRepository.find(dto.getRoomId());
 
+        LocalDateTime now = room.updateUpdatedTime();
         Chatting saveChatting = Chatting.builder()
                 .member(member)
                 .room(room)
                 .type(dto.getType())
                 .content(dto.getContent())
+                .createdTime(now)
                 .build();
 
         return chattingRepository.save(saveChatting);

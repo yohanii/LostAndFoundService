@@ -34,6 +34,16 @@ class MemberRepositoryTest {
     }
 
     @Test
+    void save_CreatedTime_UpdatedTime_같음() {
+        Member member = Member.builder().build();
+
+        memberRepository.save(member);
+
+        Member findMember = memberRepository.find(member.getId());
+        assertThat(findMember.getCreatedTime()).isEqualTo(findMember.getUpdatedTime());
+    }
+
+    @Test
     void find() {
         Member testMember = Member.builder()
                 .loginId("")

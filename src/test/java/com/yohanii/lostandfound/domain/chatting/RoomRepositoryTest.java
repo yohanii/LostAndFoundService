@@ -45,6 +45,16 @@ class RoomRepositoryTest {
     }
 
     @Test
+    void save_CreatedTime_UpdatedTime_같음() {
+        Room room = Room.builder().build();
+
+        roomRepository.save(room);
+
+        Room findRoom = roomRepository.find(room.getId());
+        assertThat(findRoom.getCreatedTime()).isEqualTo(findRoom.getUpdatedTime());
+    }
+
+    @Test
     void find() {
         Room saveRoom = Room.builder().build();
         Long savedId = roomRepository.save(saveRoom);
