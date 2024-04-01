@@ -173,4 +173,18 @@ class RoomRepositoryTest {
         assertThat(findRoom).isPresent();
         assertThat(findRoom.get()).isEqualTo(saveRoom2);
     }
+
+    @Test
+    void deleteAll() {
+        Room room1 = Room.builder().build();
+        Room room2 = Room.builder().build();
+        Room room3 = Room.builder().build();
+
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+        roomRepository.save(room3);
+
+        roomRepository.deleteAll(List.of(room1.getId(), room2.getId(), room3.getId()));
+        assertThat(roomRepository.findAll().size()).isEqualTo(0);
+    }
 }

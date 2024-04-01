@@ -1,5 +1,7 @@
 package com.yohanii.lostandfound.service.admin;
 
+import com.yohanii.lostandfound.domain.chatting.Room;
+import com.yohanii.lostandfound.domain.chatting.RoomRepository;
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.member.MemberRepository;
 import com.yohanii.lostandfound.domain.post.Post;
@@ -16,6 +18,7 @@ public class AdminService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final RoomRepository roomRepository;
 
     public List<Member> findAllMembers() {
         return memberRepository.findAll();
@@ -41,5 +44,18 @@ public class AdminService {
         }
 
         postRepository.deleteAll(postIds);
+    }
+
+    public List<Room> findAllRooms() {
+        return roomRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteRooms(List<Long> roomIds) {
+        if (roomIds.isEmpty()) {
+            return;
+        }
+
+        roomRepository.deleteAll(roomIds);
     }
 }

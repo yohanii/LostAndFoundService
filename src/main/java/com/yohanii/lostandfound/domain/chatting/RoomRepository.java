@@ -52,4 +52,10 @@ public class RoomRepository {
                 || (room.getMember().getId().equals(partnerId) && room.getPartnerId().equals(memberId)))
                 .findFirst();
     }
+
+    public void deleteAll(List<Long> roomIds) {
+        findAll().stream()
+                .filter(room -> roomIds.contains(room.getId()))
+                .forEach(em::remove);
+    }
 }

@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.web.admin;
 
+import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.service.admin.AdminService;
@@ -63,7 +64,20 @@ public class AdminController {
     }
 
     @GetMapping("/chattingRooms")
-    public String adminChattingRooms() {
+    public String adminChattingRooms(Model model) {
+
+        List<Room> rooms = adminService.findAllRooms();
+        model.addAttribute("rooms", rooms);
+
         return "admin/adminChattingRooms";
+    }
+
+    @PostMapping("/chattingRooms")
+    public String deleteRooms(@RequestParam List<Long> roomIds) {
+
+        log.info("roomIds: " + roomIds);
+        adminService.deleteRooms(roomIds);
+
+        return "redirect:/admin/chattingRooms";
     }
 }

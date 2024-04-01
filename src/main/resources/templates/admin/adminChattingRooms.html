@@ -5,8 +5,37 @@
 <div th:replace="fragments/adminBodyHeader :: adminBodyHeader"/>
 <main>
     <div th:replace="fragments/adminSidebar :: adminSidebar"/>
-    <div class="d-flex flex-column flex-shrink-0" style="width: 100vw">
-        채팅방 관리
+    <div class="d-flex flex-column flex-shrink-0">
+
+        <h1 style="text-align: center; padding: 40px">채팅방 관리</h1>
+
+        <form th:action="@{/admin/chattingRooms}" th:method="post">
+            <button type="submit" style="float: right; margin: 20px">삭제</button>
+            <div>
+                <table>
+                    <th>check</th>
+                    <th>count</th>
+                    <th>roomId</th>
+                    <th>postId</th>
+                    <th>memberId1</th>
+                    <th>memberId2</th>
+<!--                    <th>채팅개수</th>-->
+                    <th>생성시간</th>
+                    <th>최근수정시간</th>
+
+                    <tr th:each="room, roomStat: ${rooms}">
+                        <td><input type="checkbox" name="roomIds" th:value="${room.id}"></td>
+                        <td th:text="${roomStat.count}"></td>
+                        <td th:text="${room.id}"></td>
+                        <td th:text="${room.post.id}"></td>
+                        <td th:text="${room.member.id}"></td>
+                        <td th:text="${room.partnerId}"></td>
+                        <td th:text="${room.createdTime}"></td>
+                        <td th:text="${room.updatedTime}"></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
     </div>
 </main>
 </body>
