@@ -58,4 +58,10 @@ public class RoomRepository {
                 .filter(room -> roomIds.contains(room.getId()))
                 .forEach(em::remove);
     }
+
+    public long getRoomCount() {
+        return ((Number) em.createQuery("select count(r) from Room r")
+                .getSingleResult())
+                .longValue();
+    }
 }

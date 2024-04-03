@@ -6,6 +6,7 @@ import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.member.MemberRepository;
 import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.domain.post.PostRepository;
+import com.yohanii.lostandfound.dto.admin.OverviewResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,5 +58,21 @@ public class AdminService {
         }
 
         roomRepository.deleteAll(roomIds);
+    }
+
+    public OverviewResponseDto getOverview() {
+
+        long memberCount = memberRepository.getMemberCount();
+        long lostPostCount = postRepository.getLostPostCount();
+        long foundPostCount = postRepository.getFoundPostCount();
+        long roomCount = roomRepository.getRoomCount();
+
+        return new OverviewResponseDto(
+                memberCount,
+                lostPostCount + foundPostCount,
+                lostPostCount,
+                foundPostCount,
+                roomCount
+        );
     }
 }

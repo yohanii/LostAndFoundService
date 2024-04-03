@@ -201,4 +201,38 @@ class PostRepositoryTest {
         postRepository.deleteAll(List.of(post1.getId(), post2.getId(), post3.getId()));
         assertThat(postRepository.findAll().size()).isEqualTo(0);
     }
+
+    @Test
+    void getLostPostCount() {
+        Post post1 = Post.builder()
+                .type(PostType.LOST)
+                .build();
+        Post post2 = Post.builder()
+                .type(PostType.FOUND)
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        long lostPostCount = postRepository.getLostPostCount();
+
+        assertThat(lostPostCount).isEqualTo(1);
+    }
+
+    @Test
+    void getFoundPostCount() {
+        Post post1 = Post.builder()
+                .type(PostType.LOST)
+                .build();
+        Post post2 = Post.builder()
+                .type(PostType.FOUND)
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        long foundPostCount = postRepository.getFoundPostCount();
+
+        assertThat(foundPostCount).isEqualTo(1);
+    }
 }

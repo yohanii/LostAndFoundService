@@ -3,6 +3,7 @@ package com.yohanii.lostandfound.web.admin;
 import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.post.Post;
+import com.yohanii.lostandfound.dto.admin.OverviewResponseDto;
 import com.yohanii.lostandfound.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,11 @@ public class AdminController {
 
     private final AdminService adminService;
     @GetMapping
-    public String adminHome() {
+    public String adminHome(Model model) {
+
+        OverviewResponseDto overview = adminService.getOverview();
+        model.addAttribute("overview", overview);
+
         return "admin/adminHome";
     }
 

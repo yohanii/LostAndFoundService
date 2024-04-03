@@ -50,4 +50,10 @@ public class MemberRepository {
                 .filter(member -> memberIds.contains(member.getId()))
                 .forEach(em::remove);
     }
+
+    public long getMemberCount() {
+        return ((Number) em.createQuery("select count(m) from Member m")
+                .getSingleResult())
+                .longValue();
+    }
 }

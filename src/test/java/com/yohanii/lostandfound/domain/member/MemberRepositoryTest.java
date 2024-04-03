@@ -134,4 +134,24 @@ class MemberRepositoryTest {
 
         assertThat(memberRepository.findAll().size()).isEqualTo(0);
     }
+
+    @Test
+    void getMemberCount() {
+        Member member1 = Member.builder().build();
+        Member member2 = Member.builder().build();
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        long memberCount = memberRepository.getMemberCount();
+
+        assertThat(memberCount).isEqualTo(2);
+    }
+
+    @Test
+    void getMemberCount_맴버_0명() {
+        long memberCount = memberRepository.getMemberCount();
+
+        assertThat(memberCount).isEqualTo(0);
+    }
 }

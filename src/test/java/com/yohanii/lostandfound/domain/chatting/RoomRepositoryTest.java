@@ -197,4 +197,16 @@ class RoomRepositoryTest {
         roomRepository.deleteAll(List.of(room1.getId(), room2.getId(), room3.getId()));
         assertThat(roomRepository.findAll().size()).isEqualTo(0);
     }
+
+    @Test
+    void getRoomCount() {
+        Room room1 = Room.builder().build();
+        Room room2 = Room.builder().build();
+
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+
+        long roomCount = roomRepository.getRoomCount();
+        assertThat(roomCount).isEqualTo(2);
+    }
 }
