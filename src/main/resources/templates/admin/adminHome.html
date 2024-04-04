@@ -5,8 +5,41 @@
 <div th:replace="fragments/adminBodyHeader :: adminBodyHeader"/>
 <main>
     <div th:replace="fragments/adminSidebar :: adminSidebar"/>
-    <div class="d-flex flex-column flex-shrink-0" style="width: 100vw">
-        Overview 통계
+    <div class="d-flex flex-column flex-shrink-0" style="width: 100vw; margin: 50px" th:object="${overview}">
+        <h3>Overview 통계</h3>
+        <br>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">유저수</h5>
+                <p class="card-text" th:text="*{memberCount}">0</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">게시글 수</h5>
+                <p class="card-text" th:text="*{totalPostCount}">0</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Lost 게시글 수</h5>
+                <p class="card-text" th:text="*{lostPostCount}">0</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Found 게시글 수</h5>
+                <p class="card-text" th:text="*{foundPostCount}">0</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">채팅방 수</h5>
+                <p class="card-text" th:text="*{roomCount}">0</p>
+            </div>
+        </div>
+
+
     </div>
 </main>
 </body>
