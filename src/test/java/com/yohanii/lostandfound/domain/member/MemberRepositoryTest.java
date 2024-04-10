@@ -1,11 +1,15 @@
 package com.yohanii.lostandfound.domain.member;
 
+import com.yohanii.lostandfound.InitComponent;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -15,6 +19,8 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+    @MockBean
+    InitComponent initComponent;
 
     @Test
     void save() {
@@ -153,5 +159,30 @@ class MemberRepositoryTest {
         long memberCount = memberRepository.getMemberCount();
 
         assertThat(memberCount).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("admin member가 db에 정상적으로 저장되고 true를 반환해야한다.")
+    void saveAdmin_정상() {
+        boolean result = memberRepository.saveAdmin();
+
+        Optional<Member> findMember = memberRepository.findByLoginId("admin");
+        assertThat(result).isTrue();
+        assertThat(findMember).isPresent();
+        assertThat(findMember.get().getLoginId()).isEqualTo("admin");
+        assertThat(findMember.get().getPassword()).isEqualTo("admin");
+        assertThat(findMember.get().getName()).isEqualTo("admin");
+        assertThat(findMember.get().getNickName()).isEqualTo("admin");
+        assertThat(findMember.get().getAuth()).isEqualTo(MemberAuth.ADMIN);
+    }
+
+    @Test
+    @DisplayName("loginId가 admin인 member가 이미 있다면, 저장되지 않고 false를 반환해야한다.")
+    void saveAdmin_admin_이미_존재() {
+        memberRepository.saveAdmin();
+
+        boolean result = memberRepository.saveAdmin();
+
+        assertThat(result).isFalse();
     }
 }

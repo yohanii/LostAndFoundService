@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound.dto.member;
 
 import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.member.MemberAuth;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class MemberSaveRequestDto {
                 .nickName(nickName)
                 .createdTime(now)
                 .updatedTime(now)
+                .auth(MemberAuth.MEMBER)
                 .build();
     }
 }

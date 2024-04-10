@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.service.admin;
 
+import com.yohanii.lostandfound.InitComponent;
 import com.yohanii.lostandfound.domain.member.Member;
 import com.yohanii.lostandfound.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class AdminServiceTest {
 
+    @MockBean
+    InitComponent initComponent;
     @Autowired
     AdminService adminService;
     @Autowired

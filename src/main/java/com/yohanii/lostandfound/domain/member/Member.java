@@ -34,6 +34,8 @@ public class Member {
     @OrderBy("createdTime desc")
     private List<Notification> notifications;
 
+    private MemberAuth auth;
+
     private String loginId;
     private String password;
     private String nickName;
@@ -41,7 +43,7 @@ public class Member {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Member(String name, Image profileImage, String loginId, String password, String nickName, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public Member(String name, Image profileImage, String loginId, String password, String nickName, LocalDateTime createdTime, LocalDateTime updatedTime, MemberAuth auth) {
         this.name = name;
         this.profileImage = profileImage;
         this.loginId = loginId;
@@ -49,6 +51,7 @@ public class Member {
         this.nickName = nickName;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
+        this.auth = auth;
     }
 
     public void updateMember(ProfileEditRequestDto dto) {
