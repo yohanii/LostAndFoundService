@@ -9,8 +9,9 @@
 
         <h1 style="text-align: center; padding: 40px">채팅방 관리</h1>
 
-        <form th:action="@{/admin/chattingRooms}" th:method="post">
+        <form th:action="@{/admin/chattingRooms}" th:method="delete">
             <button type="submit" class="btn btn-danger" style="float: right; margin: 20px">삭제</button>
+            <input type="hidden" name="_method" value="delete">
             <br>
             <br>
             <br>

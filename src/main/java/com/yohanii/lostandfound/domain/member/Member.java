@@ -59,4 +59,12 @@ public class Member {
         this.nickName = dto.getNickName();
         this.updatedTime = LocalDateTime.now();
     }
+
+    public void changeAuth() {
+        if (this.auth.equals(MemberAuth.MEMBER)) {
+            this.auth = MemberAuth.ADMIN;
+            return;
+        }
+        this.auth = MemberAuth.MEMBER;
+    }
 }

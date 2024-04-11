@@ -1,5 +1,14 @@
 ## 기록
 
+- 24.4.11
+  - adminPage Members 권한 수정 구현
+    - 체크박스 체크한 members의 권한을 ADMIN -> MEMBER, MEMBER -> ADMIN으로 수정
+- 24.4.10
+  - Member auth 생성
+    - admin page에는 관리자만 입장 가능해야해서 만들게 되었다.
+    - MemberAuth.ADMIN, MemberAuth.MEMBER 두 가지
+  - Interceptor를 이용한 adminPage 접근 제한
+    - Interceptor를 이용해 "/admin", "/admin/*"에 입장 시 auth를 체크해, MemberAuth.ADMIN일 때만 입장 가능.
 - 24.4.4
   - admin page overview 구현
 - 24.4.1

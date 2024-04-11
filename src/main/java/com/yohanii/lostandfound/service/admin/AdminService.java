@@ -75,4 +75,12 @@ public class AdminService {
                 roomCount
         );
     }
+
+    @Transactional
+    public void updateMembersAuth(List<Long> memberIds) {
+        memberRepository.findAll()
+                .stream()
+                .filter(member -> memberIds.contains(member.getId()))
+                .forEach(Member::changeAuth);
+    }
 }

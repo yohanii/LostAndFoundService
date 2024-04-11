@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,13 +38,21 @@ public class AdminController {
         return "admin/adminMembers";
     }
 
-    @PostMapping("/members")
+    @DeleteMapping("/members")
     public String deleteMembers(@RequestParam List<Long> memberIds) {
 
-        log.info("memberIds: " + memberIds);
+        log.info("deleteMembers memberIds: " + memberIds);
         adminService.deleteMembers(memberIds);
 
         return "redirect:/admin/members";
+    }
+
+    @GetMapping("/members/auth")
+    public String updateAuthForm(Model model) {
+        List<Member> members = adminService.findAllMembers();
+        model.addAttribute("members", members);
+
+        return "admin/updateAuthForm";
     }
 
     @GetMapping("/posts")
@@ -59,7 +64,7 @@ public class AdminController {
         return "admin/adminPosts";
     }
 
-    @PostMapping("/posts")
+    @DeleteMapping("/posts")
     public String deletePosts(@RequestParam List<Long> postIds) {
 
         log.info("postIds: " + postIds);
@@ -77,7 +82,7 @@ public class AdminController {
         return "admin/adminChattingRooms";
     }
 
-    @PostMapping("/chattingRooms")
+    @DeleteMapping("/chattingRooms")
     public String deleteRooms(@RequestParam List<Long> roomIds) {
 
         log.info("roomIds: " + roomIds);
@@ -85,4 +90,14 @@ public class AdminController {
 
         return "redirect:/admin/chattingRooms";
     }
+
+    @PatchMapping("/members/auth")
+    public String updateAuth(@RequestParam List<Long> memberIds) {
+        log.info("updateAuth memberIds: " + memberIds);
+
+        adminService.updateMembersAuth(memberIds);
+
+        return "redirect:/admin/members";
+    }
+
 }

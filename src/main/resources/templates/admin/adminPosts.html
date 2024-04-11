@@ -9,8 +9,9 @@
 
         <h1 style="text-align: center; padding: 40px">게시글 관리</h1>
 
-        <form th:action="@{/admin/posts}" th:method="post">
+        <form th:action="@{/admin/posts}" th:method="delete">
             <button type="submit" class="btn btn-danger" style="float: right; margin: 20px">삭제</button>
+            <input type="hidden" name="_method" value="delete">
             <div>
                 <table>
                     <th>check</th>

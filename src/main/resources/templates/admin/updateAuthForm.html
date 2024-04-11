@@ -7,15 +7,20 @@
     <div th:replace="fragments/adminSidebar :: adminSidebar"/>
     <div class="d-flex flex-column flex-shrink-0">
 
-        <h1 style="text-align: center; padding: 40px">회원 관리</h1>
+        <h1 style="text-align: center; padding: 40px">회원 관리 - 권한 수정</h1>
+        <h4 style="text-align: center; margin-bottom: 10px"> * 수정 시 ADMIN -> MEMBER / MEMBER -> ADMIN</h4>
 
-        <div>
-            <button th:onclick="|location.href='@{/admin/members/auth}'|" class="btn btn-warning" style="float:right; width:200px;">권한 수정 모드</button>
-        </div>
+        <form th:action="@{/admin/members/auth}" th:method="patch">
+            <div class="row" style="float:right; width: 240px; margin-bottom: 20px">
+                <div class="col">
+                    <button type="submit" class="btn btn btn-primary btn-lg" style="float: right; margin: 10px">수정</button>
+                    <input type="hidden" name="_method" value="patch">
+                </div>
+                <div class="col">
+                    <button type="button" th:onclick="|location.href='@{/admin/members}'|" class="btn btn btn-secondary btn-lg" style="float: right; margin: 10px">취소</button>
+                </div>
+            </div>
 
-        <form th:action="@{/admin/members}" th:method="delete">
-            <button type="submit" class="btn btn-danger" style="float: right; margin: 20px">삭제</button>
-            <input type="hidden" name="_method" value="delete">
             <div>
                 <table>
                     <th>check</th>
