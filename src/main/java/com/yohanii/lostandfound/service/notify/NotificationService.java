@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -74,5 +75,9 @@ public class NotificationService {
         emitter.onTimeout(() -> emitterRepository.deleteById(id));
 
         return emitter;
+    }
+
+    public List<Notification> findNotificationsById(Long memberId) {
+        return notificationRepository.findAll(memberId);
     }
 }

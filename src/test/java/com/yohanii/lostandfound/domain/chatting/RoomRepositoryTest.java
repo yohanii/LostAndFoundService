@@ -45,6 +45,16 @@ class RoomRepositoryTest {
     }
 
     @Test
+    void save_CreatedTime_UpdatedTime_같음() {
+        Room room = Room.builder().build();
+
+        roomRepository.save(room);
+
+        Room findRoom = roomRepository.find(room.getId());
+        assertThat(findRoom.getCreatedTime()).isEqualTo(findRoom.getUpdatedTime());
+    }
+
+    @Test
     void find() {
         Room saveRoom = Room.builder().build();
         Long savedId = roomRepository.save(saveRoom);
@@ -172,5 +182,31 @@ class RoomRepositoryTest {
         Optional<Room> findRoom = roomRepository.findByIds(member.getId(), otherMember1.getId());
         assertThat(findRoom).isPresent();
         assertThat(findRoom.get()).isEqualTo(saveRoom2);
+    }
+
+    @Test
+    void deleteAll() {
+        Room room1 = Room.builder().build();
+        Room room2 = Room.builder().build();
+        Room room3 = Room.builder().build();
+
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+        roomRepository.save(room3);
+
+        roomRepository.deleteAll(List.of(room1.getId(), room2.getId(), room3.getId()));
+        assertThat(roomRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @Test
+    void getRoomCount() {
+        Room room1 = Room.builder().build();
+        Room room2 = Room.builder().build();
+
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+
+        long roomCount = roomRepository.getRoomCount();
+        assertThat(roomCount).isEqualTo(2);
     }
 }

@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound.dto.member;
 
 import com.yohanii.lostandfound.domain.member.Member;
+import com.yohanii.lostandfound.domain.member.MemberAuth;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,16 @@ public class MemberSaveRequestDto {
     private MultipartFile profileImage;
 
     public Member toEntity() {
+        LocalDateTime now = LocalDateTime.now();
+
         return Member.builder()
                 .name(name)
                 .loginId(loginId)
                 .password(password)
                 .nickName(nickName)
-                .createdTime(LocalDateTime.now())
+                .createdTime(now)
+                .updatedTime(now)
+                .auth(MemberAuth.MEMBER)
                 .build();
     }
 }

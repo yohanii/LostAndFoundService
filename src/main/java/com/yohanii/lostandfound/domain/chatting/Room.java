@@ -53,7 +53,14 @@ public class Room {
         this.member = member;
         this.post = post;
         this.partnerId = partnerId;
-        this.createdTime = LocalDateTime.now();
         this.storeRoomName = storeRoomName;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.createdTime = now;
+        this.updatedTime = now;
+    }
+
+    public LocalDateTime updateUpdatedTime() {
+        return this.updatedTime = LocalDateTime.now();
     }
 }

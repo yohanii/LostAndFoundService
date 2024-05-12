@@ -1,9 +1,12 @@
 package com.yohanii.lostandfound.domain.member;
 
+import com.yohanii.lostandfound.domain.image.Image;
+import com.yohanii.lostandfound.domain.image.ImageType;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,5 +46,38 @@ public class MemberRepository {
         return findAll().stream()
                 .filter(member -> member.getNickName().equals(nickName))
                 .findFirst();
+    }
+
+    public void deleteAll(List<Long> memberIds) {
+        findAll().stream()
+                .filter(member -> memberIds.contains(member.getId()))
+                .forEach(em::remove);
+    }
+
+    public long getMemberCount() {
+        return ((Number) em.createQuery("select count(m) from Member m")
+                .getSingleResult())
+                .longValue();
+    }
+
+    public boolean saveAdmin() {
+
+        if (findByLoginId("admin").isPresent()) {
+            return false;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        Member admin = Member.builder()
+                .loginId("admin")
+                .password("admin")
+                .name("admin")
+                .nickName("admin")
+                .auth(MemberAuth.ADMIN)
+                .createdTime(now)
+                .updatedTime(now)
+                .build();
+        save(admin);
+
+        return true;
     }
 }

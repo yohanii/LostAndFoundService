@@ -3,6 +3,7 @@ package com.yohanii.lostandfound.domain.member;
 import com.yohanii.lostandfound.domain.chatting.Room;
 import com.yohanii.lostandfound.domain.image.Image;
 import com.yohanii.lostandfound.domain.notify.Notification;
+import com.yohanii.lostandfound.domain.post.Post;
 import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,12 +24,17 @@ public class Member {
     @Column(name = "member_name")
     private String name;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Post> posts;
+
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Image profileImage;
 
-    @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("createdTime desc")
     private List<Notification> notifications;
+
+    private MemberAuth auth;
 
     private String loginId;
     private String password;
@@ -37,7 +43,7 @@ public class Member {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Member(String name, Image profileImage, String loginId, String password, String nickName, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public Member(String name, Image profileImage, String loginId, String password, String nickName, LocalDateTime createdTime, LocalDateTime updatedTime, MemberAuth auth) {
         this.name = name;
         this.profileImage = profileImage;
         this.loginId = loginId;
@@ -45,11 +51,20 @@ public class Member {
         this.nickName = nickName;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
+        this.auth = auth;
     }
 
     public void updateMember(ProfileEditRequestDto dto) {
         this.name = dto.getName();
         this.nickName = dto.getNickName();
         this.updatedTime = LocalDateTime.now();
+    }
+
+    public void changeAuth() {
+        if (this.auth.equals(MemberAuth.MEMBER)) {
+            this.auth = MemberAuth.ADMIN;
+            return;
+        }
+        this.auth = MemberAuth.MEMBER;
     }
 }

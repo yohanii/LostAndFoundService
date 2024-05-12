@@ -41,6 +41,16 @@ class PostRepositoryTest {
     }
 
     @Test
+    void save_CreatedTime_UpdatedTime_같음() {
+        Post post = Post.builder().build();
+
+        postRepository.save(post);
+
+        Post findPost = postRepository.findById(post.getId());
+        assertThat(findPost.getCreatedTime()).isEqualTo(findPost.getUpdatedTime());
+    }
+
+    @Test
     void findById() {
         Post post1 = Post.builder()
                 .title("hello")
@@ -176,5 +186,53 @@ class PostRepositoryTest {
         assertThat(findPosts.size()).isEqualTo(2);
         assertThat(findPosts).contains(post1, post2);
         assertThat(findPosts).doesNotContain(post3);
+    }
+
+    @Test
+    void deleteAll() {
+        Post post1 = Post.builder().build();
+        Post post2 = Post.builder().build();
+        Post post3 = Post.builder().build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+        postRepository.save(post3);
+
+        postRepository.deleteAll(List.of(post1.getId(), post2.getId(), post3.getId()));
+        assertThat(postRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @Test
+    void getLostPostCount() {
+        Post post1 = Post.builder()
+                .type(PostType.LOST)
+                .build();
+        Post post2 = Post.builder()
+                .type(PostType.FOUND)
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        long lostPostCount = postRepository.getLostPostCount();
+
+        assertThat(lostPostCount).isEqualTo(1);
+    }
+
+    @Test
+    void getFoundPostCount() {
+        Post post1 = Post.builder()
+                .type(PostType.LOST)
+                .build();
+        Post post2 = Post.builder()
+                .type(PostType.FOUND)
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        long foundPostCount = postRepository.getFoundPostCount();
+
+        assertThat(foundPostCount).isEqualTo(1);
     }
 }

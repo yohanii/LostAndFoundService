@@ -39,11 +39,11 @@ public class Chatting {
     private LocalDateTime createdTime;
 
     @Builder
-    public Chatting(Member member, Room room, ChattingType type, String content) {
+    public Chatting(Member member, Room room, ChattingType type, String content, LocalDateTime createdTime) {
         this.member = member;
         this.room = room;
         this.type = type;
         this.content = content;
-        this.createdTime = LocalDateTime.now();
+        this.createdTime = createdTime;
     }
 }

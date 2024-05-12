@@ -33,12 +33,15 @@ public class PostSaveRequestDto {
     private List<MultipartFile> itemImages;
 
     public Post toPostEntity(Member member) {
+        LocalDateTime now = LocalDateTime.now();
+
         return Post.builder()
                 .member(member)
                 .title(title)
                 .content(content)
                 .type(type)
-                .createdTime(LocalDateTime.now())
+                .createdTime(now)
+                .updatedTime(now)
                 .build();
     }
 

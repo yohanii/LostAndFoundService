@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/adminHeader :: adminHeader" />
+<body>
+<div th:replace="fragments/adminBodyHeader :: adminBodyHeader"/>
+<main>
+    <div th:replace="fragments/adminSidebar :: adminSidebar"/>
+    <div class="d-flex flex-column flex-shrink-0">
+
+        <h1 style="text-align: center; padding: 40px">게시글 관리</h1>
+
+        <form th:action="@{/admin/posts}" th:method="delete">
+            <button type="submit" class="btn btn-danger" style="float: right; margin: 20px">삭제</button>
+            <input type="hidden" name="_method" value="delete">
+            <div>
+                <table>
+                    <th>check</th>
+                    <th>count</th>
+                    <th>id</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>타입</th>
+                    <th>최근수정시간</th>
+<!--                    <th>아이템유무</th>-->
+<!--                    <th>room갯수</th>-->
+
+                    <tr th:each="post, postStat: ${posts}">
+                        <td><input type="checkbox" name="postIds" th:value="${post.id}"></td>
+                        <td th:text="${postStat.count}"></td>
+                        <td th:text="${post.id}"></td>
+                        <td th:text="${post.member.name}"></td>
+                        <td th:text="${post.title}"></td>
+                        <td th:text="${post.type}"></td>
+                        <td th:text="${post.updatedTime}"></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+<script type="text/javascript">
+    document.getElementById('nav-item3').classList.add('active');
+</script>
+</html>

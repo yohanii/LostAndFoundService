@@ -30,7 +30,7 @@ public class Post {
     @OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Item item;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Room> rooms = new ArrayList<>();
 
     @Column(name = "post_title")

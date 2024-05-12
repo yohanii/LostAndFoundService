@@ -89,4 +89,24 @@ public class PostRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    public void deleteAll(List<Long> postIds) {
+        findAll().stream()
+                .filter(post -> postIds.contains(post.getId()))
+                .forEach(em::remove);
+    }
+
+    public long getLostPostCount() {
+        return ((Number) em.createQuery("select count(p) from Post p where p.type = :type")
+                .setParameter("type", PostType.LOST)
+                .getSingleResult())
+                .longValue();
+    }
+
+    public long getFoundPostCount() {
+        return ((Number) em.createQuery("select count(p) from Post p where p.type = :type")
+                .setParameter("type", PostType.FOUND)
+                .getSingleResult())
+                .longValue();
+    }
 }

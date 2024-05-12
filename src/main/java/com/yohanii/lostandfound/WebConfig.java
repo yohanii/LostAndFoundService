@@ -1,6 +1,7 @@
 package com.yohanii.lostandfound;
 
 import com.yohanii.lostandfound.web.argumentresolver.LoginMemberArgumentResolver;
+import com.yohanii.lostandfound.web.interceptor.AdminInterceptor;
 import com.yohanii.lostandfound.web.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -23,5 +24,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/members", "/members/add-form", "/login", "/logout", "/css/**", "*.ico", "/error");
+
+        registry.addInterceptor(new AdminInterceptor())
+                .order(2)
+                .addPathPatterns("/admin", "/admin/*");
     }
 }

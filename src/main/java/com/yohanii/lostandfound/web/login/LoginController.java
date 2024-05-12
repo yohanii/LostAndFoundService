@@ -46,7 +46,7 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember.get());
-        notificationService.subscribe(loginMember.get().getId());
+//        notificationService.subscribe(loginMember.get().getId());
 
         return "redirect:" + redirectURL;
     }

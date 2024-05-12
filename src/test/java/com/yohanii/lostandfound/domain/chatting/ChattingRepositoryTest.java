@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -27,6 +28,7 @@ class ChattingRepositoryTest {
                 .room(room)
                 .type(ChattingType.TALK)
                 .content("hi")
+                .createdTime(LocalDateTime.now())
                 .build();
 
         Long savedId = chattingRepository.save(saveChatting);

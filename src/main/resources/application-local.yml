@@ -22,3 +22,17 @@ cloud:
       folder: local/images/
     stack:
       auto: false
+
+management:
+  server:
+    port: 9001
+    address: 127.0.0.1
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true

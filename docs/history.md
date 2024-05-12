@@ -1,5 +1,45 @@
 ## 기록
 
+- 24.4.11
+  - adminPage Members 권한 수정 구현
+    - 체크박스 체크한 members의 권한을 ADMIN -> MEMBER, MEMBER -> ADMIN으로 수정
+- 24.4.10
+  - Member auth 생성
+    - admin page에는 관리자만 입장 가능해야해서 만들게 되었다.
+    - MemberAuth.ADMIN, MemberAuth.MEMBER 두 가지
+  - Interceptor를 이용한 adminPage 접근 제한
+    - Interceptor를 이용해 "/admin", "/admin/*"에 입장 시 auth를 체크해, MemberAuth.ADMIN일 때만 입장 가능.
+- 24.4.4
+  - admin page overview 구현
+- 24.4.1
+  - 관리자 페이지 구현
+    - 회원, 게시글, 채팅룸 현황 화면 생성
+    - delete Members, Posts, Rooms 구현
+  - createdTime, updatedTime 제대로 기록되도록 refactoring
+    - save시 createdTime, updatedTime 같아야한다.
+    - room의 경우는 방 생성 후, ENTER 채팅이 보내져서, room의 createdTime, updatedTime 같지 않고, 해당 채팅 createdTime과 room의 updatedTime이 같다.
+- 24.3.29
+  - 맴버 삭제 불가능 문제 해결
+    - Member 객체 삭제시 `Cannot delete or update a parent row: a foreign key constraint fails cascade` error 발생
+    - 원인 : 다른 테이블에 해당 데이터를 참조하고 있는 외래키가 있어서 발생한 문제.
+    - 시도
+      - 연관관계의 부모에 `cascade = CascadeType.ALL, orphanRemoval = true`을 모두 추가해줌
+        - `cascade = CascadeType.ALL` : 부모가 자식의 전체 생명 주기를 관리한다. 부모가 영속화되면, 자식도 영속화된다. + 부모객체가 삭제되면, 자식 객체도 삭제된다.
+          단, 부모와 자식의 연관관계가 끊어질 경우, 자식을 미처 제거하지 못한다.
+        - `orphanRemoval = true` : 부모와 자식의 연관관계가 끊어질 경우, 자식 엔티디들을 삭제한다.
+      - 그러나, 계속 실패해서 자식측에 `optional = false` 추가
+        - `optional = false` : 해당 객체가 null이 아님을 보장
+      - 그래도 실패
+    - 해결
+      - JPQL로 쿼리를 날려서 delete한 것이 원인이었다. 그러면, cascade가 적용안된다.
+      - `em.remove`를 통해 삭제해줘서 해결함.
+  - `Member.notifications` FetchType.EAGER -> FetchType.LAZY 바꿈
+    - 24.2.21에 nav에서 알림을 보여줄 때, `LazyInitializationException`이 발생했다.
+    - FetchType.LAZY로 설정할 경우에 notifications를 들고 올 수 없어서, 당시엔 FetchType.EAGER로 설정해서 해결했었다.
+    - 하지만, member를 조회할 때마다 notifications도 같이 조회하기 때문에 비효율적이었다.
+    - 그러다가 최근에 Transaction 관련 강의를 들으면서 새로운 해결법을 알게되었다.
+    - 기존엔 template에서 notifications를 조회했기 때문에, Transaction이 걸려있지 않아서 지연로딩을 할 수 없어던 것이다.
+    - 그래서, FetchType.LAZY로 바꿔주고, notifications는 Transaction이 걸려있을 때 가져올 수 있도록, NotificationService에서 받아오게 해서 해결했다.
 - 24.3.25
   - Nginx를 이용한 포트포워딩
   - Let's Encrypt를 이용한 HTTPS 사용
