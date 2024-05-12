@@ -1,12 +1,13 @@
 package com.yohanii.lostandfound.service.chat;
 
-import com.yohanii.lostandfound.domain.chatting.Room;
-import com.yohanii.lostandfound.domain.chatting.RoomRepository;
-import com.yohanii.lostandfound.domain.member.Member;
-import com.yohanii.lostandfound.domain.member.MemberRepository;
-import com.yohanii.lostandfound.domain.post.Post;
-import com.yohanii.lostandfound.domain.post.PostRepository;
-import com.yohanii.lostandfound.dto.chatting.RoomSaveRequestDto;
+import com.yohanii.lostandfound.component.chatting.service.RoomService;
+import com.yohanii.lostandfound.component.chatting.entity.Room;
+import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
+import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.repository.PostRepository;
+import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

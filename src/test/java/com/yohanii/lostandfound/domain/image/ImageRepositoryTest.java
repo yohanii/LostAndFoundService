@@ -1,5 +1,7 @@
 package com.yohanii.lostandfound.domain.image;
 
+import com.yohanii.lostandfound.component.crud.entity.Image;
+import com.yohanii.lostandfound.component.crud.repository.ImageRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

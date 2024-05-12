@@ -1,14 +1,15 @@
 package com.yohanii.lostandfound.service.file;
 
-import com.yohanii.lostandfound.domain.image.Image;
-import com.yohanii.lostandfound.domain.image.ImageRepository;
-import com.yohanii.lostandfound.domain.image.ImageType;
-import com.yohanii.lostandfound.domain.item.Item;
-import com.yohanii.lostandfound.domain.item.ItemRepository;
-import com.yohanii.lostandfound.domain.member.Member;
-import com.yohanii.lostandfound.domain.member.MemberRepository;
-import com.yohanii.lostandfound.dto.image.ItemImagesSaveDto;
-import com.yohanii.lostandfound.dto.image.ProfileImageSaveDto;
+import com.yohanii.lostandfound.component.crud.entity.Image;
+import com.yohanii.lostandfound.component.crud.repository.ImageRepository;
+import com.yohanii.lostandfound.component.crud.entity.ImageType;
+import com.yohanii.lostandfound.component.crud.entity.Item;
+import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
+import com.yohanii.lostandfound.component.crud.dto.image.ItemImagesSaveDto;
+import com.yohanii.lostandfound.component.crud.dto.image.ProfileImageSaveDto;
+import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

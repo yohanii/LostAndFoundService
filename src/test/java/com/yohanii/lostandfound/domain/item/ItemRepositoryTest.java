@@ -1,6 +1,9 @@
 package com.yohanii.lostandfound.domain.item;
 
-import com.yohanii.lostandfound.domain.post.Post;
+import com.yohanii.lostandfound.component.crud.entity.Item;
+import com.yohanii.lostandfound.component.crud.entity.ItemCategory;
+import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
+import com.yohanii.lostandfound.component.crud.entity.Post;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

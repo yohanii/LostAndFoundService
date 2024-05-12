@@ -1,6 +1,8 @@
 package com.yohanii.lostandfound.domain.member;
 
-import com.yohanii.lostandfound.dto.profile.ProfileEditRequestDto;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.entity.MemberAuth;
+import com.yohanii.lostandfound.component.crud.dto.profile.ProfileEditRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

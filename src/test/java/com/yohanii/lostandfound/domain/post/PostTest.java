@@ -1,11 +1,11 @@
 package com.yohanii.lostandfound.domain.post;
 
-import com.yohanii.lostandfound.dto.post.PostEditRequestDto;
-import org.assertj.core.api.Assertions;
+import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
+import com.yohanii.lostandfound.component.crud.dto.post.PostEditRequestDto;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostTest {
 

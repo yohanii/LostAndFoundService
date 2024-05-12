@@ -1,8 +1,11 @@
 package com.yohanii.lostandfound.domain.post;
 
-import com.yohanii.lostandfound.domain.member.Member;
-import com.yohanii.lostandfound.domain.member.MemberRepository;
-import com.yohanii.lostandfound.dto.post.PostSearchRequestDto;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
+import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.repository.PostRepository;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
+import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

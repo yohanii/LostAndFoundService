@@ -1,6 +1,9 @@
 package com.yohanii.lostandfound.domain.member;
 
 import com.yohanii.lostandfound.InitComponent;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.entity.MemberAuth;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
