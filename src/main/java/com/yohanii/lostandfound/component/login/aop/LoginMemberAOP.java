@@ -18,22 +18,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 public class LoginMemberAOP {
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.post..*(..)) ")
-    private void webPost() {}
+    @Pointcut("execution(* com.yohanii.lostandfound.component.crud.controller..*(..)) ")
+    private void crudController() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.profile..*(..))")
-    private void webProfile() {}
+    @Pointcut("execution(* com.yohanii.lostandfound.component.chatting.controller..*(..)) ")
+    private void chattingController() {}
 
-    @Pointcut("execution(* com.yohanii.lostandfound.web.member..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
-    private void webMember() {}
-
-    @Pointcut("execution(* com.yohanii.lostandfound.web.HomeController..*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
-    private void webHome() {}
-
-    @Pointcut("execution(* com.yohanii.lostandfound.web.chatting..*(..))")
-    private void webChatting() {}
-
-    @Around("webPost() || webProfile() || webMember() || webHome() || webChatting()")
+    @Around("crudController() || chattingController()")
     public Object getLoginMember(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
