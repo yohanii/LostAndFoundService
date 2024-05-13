@@ -1,7 +1,7 @@
 package com.yohanii.lostandfound;
 
-import com.yohanii.lostandfound.domain.image.ImageRepository;
-import com.yohanii.lostandfound.domain.member.MemberRepository;
+import com.yohanii.lostandfound.component.crud.repository.ImageRepository;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

@@ -1,5 +1,12 @@
 ## 기록
 
+- 24.5.13
+  - 디렉토리 구조 변경
+    - product 별로 크게 분리함
+- 24.5.2
+  - local 모니터링 설정
+    - Prometheus, Grafana 환경
+    - 추후 운영 환경에도 적용할 예정
 - 24.4.11
   - adminPage Members 권한 수정 구현
     - 체크박스 체크한 members의 권한을 ADMIN -> MEMBER, MEMBER -> ADMIN으로 수정
