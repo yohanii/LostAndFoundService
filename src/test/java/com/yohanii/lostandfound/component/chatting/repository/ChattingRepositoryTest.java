@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.domain.chatting;
+package com.yohanii.lostandfound.component.chatting.repository;
 
 import com.yohanii.lostandfound.component.chatting.entity.Chatting;
 import com.yohanii.lostandfound.component.chatting.repository.ChattingRepository;

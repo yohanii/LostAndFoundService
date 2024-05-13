@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.domain.post;
+package com.yohanii.lostandfound.component.crud.entity;
 
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.entity.PostType;

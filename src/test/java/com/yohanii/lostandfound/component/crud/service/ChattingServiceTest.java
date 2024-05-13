@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.service.chat;
+package com.yohanii.lostandfound.component.crud.service;
 
 import com.yohanii.lostandfound.component.chatting.service.ChattingService;
 import com.yohanii.lostandfound.component.chatting.entity.Chatting;

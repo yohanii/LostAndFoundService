@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.service.file;
+package com.yohanii.lostandfound.component.crud.service;
 
 import com.yohanii.lostandfound.component.crud.entity.Image;
 import com.yohanii.lostandfound.component.crud.repository.ImageRepository;

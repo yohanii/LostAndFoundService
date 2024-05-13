@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.domain.member;
+package com.yohanii.lostandfound.component.crud.repository;
 
 import com.yohanii.lostandfound.InitComponent;
 import com.yohanii.lostandfound.component.crud.entity.Member;

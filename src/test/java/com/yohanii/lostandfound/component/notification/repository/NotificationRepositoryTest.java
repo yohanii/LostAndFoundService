@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.domain.notify;
+package com.yohanii.lostandfound.component.notification.repository;
 
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;

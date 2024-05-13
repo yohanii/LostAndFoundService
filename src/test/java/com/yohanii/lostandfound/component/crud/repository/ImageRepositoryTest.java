@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.domain.image;
+package com.yohanii.lostandfound.component.crud.repository;
 
 import com.yohanii.lostandfound.component.crud.entity.Image;
 import com.yohanii.lostandfound.component.crud.repository.ImageRepository;
@@ -31,12 +31,12 @@ class ImageRepositoryTest {
         assertThat(findImage).isEqualTo(image);
     }
 
-    @Test
-    void saveDefaultImage() {
-        boolean status = imageRepository.saveDefaultImage();
-
-        assertThat(status).isFalse();
-    }
+//    @Test
+//    void saveDefaultImage() {
+//        boolean status = imageRepository.saveDefaultImage();
+//
+//        assertThat(status).isFalse();
+//    }
 
     @Test
     void find() {

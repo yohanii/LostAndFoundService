@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.domain.item;
+package com.yohanii.lostandfound.component.crud.repository;
 
 import com.yohanii.lostandfound.component.crud.entity.Item;
 import com.yohanii.lostandfound.component.crud.entity.ItemCategory;

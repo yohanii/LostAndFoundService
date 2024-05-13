@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.service.admin;
+package com.yohanii.lostandfound.component.admin.service;
 
 import com.yohanii.lostandfound.InitComponent;
 import com.yohanii.lostandfound.component.crud.entity.Member;
