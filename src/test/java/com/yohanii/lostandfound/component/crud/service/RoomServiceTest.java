@@ -33,7 +33,7 @@ class RoomServiceTest {
     @Test
     void createRoom() {
         Member member = Member.builder().build();
-        Long savedMemberId = memberRepository.save(member);
+        Long savedMemberId = memberRepository.save(member).getId();
         Post post = Post.builder().build();
         Long savedPostId = postRepository.save(post);
 

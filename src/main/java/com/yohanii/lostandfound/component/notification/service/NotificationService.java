@@ -39,7 +39,8 @@ public class NotificationService {
     }
 
     private void sendToClient(Long id, Object data, NotificationType type) {
-        Member receiver = memberRepository.find(id);
+        Member receiver = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 유저가 존재하지 않습니다."));
 
         SseEmitter emitter = emitterRepository.get(id);
         if (emitter != null) {

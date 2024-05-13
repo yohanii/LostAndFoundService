@@ -2,6 +2,7 @@ package com.yohanii.lostandfound.component.crud.service;
 
 import com.yohanii.lostandfound.component.crud.dto.member.MemberSaveRequestDto;
 import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.entity.MemberAuth;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,7 +34,7 @@ class MemberServiceTest {
 
         Long savedMemberId = memberService.saveMember(dto, file);
 
-        Member findMember = memberRepository.find(savedMemberId);
+        Member findMember = memberRepository.findById(savedMemberId).orElse(Member.builder().build());
         assertThat(findMember.getName()).isEqualTo(dto.getName());
         assertThat(findMember.getLoginId()).isEqualTo(dto.getLoginId());
         assertThat(findMember.getPassword()).isEqualTo(dto.getPassword());
@@ -46,7 +49,7 @@ class MemberServiceTest {
 
         Long savedMemberId = memberService.saveMember(dto, null);
 
-        Member findMember = memberRepository.find(savedMemberId);
+        Member findMember = memberRepository.findById(savedMemberId).orElse(Member.builder().build());
         assertThat(findMember.getName()).isEqualTo(dto.getName());
         assertThat(findMember.getLoginId()).isEqualTo(dto.getLoginId());
         assertThat(findMember.getPassword()).isEqualTo(dto.getPassword());
@@ -99,5 +102,38 @@ class MemberServiceTest {
                 .isInstanceOf(ConstraintViolationException.class);
         assertThatThrownBy(() -> memberService.saveMember(dto4, null))
                 .isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    @DisplayName("admin이 존재하지 않을 때, saveAdmin 호출 시 새로운 admin을 생성합니다. admin의 권한은 MemberAuth.ADMIN입니다.")
+    void saveAdmin_create_new_admin() {
+        Optional<Member> admin = memberRepository.findByNickName("admin");
+        if (admin.isPresent()) {
+            memberRepository.deleteById(admin.get().getId());
+        }
+
+        Long savedAdminId = memberService.saveAdmin();
+
+        Optional<Member> findAdmin = memberRepository.findById(savedAdminId);
+        assertThat(findAdmin.isPresent()).isTrue();
+        assertThat(findAdmin.get().getName()).isEqualTo("admin");
+        assertThat(findAdmin.get().getLoginId()).isEqualTo("admin");
+        assertThat(findAdmin.get().getPassword()).isEqualTo("admin");
+        assertThat(findAdmin.get().getNickName()).isEqualTo("admin");
+        assertThat(findAdmin.get().getAuth()).isEqualTo(MemberAuth.ADMIN);
+    }
+
+    @Test
+    @DisplayName("admin이 존재할 경우, 해당 member의 id를 반환합니다.")
+    void saveAdmin_admin_exist() {
+        Optional<Member> admin = memberRepository.findByNickName("admin");
+        if (admin.isPresent()) {
+            memberRepository.deleteById(admin.get().getId());
+        }
+        Long savedAdminId = memberService.saveAdmin();
+
+        Long result = memberService.saveAdmin();
+
+        assertThat(result).isEqualTo(savedAdminId);
     }
 }

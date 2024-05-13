@@ -9,7 +9,6 @@ import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.dto.image.ItemImagesSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.image.ProfileImageSaveDto;
-import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -32,7 +32,7 @@ class ChattingServiceTest {
     @Test
     void saveChatting() {
         Member member = Member.builder().build();
-        Long savedMemberId = memberRepository.save(member);
+        Long savedMemberId = memberRepository.save(member).getId();
         Room room = Room.builder().build();
         Long savedRoomId = roomRepository.save(room);
 
@@ -51,7 +51,7 @@ class ChattingServiceTest {
     @Test
     void saveChatting시_room의_updatedPost_update() {
         Member member = Member.builder().build();
-        Long savedMemberId = memberRepository.save(member);
+        Long savedMemberId = memberRepository.save(member).getId();
         Room room = Room.builder().build();
         Long savedRoomId = roomRepository.save(room);
         ChattingMessageDto dto = new ChattingMessageDto(savedMemberId, savedRoomId, ChattingType.ENTER, "입장했습니다.");

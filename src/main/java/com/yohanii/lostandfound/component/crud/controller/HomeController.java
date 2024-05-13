@@ -22,7 +22,8 @@ public class HomeController {
             return "home";
         }
 
-        Member findMember = memberRepository.find(loginMember.getId());
+        Member findMember = memberRepository.findById(loginMember.getId())
+                .orElseThrow(() -> new IllegalStateException("해당하는 유저가 없습니다."));
         model.addAttribute("member", findMember);
 
         return "loginHome";

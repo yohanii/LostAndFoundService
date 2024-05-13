@@ -2,6 +2,7 @@ package com.yohanii.lostandfound.component.chatting.service;
 
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
+import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
@@ -25,8 +26,11 @@ public class RoomService {
 
     @Transactional
     public Long createRoom(RoomSaveRequestDto dto) {
+        Member findMember = memberRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 유저가 존재하지 않습니다."));
+
         Room saveRoom = Room.builder()
-                .member(memberRepository.find(dto.getMemberId()))
+                .member(findMember)
                 .partnerId(dto.getPartnerId())
                 .post(postRepository.findById(dto.getPostId()))
                 .storeRoomName(createStoreRoomName())
