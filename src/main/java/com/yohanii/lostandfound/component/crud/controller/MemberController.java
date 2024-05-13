@@ -5,53 +5,31 @@ import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.dto.image.ProfileImageSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.member.MemberSaveRequestDto;
 import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
+import com.yohanii.lostandfound.component.crud.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/members")
 public class MemberController {
 
-    private final MemberRepository memberRepository;
-    private final ImageStoreService imageStoreService;
+    private final MemberService memberService;
 
-    @GetMapping("/add-form")
-    public String addForm(@ModelAttribute MemberSaveRequestDto dto) {
-        return "members/addMemberForm";
-    }
+    @PostMapping("/members")
+    public ResponseEntity<Long> save(@RequestPart MemberSaveRequestDto dto, @RequestPart(required = false) MultipartFile file) {
 
-    @PostMapping
-    @Transactional
-    public String save(@Validated @ModelAttribute MemberSaveRequestDto dto, BindingResult bindingResult) {
+        Long savedMemberId = memberService.saveMember(dto, file);
 
-        Optional<Member> findMember = memberRepository.findByNickName(dto.getNickName());
-        if (findMember.isPresent()) {
-            bindingResult.reject("errorCode입니다", "닉네임 중복입니다.");
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "members/addMemberForm";
-        }
-
-        Long savedMemberId = memberRepository.save(dto.toEntity());
-        Member savedMember = memberRepository.find(savedMemberId);
-
-        if (!dto.getProfileImage().isEmpty()) {
-            imageStoreService.saveImage(new ProfileImageSaveDto(savedMember, dto.getProfileImage()));
-        }
-        log.info("Save Success!!!!!!!!!");
-        return "redirect:/";
+        return ResponseEntity.ok(savedMemberId);
     }
 }

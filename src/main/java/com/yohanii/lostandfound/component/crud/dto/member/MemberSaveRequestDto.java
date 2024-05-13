@@ -3,6 +3,7 @@ package com.yohanii.lostandfound.component.crud.dto.member;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.MemberAuth;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberSaveRequestDto {
 
     @NotBlank
@@ -23,9 +25,6 @@ public class MemberSaveRequestDto {
     private String password;
     @NotBlank
     private String nickName;
-
-    private MultipartFile profileImage;
-
     public Member toEntity() {
         LocalDateTime now = LocalDateTime.now();
 
