@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class PostRepositoryTest {
+class PostRepositoryOldTest {
 
     @Autowired
-    PostRepository postRepository;
+    PostRepositoryOld postRepository;
     @Autowired
     MemberRepository memberRepository;
 

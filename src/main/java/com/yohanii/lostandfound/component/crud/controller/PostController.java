@@ -1,132 +1,118 @@
 package com.yohanii.lostandfound.component.crud.controller;
 
-import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
-import com.yohanii.lostandfound.component.crud.entity.Post;
-import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.entity.PostType;
 import com.yohanii.lostandfound.component.crud.dto.image.ItemImagesSaveDto;
-import com.yohanii.lostandfound.component.crud.dto.post.PostEditRequestDto;
-import com.yohanii.lostandfound.component.crud.dto.post.PostSaveRequestDto;
-import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
+import com.yohanii.lostandfound.component.crud.dto.post.*;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
+import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
+import com.yohanii.lostandfound.component.crud.repository.PostRepositoryOld;
 import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
+import com.yohanii.lostandfound.component.crud.service.PostService;
 import com.yohanii.lostandfound.component.notification.service.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class PostController {
-    private final PostRepository postRepository;
+
+    private final PostService postService;
+    private final PostRepositoryOld postRepository;
     private final ItemRepository itemRepository;
     private final ImageStoreService imageStoreService;
     private final NotificationService notificationService;
 
-//    @GetMapping("/posts")
-    public String posts(Model model) {
+    @GetMapping("/posts")
+    public ResponseEntity<PostsResponseDto> posts() {
 
-        List<Post> postList = postRepository.findAll();
+        List<Post> posts = postService.findPosts();
 
-        model.addAttribute("posts", postList);
+        List<PostResponseDto> postResponseDtos = posts.stream()
+                .map(PostResponseDto::new)
+                .toList();
+        PostsResponseDto postsResponseDto = new PostsResponseDto(postResponseDtos);
 
-        return "posts/posts";
+        return ResponseEntity.ok(postsResponseDto);
     }
 
-    @GetMapping("/posts-lost")
-    public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    @GetMapping("/posts/lost")
+    public ResponseEntity<PostsResponseDto> postsLost() {
 
-        List<Post> postList = postRepository.findLostPosts();
+        List<Post> posts = postService.findLostPosts();
 
-        model.addAttribute("posts", postList);
-        model.addAttribute("requestURI", request.getRequestURI());
+        List<PostResponseDto> postResponseDtos = posts.stream()
+                .map(PostResponseDto::new)
+                .toList();
+        PostsResponseDto postsResponseDto = new PostsResponseDto(postResponseDtos);
 
-        Member loginMember = (Member) model.getAttribute("member");
-        model.addAttribute("notifications", notificationService.findNotificationsById(loginMember.getId()));
-
-        return "posts/postsLost";
+        return ResponseEntity.ok(postsResponseDto);
     }
 
-    @GetMapping("/posts-found")
-    public String postsFound(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    @GetMapping("/posts/found")
+    public ResponseEntity<PostsResponseDto> postsFound() {
 
-        List<Post> postList = postRepository.findFoundPosts();
+        List<Post> posts = postService.findFoundPosts();
 
-        model.addAttribute("posts", postList);
-        model.addAttribute("requestURI", request.getRequestURI());
+        List<PostResponseDto> postResponseDtos = posts.stream()
+                .map(PostResponseDto::new)
+                .toList();
+        PostsResponseDto postsResponseDto = new PostsResponseDto(postResponseDtos);
 
-        return "posts/postsFound";
+        return ResponseEntity.ok(postsResponseDto);
     }
 
     @GetMapping("/posts/{postId}")
-    public String post(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public ResponseEntity<PostResponseDto> post(@PathVariable Long postId) {
 
         Post post = postRepository.findById(postId);
+        PostResponseDto postResponseDto = new PostResponseDto(post);
 
-        model.addAttribute("post", post);
-        model.addAttribute("redirectURL", redirectURL);
-
-        return "posts/post";
+        return ResponseEntity.ok(postResponseDto);
     }
 
-    @GetMapping("/posts/add-form")
-    public String postSaveForm(@ModelAttribute PostSaveRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
-
-        setDtoPostTypeByRedirectURL(dto, redirectURL);
-        model.addAttribute("redirectURL", redirectURL);
-        
-        return "posts/addPostForm";
-    }
+//    @GetMapping("/posts/add-form")
+//    public String postSaveForm(@ModelAttribute PostSaveRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+//
+//        setDtoPostTypeByRedirectURL(dto, redirectURL);
+//        model.addAttribute("redirectURL", redirectURL);
+//
+//        return "posts/addPostForm";
+//    }
 
     @PostMapping("/posts")
-    @Transactional
-    public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+    public ResponseEntity<Long> postSave(@RequestPart PostSaveRequestDto dto, @RequestPart(required = false) List<MultipartFile> files) {
 
-        if (bindingResult.hasErrors()) {
-            log.info("PostController.postSave bindingResult.hasErrors");
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                log.info(error.getDefaultMessage());
-            }
-            return "posts/addPostForm";
-        }
+        Long savedPostId = postService.savePost(dto, files);
 
-        Post savePost = dto.toPostEntity((Member) model.getAttribute("member"));
-        postRepository.save(savePost);
-        Long savedItemId = itemRepository.save(dto.toItemEntity(savePost));
-
-        if (!dto.getItemImages().isEmpty()) {
-            imageStoreService.saveImages(new ItemImagesSaveDto(itemRepository.find(savedItemId), dto.getItemImages()));
-        }
-
-        return "redirect:" + redirectURL;
+        return ResponseEntity.ok(savedPostId);
     }
 
-    @GetMapping("/posts/{postId}/edit-form")
-    public String postEditForm(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
-
-        Post findPost = postRepository.findById(postId);
-        dto.setTitle(findPost.getTitle());
-        dto.setContent(findPost.getContent());
-        dto.setType(findPost.getType());
-        dto.setItemName(findPost.getItem().getName());
-        dto.setItemPlace(findPost.getItem().getPlace());
-        dto.setItemCategory(findPost.getItem().getItemCategory());
-
-        model.addAttribute("post", findPost);
-        model.addAttribute("redirectURL", redirectURL);
-
-        return "posts/editPostForm";
-    }
+//    @GetMapping("/posts/{postId}/edit-form")
+//    public String postEditForm(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
+//
+//        Post findPost = postRepository.findById(postId);
+//        dto.setTitle(findPost.getTitle());
+//        dto.setContent(findPost.getContent());
+//        dto.setType(findPost.getType());
+//        dto.setItemName(findPost.getItem().getName());
+//        dto.setItemPlace(findPost.getItem().getPlace());
+//        dto.setItemCategory(findPost.getItem().getItemCategory());
+//
+//        model.addAttribute("post", findPost);
+//        model.addAttribute("redirectURL", redirectURL);
+//
+//        return "posts/editPostForm";
+//    }
 
     @PatchMapping("/posts/{postId}")
     @Transactional

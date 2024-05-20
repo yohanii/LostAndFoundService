@@ -1,11 +1,11 @@
 package com.yohanii.lostandfound.component.chatting.service;
 
+import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
-import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
+import com.yohanii.lostandfound.component.crud.repository.PostRepositoryOld;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
-    private final PostRepository postRepository;
+    private final PostRepositoryOld postRepository;
 
     @Transactional
     public Long createRoom(RoomSaveRequestDto dto) {

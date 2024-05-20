@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.component.crud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yohanii.lostandfound.component.crud.dto.post.PostEditRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -23,6 +24,7 @@ public class Item {
     @Column(name = "item_id")
     private Long id;
 
+    @JsonIgnore
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

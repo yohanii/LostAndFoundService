@@ -1,12 +1,12 @@
 package com.yohanii.lostandfound.component.chatting.controller;
 
+import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
+import com.yohanii.lostandfound.component.chatting.service.RoomService;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
-import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
-import com.yohanii.lostandfound.component.chatting.service.RoomService;
+import com.yohanii.lostandfound.component.crud.repository.PostRepositoryOld;
 import com.yohanii.lostandfound.component.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class ChattingController {
 
     private final RoomService roomService;
-    private final PostRepository postRepository;
+    private final PostRepositoryOld postRepository;
     private final RoomRepository roomRepository;
     private final NotificationService notificationService;
 

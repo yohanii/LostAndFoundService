@@ -6,7 +6,7 @@ import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
-import com.yohanii.lostandfound.component.crud.repository.PostRepository;
+import com.yohanii.lostandfound.component.crud.repository.PostRepositoryOld;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import java.util.List;
 public class AdminService {
 
     private final MemberRepository memberRepository;
-    private final PostRepository postRepository;
+    private final PostRepositoryOld postRepository;
     private final RoomRepository roomRepository;
 
     public List<Member> findAllMembers() {
@@ -44,7 +44,7 @@ public class AdminService {
             return;
         }
 
-        postRepository.deleteAll(postIds);
+//        postRepository.deleteAll(postIds);
     }
 
     public List<Room> findAllRooms() {

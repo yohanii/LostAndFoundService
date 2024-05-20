@@ -1,5 +1,6 @@
 package com.yohanii.lostandfound.component.crud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yohanii.lostandfound.component.crud.dto.profile.ProfileEditRequestDto;
 import com.yohanii.lostandfound.component.notification.entity.Notification;
 import jakarta.persistence.*;
@@ -17,6 +18,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    @JsonIgnore
     @Column(name = "member_name")
     private String name;
 
@@ -33,6 +35,8 @@ public class Member {
     private MemberAuth auth;
 
     private String loginId;
+
+    @JsonIgnore
     private String password;
     private String nickName;
     private LocalDateTime createdTime;
