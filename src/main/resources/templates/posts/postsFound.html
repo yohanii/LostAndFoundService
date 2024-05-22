@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/loginHeader :: loginHeader" />
+<head th:replace="~{fragments/loginHeader :: loginHeader}" />
 <body>
 
-<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
 <div class="container" style="max-width: 600px; margin-top: 10px;">
     <div class="py-5 text-center">
@@ -69,6 +69,8 @@
     </div>
 
 </div> <!-- /container -->
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

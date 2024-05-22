@@ -43,7 +43,7 @@ public class PostController {
         return "posts/posts";
     }
 
-    @GetMapping("/posts-lost")
+    @GetMapping("/posts/lost")
     public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         List<Post> postList = postRepository.findLostPosts();
@@ -52,18 +52,27 @@ public class PostController {
         model.addAttribute("requestURI", request.getRequestURI());
 
         Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
+            return "posts/unLoginPostsLost";
+        }
+
         model.addAttribute("notifications", notificationService.findNotificationsById(loginMember.getId()));
 
         return "posts/postsLost";
     }
 
-    @GetMapping("/posts-found")
+    @GetMapping("/posts/found")
     public String postsFound(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         List<Post> postList = postRepository.findFoundPosts();
 
         model.addAttribute("posts", postList);
         model.addAttribute("requestURI", request.getRequestURI());
+
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
+            return "posts/unLoginPostsFound";
+        }
 
         return "posts/postsFound";
     }

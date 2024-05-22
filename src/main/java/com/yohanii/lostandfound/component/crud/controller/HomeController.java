@@ -19,12 +19,12 @@ public class HomeController {
 
         Member loginMember = (Member) model.getAttribute("member");
         if (loginMember == null) {
-            return "home";
+            return "posts/unLoginPosts";
         }
 
         Member findMember = memberRepository.find(loginMember.getId());
         model.addAttribute("member", findMember);
 
-        return "loginHome";
+        return "posts/posts";
     }
 }

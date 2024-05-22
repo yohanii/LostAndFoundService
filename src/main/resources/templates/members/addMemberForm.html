@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
-<head th:replace="fragments/imageJSScript :: imageJSScript">
+<head th:replace="~{fragments/header :: header}" />
+<head th:replace="~{fragments/imageJSScript :: imageJSScript}">
 <body>
 
-<div th:replace="fragments/unLoginBodyHeader :: unLoginBodyHeader"/>
+<div th:replace="~{fragments/unLoginBodyHeader :: unLoginBodyHeader}"/>
 
 <div class="container">
   <div class="py-5 text-center">
@@ -61,5 +61,8 @@
     </div>
   </form>
 </div> <!-- /container -->
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
 </body>
 </html>

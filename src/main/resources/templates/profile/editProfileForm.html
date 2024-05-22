@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/loginHeader :: loginHeader" />
-<head th:replace="fragments/imageJSScript :: imageJSScript">
+<head th:replace="~{fragments/loginHeader :: loginHeader}" />
+<head th:replace="~{fragments/imageJSScript :: imageJSScript">
 <body>
 
-<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
 <div class="container">
 
@@ -51,6 +51,8 @@
         </div>
     </form>
 </div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

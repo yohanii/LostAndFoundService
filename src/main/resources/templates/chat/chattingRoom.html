@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
-<script th:replace="fragments/chattingJSScript :: chattingJSScript" />
+<head th:replace="~{fragments/header :: header}" />
+<script th:replace="~{fragments/chattingJSScript :: chattingJSScript}" />
 <body>
 
-<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
 <div class="container">
 
@@ -25,6 +25,8 @@
 
     <button id="quitButton" class="w-100 btn btn-secondary" type="button" value="방나가기" onclick="quit()">방 나가기</button>
 </div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>
