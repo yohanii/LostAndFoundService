@@ -1,9 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div class="header" th:fragment="unLoginBodyHeader">
-<nav class="navbar navbar-light" style="background-color: #FFFFFF">
-    <a class="navbar-brand fw-bold" href="#" style="padding: 10px; padding-left: 20px;">
-        LAF
-    </a>
-</nav>
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top" aria-label="Second navbar example">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-padding" href="/">찾아줘요</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item nav-item-padding">
+                        <a class="nav-link active" aria-current="page" th:href="@{/posts/found}">주인 찾아요</a>
+                    </li>
+                    <li class="nav-item nav-item-padding">
+                        <a class="nav-link active" aria-current="page" th:href="@{/posts/lost}">물건 찾아요</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 </div>

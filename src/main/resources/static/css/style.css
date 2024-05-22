@@ -1,7 +1,15 @@
+body {
+    padding-top: 4.5rem;
+}
 footer {
     padding-top: 3rem;
     padding-bottom: 3rem;
 }
+a {
+    text-decoration:none;
+    color: black;
+}
+
 
 /*.container {*/
 /*    max-width: 560px;*/
@@ -85,4 +93,10 @@ footer {
 
 .bd-mode-toggle .dropdown-menu .active .bi {
     display: block !important;
+}
+.navbar-brand-padding {
+    padding-right: 4rem;
+}
+.nav-item-padding {
+    padding-right: 2rem;
 }
