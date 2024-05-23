@@ -177,7 +177,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/my-posts")
-    public String MyPosts(Model model, HttpServletRequest request) {
+    public String MyPosts(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         Member loginMember = (Member) model.getAttribute("member");
         if (loginMember == null) {
@@ -188,7 +188,7 @@ public class PostController {
         model.addAttribute("posts", myPosts);
         model.addAttribute("requestURI", request.getRequestURI());
 
-        return "posts/posts";
+        return "posts/myPosts";
     }
 
     private static void setDtoPostTypeByRedirectURL(PostSaveRequestDto dto, String redirectURL) {

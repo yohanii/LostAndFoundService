@@ -20,7 +20,7 @@
         </section>
 
         <section id="article-profile" class="py-1">
-            <div class="card border-0 shadow rounded-3 overflow-hidden">
+            <div class="card border-0 shadow rounded-3">
                 <div class="card-body p-0">
                     <div class="row gx-0">
                         <div class="py-lg-1">
@@ -40,7 +40,7 @@
                                 </a>
 
                                 <div class="dropdown col" th:align="right">
-                                    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-outline-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
                                         </svg>
@@ -50,7 +50,7 @@
                                             <form class="dropdown-item" id="delete_form" th:if="${member.name.equals(post.member.name)}"
                                                   th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">
                                                 <input type="hidden" name="_method" value="delete"/>
-                                                <a href="javascript:{}" onclick="document.getElementById('delete_form').submit();">로그아웃</a>
+                                                <a class="text-danger" href="javascript:{}" onclick="document.getElementById('delete_form').submit();">삭제</a>
                                             </form>
                                         </li>
                                     </ul>

@@ -305,3 +305,11 @@ a {
 .overflow-hidden {
     overflow: hidden !important;
 }
+
+.addform-item {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.addform-item-label {
+    margin-bottom: 0.5rem;
+}
