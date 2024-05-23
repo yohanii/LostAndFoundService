@@ -5,43 +5,108 @@
 
 <div th:replace="~{fragments/unLoginBodyHeader :: unLoginBodyHeader}"/>
 
-<div class="container">
-    <div class="py-5 text-center">
-        <h2>로그인</h2>
+<main>
+<!--    <div class="py-5 text-center">-->
+<!--        <h2>로그인</h2>-->
+<!--    </div>-->
+
+    <section class="pt-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">찾아줘요</h1>
+<!--                <p class="lead text-body-secondary">잃어버린 물건이나 습득한 물건을 등록해보세요!</p>-->
+                <!--                <p>-->
+                <!--                    <a href="#" class="btn btn-primary my-2">Main call to action</a>-->
+                <!--                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
+                <!--                </p>-->
+            </div>
+        </div>
+    </section>
+
+    <div class="py-2">
+        <div class="container border rounded w-50">
+            <div class="row">
+                <div class="login d-flex justify-content-center py-lg-5">
+                    <div class="col-sm-12 col-md-10 col-md-offset-1">
+                        <form action="" id="loginForm" th:action th:object="${loginForm}" method="post">
+                            <div th:if="${#fields.hasGlobalErrors()}">
+                                <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                                   th:text="${err}">전체 오류 메시지</p>
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                    </svg>
+                                </span>
+                                <input class="form-control" type="text" placeholder="아이디" id="loginId" th:field="*{loginId}" th:errorclass="field-error"/>
+
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                      <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                                    </svg>
+                                </span>
+                                <input class="form-control" type="password" id="password" th:field="*{password}" placeholder="비밀번호" th:errorclass="field-error"/>
+
+                            </div>
+                            <div class="field-error" th:errors="*{loginId}"/>
+                            <div class="field-error" th:errors="*{password}" />
+                            <div class="form-group text-center py-4 w-100">
+                                <button type="submit" class="btn btn-success w-100 p-3 fw-bold">로그인</button>
+                            </div>
+                            <div class="form-group text-center">
+                                <a href="#">비밀번호 찾기</a>&nbsp;|&nbsp;<a href="#">회원가입</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <form action="item.html" th:action th:object="${loginForm}" method="post">
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
-               th:text="${err}">전체 오류 메시지</p>
-        </div>
-        <div>
-            <label for="loginId">로그인 ID</label>
-            <input type="text" id="loginId" th:field="*{loginId}" class="formcontrol"
-                   th:errorclass="field-error">
-            <div class="field-error" th:errors="*{loginId}" />
-        </div>
-        <div>
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" th:field="*{password}"
-                   class="form-control"
-                   th:errorclass="field-error">
-            <div class="field-error" th:errors="*{password}" />
-        </div>
-        <hr class="my-4">
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">
-                    로그인</button>
-            </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/}'|"
-                        type="button">취소</button>
-            </div>
-        </div>
-    </form>
-</div> <!-- /container -->
+
+<!--    <div class="py-2">-->
+<!--        <div class="container">-->
+
+<!--            <form th:action th:object="${loginForm}" method="post" class="col-5">-->
+<!--                <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--                    <p class="field-error" th:each="err : ${#fields.globalErrors()}"-->
+<!--                       th:text="${err}">전체 오류 메시지</p>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--&lt;!&ndash;                    <label for="loginId">로그인 ID</label>&ndash;&gt;-->
+<!--                    <input type="text" id="loginId" th:field="*{loginId}" class="form-control"-->
+<!--                           th:errorclass="field-error">-->
+<!--                    <div class="field-error" th:errors="*{loginId}" />-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--&lt;!&ndash;                    <label for="password">비밀번호</label>&ndash;&gt;-->
+<!--                    <input type="password" id="password" th:field="*{password}"-->
+<!--                           class="form-control"-->
+<!--                           th:errorclass="field-error">-->
+<!--                    <div class="field-error" th:errors="*{password}" />-->
+<!--                </div>-->
+
+<!--                <div class="row">-->
+<!--                    <div class="col">-->
+<!--                        <button class="w-100 btn btn-primary btn-lg" type="submit">-->
+<!--                            로그인</button>-->
+<!--                    </div>-->
+<!--                    <div class="col">-->
+<!--                        <button class="w-100 btn btn-secondary btn-lg"-->
+<!--                                onclick="location.href='items.html'"-->
+<!--                                th:onclick="|location.href='@{/}'|"-->
+<!--                                type="button">취소</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+
+<!--        </div>-->
+<!--    </div>-->
+
+
+</main> <!-- /container -->
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 

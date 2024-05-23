@@ -5,71 +5,184 @@
 
 <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
-<div class="container" style="max-width: 600px">
+<main>
 
-    <div class="py-5 text-center">
-        <h2 th:text="'검색 목록'">검색 목록</h2>
-    </div>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">찾아줘요</h1>
+                <p class="lead text-body-secondary">잃어버린 물건이나 습득한 물건을 등록해보세요!</p>
+                <!--                <p>-->
+                <!--                    <a href="#" class="btn btn-primary my-2">Main call to action</a>-->
+                <!--                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
+                <!--                </p>-->
+            </div>
+        </div>
+    </section>
+    <div class="album py-2 bg-body-tertiary">
+        <div class="container">
 
-    <div class="row">
-        <div class="col">
-            <button class="btn btn-primary float-end"
-                    onclick="location.href='addForm.html'"
-                    th:onclick="|location.href='@{/posts/add-form}'|"
-                    type="button" th:text="'게시글 생성'">게시글 생성</button>
+            <div class="row p-4">
+                <form class="col-sm-10" th:action="|/posts/search|" th:object="${postSearchRequestDto}" method="post">
+                    <div class="row">
+                        <div class="col-8 container-fluid row">
+                            <label for="search-input"></label>
+                            <input type="text" id="search-input" th:field="*{content}"
+                                   class="form-control" placeholder="검색어를 입력하세요">
+                        </div>
+                        <div class="col align-self-center">
+                            <select th:field="*{type}" class="form-select">
+                                <option value="">타입</option>
+                                <option th:each="type : ${T(com.yohanii.lostandfound.component.crud.entity.PostType).values()}" th:value="${type}"
+                                        th:text="${type.name}">FOUND</option>
+                            </select>
+                        </div>
+                        <div class="col align-self-center">
+                            <button class="btn btn-secondary"
+                                    onclick="location.href='addForm.html'"
+                                    th:onclick="|location.href='@{/posts/add-form?redirectURL={uri}(uri=${requestURI})}'|"
+                                    type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="col-sm-2">
+                    <button class="btn btn-secondary float-end"
+                            onclick="location.href='addForm.html'"
+                            th:onclick="|location.href='@{/posts/add-form?redirectURL={uri}(uri=${requestURI})}'|"
+                            type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                        게시글 생성</button>
+                </div>
+
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-body-secondary">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-body-secondary">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-body-secondary">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-body-secondary">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-body-secondary">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <div class="card-body">
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-body-secondary">9 mins</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <hr class="my-4">
 
-    <div>
-        <form th:action="|/posts/search|" th:object="${postSearchRequestDto}" method="post">
-            <div class="row">
-                <div class="col-8 container-fluid row">
-                    <label for="search-input"></label>
-                    <input type="text" id="search-input" th:field="*{content}"
-                           class="form-control" placeholder="검색어를 입력하세요">
-                </div>
-                <div class="col align-self-center">
-                    <select th:field="*{type}" class="form-select">
-                        <option value="">타입</option>
-                        <option th:each="type : ${T(com.yohanii.lostandfound.component.crud.entity.PostType).values()}" th:value="${type}"
-                                th:text="${type.name}">FOUND</option>
-                    </select>
-                </div>
-                <div class="col align-self-center">
-                    <button class="btn btn-primary"
-                            onclick="location.href='addForm.html'"
-                            th:onclick="|location.href='@{/posts/add-form?redirectURL={uri}(uri=${requestURI})}'|"
-                            type="submit" th:text="'검색'">검색</button>
-                </div>
-            </div>
-        </form>
-    </div>
+    <!--    <div>-->
+    <!--        <table class="table">-->
+    <!--            <thead>-->
+    <!--            <tr>-->
+    <!--                <th th:text="'게시글타입'">게시글타입</th>-->
+    <!--                <th th:text="'게시글제목'">게시글제목</th>-->
+    <!--                <th th:text="'작성자'">작성자</th>-->
+    <!--                <th th:text="'작성날짜'">작성날짜</th>-->
+    <!--            </tr>-->
+    <!--            </thead>-->
+    <!--            <tbody>-->
+    <!--            <tr th:each="post : ${posts}">-->
+    <!--                <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.type}">게시글타입</a></td>-->
+    <!--                <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.title}">게시글제목</a></td>-->
+    <!--                <td><a th:href="@{|/profiles/${post.member.nickName}?redirectURL=${requestURI}|}" th:text="${post.member.nickName}">작성자</a></td>-->
+    <!--                <td th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">작성날짜</td>-->
+    <!--            </tr>-->
+    <!--            </tbody>-->
+    <!--        </table>-->
+    <!--    </div>-->
 
-    <hr class="my-4">
-    <div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th th:text="'게시글타입'">게시글타입</th>
-                <th th:text="'게시글제목'">게시글제목</th>
-                <th th:text="'작성자'">작성자</th>
-                <th th:text="'작성날짜'">작성날짜</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="post : ${posts}">
-                <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.type}">게시글타입</a></td>
-                <td><a href="post.html" th:href="@{|/posts/${post.id}?redirectURL=${requestURI}|}" th:text="${post.title}">게시글제목</a></td>
-                <td><a th:href="@{|/profiles/${post.member.nickName}?redirectURL=${requestURI}|}" th:text="${post.member.nickName}">작성자</a></td>
-                <td th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">작성날짜</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-</div> <!-- /container -->
+</main> <!-- /container -->
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 

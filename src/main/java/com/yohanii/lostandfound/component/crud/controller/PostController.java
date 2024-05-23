@@ -168,6 +168,11 @@ public class PostController {
         List<Post> searchPosts = postRepository.findAll(dto);
         model.addAttribute("posts", searchPosts);
 
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
+            return "posts/unLoginPostsSearch";
+        }
+
         return "posts/postsSearch";
     }
 
