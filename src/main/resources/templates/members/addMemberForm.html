@@ -2,65 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/header :: header}" />
 <head th:replace="~{fragments/imageJSScript :: imageJSScript}">
-<body>
+<body class="d-flex flex-column h-100">
 
 <div th:replace="~{fragments/unLoginBodyHeader :: unLoginBodyHeader}"/>
 
-<div class="container">
-  <div class="py-5 text-center">
-    <h2>회원 가입</h2>
+<main>
+
+  <section class="pt-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">회원가입</h1>
+      </div>
+    </div>
+  </section>
+
+  <div class="py-2 pb-5">
+    <div class="container border rounded w-50 pb-4">
+      <div class="row">
+        <div class="login d-flex justify-content-center py-lg-3">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <form action="" th:action="@{/members}" th:object="${memberSaveRequestDto}" method="post" enctype="multipart/form-data">
+              <div class="addform-item">
+                <label for="loginId" class="row addform-item-label" style="padding-left : 15px">아이디</label>
+                <input type="text" id="loginId" th:field="*{loginId}" class="form-control"
+                       th:errorclass="field-error">
+                <div class="field-error" th:errors="*{loginId}" />
+              </div>
+              <div class="addform-item">
+                <label for="password" class="row addform-item-label" style="padding-left : 15px">비밀번호</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control"
+                       th:errorclass="field-error">
+                <div class="field-error" th:errors="*{password}" />
+              </div>
+              <div class="addform-item">
+                <label for="name" class="row addform-item-label" style="padding-left : 15px">이름</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control"
+                       th:errorclass="field-error">
+                <div class="field-error" th:errors="*{name}" />
+              </div>
+              <div class="addform-item">
+                <label for="nickName" class="row addform-item-label" style="padding-left : 15px">닉네임</label>
+                <input type="text" id="nickName" th:field="*{nickName}" class="form-control"
+                       th:errorclass="field-error">
+                <div class="field-error" th:errors="*{nickName}" />
+                <div th:if="${#fields.hasGlobalErrors()}">
+                  <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                     th:text="${err}">글로벌 오류 메시지</p> </div>
+              </div>
+              <div class="addform-item">
+                <label for="profileImage" class="row addform-item-label" style="padding-left : 15px">프로필 이미지</label>
+                <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
+              </div>
+              <div class="pb-2">
+                <img id="preview" class="img-fluid rounded w-100"/>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <button class="w-100 btn btn-success btn-lg fw-bold" type="submit">회원 가입</button>
+                </div>
+<!--                <div class="col">-->
+<!--                  <button class="w-100 btn btn-secondary btn-lg"-->
+<!--                          onclick="location.href='/'"-->
+<!--                          th:onclick="|location.href='@{/}'|"-->
+<!--                          type="button">취소</button>-->
+<!--                </div>-->
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <h4 class="mb-3">회원 정보 입력</h4>
-  <form action="" th:action="@{/members}" th:object="${memberSaveRequestDto}" method="post" enctype="multipart/form-data">
-    <div>
-      <label for="loginId" class="row" style="padding-left : 15px">로그인 ID</label>
-      <input type="text" id="loginId" th:field="*{loginId}" class="form-control"
-             th:errorclass="field-error">
-      <div class="field-error" th:errors="*{loginId}" />
-    </div>
-    <div>
-      <label for="password" class="row" style="padding-left : 15px">비밀번호</label>
-      <input type="password" id="password" th:field="*{password}" class="form-control"
-             th:errorclass="field-error">
-      <div class="field-error" th:errors="*{password}" />
-    </div>
-    <div>
-      <label for="name" class="row" style="padding-left : 15px">이름</label>
-      <input type="text" id="name" th:field="*{name}" class="form-control"
-             th:errorclass="field-error">
-      <div class="field-error" th:errors="*{name}" />
-    </div>
-    <div>
-      <label for="nickName" class="row" style="padding-left : 15px">닉네임</label>
-      <input type="text" id="nickName" th:field="*{nickName}" class="form-control"
-             th:errorclass="field-error">
-      <div class="field-error" th:errors="*{nickName}" />
-      <div th:if="${#fields.hasGlobalErrors()}">
-        <p class="field-error" th:each="err : ${#fields.globalErrors()}"
-           th:text="${err}">글로벌 오류 메시지</p> </div>
-    </div>
-    <div>
-      <label for="profileImage" class="row" style="padding-left : 15px">프로필 이미지</label>
-      <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
-    </div>
-    <div>
-      <img id="preview" />
-    </div>
-    <hr class="my-4">
-    <div class="row">
-      <div class="col">
-        <button class="w-100 btn btn-primary btn-lg" type="submit">회원
-          가입</button>
-      </div>
-      <div class="col">
-        <button class="w-100 btn btn-secondary btn-lg"
-                onclick="location.href='/'"
-                th:onclick="|location.href='@{/}'|"
-                type="button">취소</button>
-      </div>
-    </div>
-  </form>
-</div> <!-- /container -->
+</main>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
