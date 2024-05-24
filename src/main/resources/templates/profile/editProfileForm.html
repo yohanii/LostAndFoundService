@@ -6,51 +6,66 @@
 
 <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
-<div class="container">
-
-    <form action="post.html" th:action="@{/profiles/{nickName}?redirectURL={url}(nickName=${profileEditRequestDto.nickName}, url=${redirectURL})}" th:object="${profileEditRequestDto}" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_method" value="patch"/>
-
+<main>
+    <div class="container w-50">
         <div class="py-5 text-center">
-            <h2 th:text="'프로필 수정'">프로필 수정</h2>
+            <section class="pt-5 text-center container">
+                <div class="row py-lg-5">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <h1 class="fw-light">프로필</h1>
+                    </div>
+                </div>
+            </section>
 
-            <div style="padding: 20px; max-width: 600px; margin: 0 auto;">
-                <div>
-                    <label for="name" th:text="'이름'">이름</label>
-                    <input type="text" id="name" name="name" class="form-control" value="" th:value="*{name}">
-                </div>
+            <section id="profile" class="py-1">
+                <div class="card border-0 shadow rounded-3 overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="row gx-0">
+                            <div class="py-lg-2">
+                                <div class="p-3 p-md-5">
+                                    <form action="post.html" th:action="@{/profiles/{nickName}?redirectURL={url}(nickName=${profileEditRequestDto.nickName}, url=${redirectURL})}" th:object="${profileEditRequestDto}" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="_method" value="patch"/>
 
-                <div>
-                    <label for="nickName" th:text="'닉네임'">닉네임</label>
-                    <input type="text" id="nickName" name="nickName" class="form-control" value="" th:value="*{nickName}">
-                    <div th:if="${#fields.hasGlobalErrors()}">
-                        <p class="field-error" th:each="err : ${#fields.globalErrors()}"
-                           th:text="${err}">글로벌 오류 메시지</p> </div>
-                </div>
+                                        <div class="py-1">
+                                            <!--                    <img id="preview" th:src="|/images/${member.profileImage.getStoreFileName()}|" class="img-thumbnail" style="width: 300px; height: 300px" />-->
+                                            <img id="preview" th:src="'/profiles/images/default.png'" class="img-fluid img-thumbnail" style="width: 150px; height: 150px"/>
+                                        </div>
 
-                <div>
-                    <label for="profileImage" th:text="'프로필 이미지'">프로필 이미지</label>
-                    <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
+                                        <div class="py-2">
+                                            <label class="py-3" for="profileImage" th:text="'프로필 이미지'">프로필 이미지</label>
+                                            <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
+                                        </div>
+
+                                        <div class="py-3">
+                                            <label class="py-3" for="nickName" th:text="'닉네임'">닉네임</label>
+                                            <input type="text" id="nickName" name="nickName" class="form-control" value="" th:value="*{nickName}">
+                                            <div th:if="${#fields.hasGlobalErrors()}">
+                                                <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                                                   th:text="${err}">글로벌 오류 메시지</p> </div>
+                                        </div>
+
+                                        <div class="row py-3">
+                                            <div class="col">
+                                                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="'저장'">저장</button>
+                                            </div>
+                                            <div class="col">
+                                                <button class="w-100 btn btn-secondary btn-lg"
+                                                        onclick="location.href='profile.html'"
+                                                        th:onclick="|location.href='@{/profiles/{url}?redirectURL={redirectURL}(url=${profileEditRequestDto.nickName}, redirectURL=${redirectURL})}'|"
+                                                        type="button" th:text="'취소'">취소</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <img id="preview" th:src="|/images/${member.profileImage.getStoreFileName()}|" class="img-thumbnail" style="width: 300px; height: 300px" />
-                </div>
-            </div>
+            </section>
+
         </div>
-
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="'저장'">저장</button>
-            </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='profile.html'"
-                        th:onclick="|location.href='@{/profiles/{url}?redirectURL={redirectURL}(url=${profileEditRequestDto.nickName}, redirectURL=${redirectURL})}'|"
-                        type="button" th:text="'취소'">취소</button>
-            </div>
-        </div>
-    </form>
-</div>
+    </div>
+</main>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
