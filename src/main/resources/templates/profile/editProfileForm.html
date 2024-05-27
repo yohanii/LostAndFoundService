@@ -26,14 +26,11 @@
                                     <form action="post.html" th:action="@{/profiles/{nickName}?redirectURL={url}(nickName=${profileEditRequestDto.nickName}, url=${redirectURL})}" th:object="${profileEditRequestDto}" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="_method" value="patch"/>
 
-                                        <div class="py-1">
-                                            <!--                    <img id="preview" th:src="|/images/${member.profileImage.getStoreFileName()}|" class="img-thumbnail" style="width: 300px; height: 300px" />-->
-                                            <img id="preview" th:src="'/profiles/images/default.png'" class="img-fluid img-thumbnail" style="width: 150px; height: 150px"/>
-                                        </div>
+                                        <img id="preview" th:if="${member.profileImage}" th:src="|/images/${member.profileImage.getStoreFileName()}|" class="img-fluid img-thumbnail" style="width: 300px; height: 300px"/>
 
                                         <div class="py-2">
                                             <label class="py-3" for="profileImage" th:text="'프로필 이미지'">프로필 이미지</label>
-                                            <input type="file" id="profileImage" th:field="*{profileImage}" class="form-control" onchange="readURL(this);">
+                                            <input type="file" id="profileImage" th:field="${member.profileImage}" class="form-control" onchange="readURL(this);">
                                         </div>
 
                                         <div class="py-3">

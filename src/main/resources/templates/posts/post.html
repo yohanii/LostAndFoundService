@@ -1,6 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/loginHeader :: loginHeader}" />
+<script>
+    window.onload=function(){
+        var item = document.getElementsByClassName('carousel-item');
+        item[0].className += ' active';
+    };
+
+</script>
 <body>
 
 <div th:replace="~{fragments/loginBodyHeader :: loginBodyHeader}"/>
@@ -11,15 +18,36 @@
 
         <section id="article-images">
             <div id="images">
-                <div class="text-center">
-                    <div th:if="${post.item.images} != null and !${post.item.images.isEmpty()}">
-                        <th:block id="itemImages" th:each="image : *{post.item.images}">
-                            <img class="img-fluid rounded-2" style="width: 500px; height: 500px" th:src="|/images/${image.getStoreFileName()}|"/>
-                        </th:block>
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-indicators">
+                        <div th:if="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                            <th:block th:each="image, imageStat: *{post.item.images}">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${imageStat.index}" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            </th:block>
+                        </div>
                     </div>
-                    <div th:unless="${post.item.images} != null and !${post.item.images.isEmpty()}">
-                        <img class="img-fluid rounded-2" style="width: 500px; height: 500px" th:src="@{/img/default.png}"/>
+                    <div class="carousel-inner">
+                        <div th:if="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                            <th:block th:each="image: *{post.item.images}">
+                                <div class="carousel-item">
+                                    <img src="..." class="d-block w-100" style="width: 500px; height: 500px" alt="..." th:src="|/images/${image.getStoreFileName()}|">
+                                </div>
+                            </th:block>
+                        </div>
+                        <div th:unless="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                            <div class="carousel-item">
+                                <img src="..." class="d-block w-100" style="width: 500px; height: 500px" alt="..." th:src="@{/img/default.png}">
+                            </div>
+                        </div>
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
         </section>
