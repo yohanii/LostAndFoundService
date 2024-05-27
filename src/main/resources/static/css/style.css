@@ -653,3 +653,12 @@ a {
 #messageBox {
     overflow-y: auto;
 }
+#article-profile-left {
+     display: flex;
+     align-items: center;
+ }
+#article-profile-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

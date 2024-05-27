@@ -28,9 +28,9 @@
                                 <a id="article-profile-link" class="col">
                                     <div>
                                         <div class="row">
-                                            <div id="article-profile-image" class="col">
-                                                <!--                            <img alt="profile-image" th:src="|/images/${post.member.profileImage.getStoreFileName()}|">-->
-                                                <img alt="profile-image" th:src="|/images/default|">
+                                            <div id="article-profile-image" class="col col-4 text-center p-1">
+                                                <img class="img-thumbnail" th:if="${post.member.profileImage} != null" alt="profile-image" th:src="|/images/${post.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px">
+                                                <img class="img-thumbnail" th:unless="${post.member.profileImage} != null"alt="profile-image" th:src="|/images/default|" style="width: 60px; height: 60px">
                                             </div>
                                             <div id="article-profile-left" class="col">
                                                 <div id="nickname" th:text="${post.member.nickName}">nickname</div>
@@ -39,7 +39,7 @@
                                     </div>
                                 </a>
 
-                                <div class="dropdown col" th:align="right">
+                                <div id="article-profile-dropdown" class="dropdown col">
                                     <button class="btn btn-outline-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
