@@ -1,29 +1,107 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head th:replace="~{fragments/header :: header}" />
 <script th:replace="~{fragments/chattingJSScript :: chattingJSScript}" />
-<body>
+<body class="d-flex flex-column h-100">
 
 <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
-<div class="container">
+<!--<main>-->
+<!--    <div class="container w-100">-->
+<!--        <div class="py-5 text-center">-->
+<!--            <section class="pt-5 text-center container">-->
+<!--                <div class="row py-lg-5">-->
+<!--                    <div class="col-lg-6 col-md-8 mx-auto">-->
+<!--                        <h1 class="fw-light">채팅</h1>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </section>-->
 
-    <div class="py-5 text-center">
-        <h2 th:text="'채팅'">채팅</h2>
-    </div>
+<!--            <section id="article-profile" class="py-1">-->
+<!--                <div class="card border-0 shadow rounded-3">-->
+<!--                    <div class="card-body p-0">-->
+<!--                        <div class="row gx-0">-->
+<!--                            <div class="py-lg-1">-->
+<!--                                <div class="p-2 p-md-4 row">-->
 
-    <div id="messageBox" style="background-color: yellowgreen; height: 500px; width: 100%; overflow-y: auto" >
-        <div id="history" th:each="chat: ${room.chattings}">
-            <th:block th:text="|${chat.member.id}님 : ${chat.content}|" style="height: 50px"></th:block>
-        </div>
-        <div id="messages"></div>
-    </div>
+<!--                                    <div id="messageBox" style="background-color: lightgray; height: 500px; width: 100%; overflow-y: auto" >-->
+<!--                                        <div id="history" th:each="chat: ${room.chattings}" class="justify-content-start">-->
+<!--                                            <th:block th:text="|${chat.member.id}님 : ${chat.content}|" style="height: 50px"></th:block>-->
+<!--                                        </div>-->
+<!--                                        <div id="messages"></div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <input id="message" class="col" type="text" placeholder="보낼 메세지를 입력하세요." >-->
+<!--                                        <button id="sendButton" class="w-25 btn btn-primary" type="button" value="전송" onclick="sendMsg()">전송</button>-->
+<!--                                    </div>-->
+
+<!--                                    <button id="quitButton" class="w-100 btn btn-secondary" type="button" value="방나가기" onclick="quit()">방 나가기</button>-->
+
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </section>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+
+<div class="container chatContainer">
     <div class="row">
-        <input id="message" class="col" type="text" placeholder="보낼 메세지를 입력하세요." >
-        <button id="sendButton" class="w-25 btn btn-primary" type="button" value="전송" onclick="sendMsg()">전송</button>
-    </div>
+        <section class="chat">
+            <div class="header-chat">
+<!--                <i class="icon fa fa-user-o" aria-hidden="true"></i>-->
+                <p class="name px-3" th:text="${room.partnerId}">Megan Leib</p>
+<!--                <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>-->
+            </div>
+            <div class="messages-chat" id="messageBox">
+                <div class="message">
+                    <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
+                        <div class="online"></div>
+                    </div>
+                    <p class="text"> Hi, how are you ? </p>
+                </div>
+                <div class="message text-only">
+                    <p class="text"> What are you doing tonight ? Want to go take a drink ?</p>
+                </div>
+                <p class="time"> 14h58</p>
+                <div class="message text-only">
+                    <div class="response">
+                        <p class="text"> Hey Megan ! It's been a while 😃</p>
+                    </div>
+                </div>
+                <div class="message text-only">
+                    <div class="response">
+                        <p class="text"> When can we meet ?</p>
+                    </div>
+                </div>
+                <p class="response-time time"> 15h04</p>
+                <div class="message">
+                    <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
+                        <div class="online"></div>
+                    </div>
+                    <p class="text"> 9 pm at the bar if possible 😳</p>
+                </div>
+                <p class="time"> 15h09</p>
 
-    <button id="quitButton" class="w-100 btn btn-secondary" type="button" value="방나가기" onclick="quit()">방 나가기</button>
+                <div class="message text-only">
+                    <div class="response">
+                        <p class="text"> When can we meet ?</p>
+                    </div>
+                </div>
+                <div id="messages"></div>
+            </div>
+            <div class="footer-chat w-100">
+                <input id="message" class="write-message w-75" type="text" placeholder="보낼 메세지를 입력하세요." >
+                <button id="sendButton" class="btn btn-primary w-25" type="button" value="전송" onclick="sendMsg()">전송</button>
+            </div>
+
+
+
+        </section>
+    </div>
 </div>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>

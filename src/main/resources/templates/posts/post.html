@@ -13,7 +13,7 @@
             <div id="images">
                 <div class="text-center">
                     <th:block id="itemImages" th:each="image : *{post.item.images}">
-                        <img class="img-fluid rounded-2 mw-100 w-100" style="width: 300px; height: 300px" th:src="|/images/${image.getStoreFileName()}|"/>
+                        <img class="img-fluid rounded-2" style="width: 500px; height: 500px" th:src="|/images/${image.getStoreFileName()}|"/>
                     </th:block>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <form class="dropdown-item" id="delete_form" th:if="${member.name.equals(post.member.name)}"
+                                            <form class="dropdown-item" id="delete_form" th:if="${member.id.equals(post.member.id)}"
                                                   th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">
                                                 <input type="hidden" name="_method" value="delete"/>
                                                 <a class="text-danger" href="javascript:{}" onclick="document.getElementById('delete_form').submit();">삭제</a>
