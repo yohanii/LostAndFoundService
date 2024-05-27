@@ -113,7 +113,9 @@ public class PostController {
         postRepository.save(savePost);
         Long savedItemId = itemRepository.save(dto.toItemEntity(savePost));
 
-        if (!dto.getItemImages().isEmpty()) {
+        if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).getOriginalFilename().isBlank()) {
+            log.info("postSave.dto.getItemImages().size() = {}", dto.getItemImages().size());
+            log.info("postSave.dto.getItemImages().get(0).getOriginalFilename() = {}", dto.getItemImages().get(0).getOriginalFilename());
             imageStoreService.saveImages(new ItemImagesSaveDto(itemRepository.find(savedItemId), dto.getItemImages()));
         }
 

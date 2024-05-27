@@ -12,9 +12,14 @@
         <section id="article-images">
             <div id="images">
                 <div class="text-center">
-                    <th:block id="itemImages" th:each="image : *{post.item.images}">
-                        <img class="img-fluid rounded-2" style="width: 500px; height: 500px" th:src="|/images/${image.getStoreFileName()}|"/>
-                    </th:block>
+                    <div th:if="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                        <th:block id="itemImages" th:each="image : *{post.item.images}">
+                            <img class="img-fluid rounded-2" style="width: 500px; height: 500px" th:src="|/images/${image.getStoreFileName()}|"/>
+                        </th:block>
+                    </div>
+                    <div th:unless="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                        <img class="img-fluid rounded-2" style="width: 500px; height: 500px" th:src="@{/img/default.png}"/>
+                    </div>
                 </div>
             </div>
         </section>
@@ -30,7 +35,7 @@
                                         <div class="row">
                                             <div id="article-profile-image" class="col col-4 text-center p-1">
                                                 <img class="img-thumbnail" th:if="${post.member.profileImage} != null" alt="profile-image" th:src="|/images/${post.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px">
-                                                <img class="img-thumbnail" th:unless="${post.member.profileImage} != null"alt="profile-image" th:src="|/images/default|" style="width: 60px; height: 60px">
+                                                <img class="img-thumbnail" th:unless="${post.member.profileImage} != null"alt="profile-image" th:src="@{/img/default.png}" style="width: 60px; height: 60px">
                                             </div>
                                             <div id="article-profile-left" class="col">
                                                 <div id="nickname" th:text="${post.member.nickName}">nickname</div>
