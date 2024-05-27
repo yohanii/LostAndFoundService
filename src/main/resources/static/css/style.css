@@ -524,6 +524,8 @@ a {
 
 .chat .messages-chat {
     padding: 25px 35px;
+    height: 510px;
+    overflow-y: auto;
 }
 
 .chat .messages-chat .message {
@@ -619,7 +621,7 @@ a {
 }
 
 .write-message {
-    border:none !important;
+    /*border:none !important;*/
     width:60%;
     height: 50px;
     margin-left: 20px;

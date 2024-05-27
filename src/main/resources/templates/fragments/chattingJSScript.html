@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<script type="text/javascript" th:fragment="chattingJSScript">
+<script type="text/javascript" th:fragment="chattingJSScript" th:inline="javascript">
 
     function enterRoom(socket){
         var enterMsg={"type" : "ENTER","roomId":[[${room.id}]],"memberId":[[${member.id}]],"content":""};
@@ -23,17 +23,28 @@
     //메세지 수신했을 때 이벤트.
     socket.onmessage = function (e) {
         console.log(e.data);
+
+        const obj = JSON.parse(e.data);
+        if (obj.type === "ENTER" || obj.type === "QUIT") {
+            return;
+        }
+
         let messageBox = document.querySelector('#messageBox');
         let messages = document.querySelector('#messages');
+
 
         let container1 = document.createElement('div');
         let container2 = document.createElement('div');
         let newMsg = document.createElement('div');
 
         container1.classList.add('message', 'text-only');
-        container2.classList.add('response');
+
+        if (obj.memberId === [[${member.id}]]) {
+            container2.classList.add('response');
+        }
+
         newMsg.classList.add('text');
-        newMsg.innerText=e.data;
+        newMsg.innerText=obj.content;
 
         container2.append(newMsg);
         container1.append(container2);

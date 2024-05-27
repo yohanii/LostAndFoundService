@@ -2,6 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" class="h-100">
 <head th:replace="~{fragments/header :: header}" />
 <script th:replace="~{fragments/chattingJSScript :: chattingJSScript}" />
+<script type="text/javascript">
+    window.onload=function(){
+        let mySpace = document.getElementById("messageBox");
+        mySpace.scrollTop = mySpace.scrollHeight;
+    };
+</script>
 <body class="d-flex flex-column h-100">
 
 <div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
@@ -57,45 +63,37 @@
 <!--                <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>-->
             </div>
             <div class="messages-chat" id="messageBox">
-                <div class="message">
-                    <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
-                        <div class="online"></div>
-                    </div>
-                    <p class="text"> Hi, how are you ? </p>
-                </div>
-                <div class="message text-only">
-                    <p class="text"> What are you doing tonight ? Want to go take a drink ?</p>
-                </div>
-                <p class="time"> 14h58</p>
-                <div class="message text-only">
-                    <div class="response">
-                        <p class="text"> Hey Megan ! It's been a while 😃</p>
-                    </div>
-                </div>
-                <div class="message text-only">
-                    <div class="response">
-                        <p class="text"> When can we meet ?</p>
-                    </div>
-                </div>
-                <p class="response-time time"> 15h04</p>
-                <div class="message">
-                    <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">
-                        <div class="online"></div>
-                    </div>
-                    <p class="text"> 9 pm at the bar if possible 😳</p>
-                </div>
-                <p class="time"> 15h09</p>
+<!--                <p class="response-time time"> 15h04</p>-->
+<!--                <div class="message">-->
+<!--                    <div class="photo" style="background-image: url(https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);">-->
+<!--                        <div class="online"></div>-->
+<!--                    </div>-->
+<!--                    <p class="text"> 9 pm at the bar if possible 😳</p>-->
+<!--                </div>-->
+<!--                <p class="time"> 15h09</p>-->
 
-                <div class="message text-only">
-                    <div class="response">
-                        <p class="text"> When can we meet ?</p>
-                    </div>
+                <div id="history" th:each="chat: ${room.chattings}">
+                    <th:block>
+                        <div class="message text-only">
+                            <div th:if="${chat.member.id} != ${member.id}">
+                                <p class="text" th:text="${chat.content}">message</p>
+<!--                                <p class="time" th:text="${chat.createdTime}"> 15h09</p>-->
+                            </div>
+                            <div class="response" th:if="${chat.member.id} == ${member.id}">
+                                <p class="text" th:text="${chat.content}">message</p>
+<!--                                <p class="time" th:text="${chat.createdTime}"> 15h09</p>-->
+                            </div>
+                        </div>
+                    </th:block>
                 </div>
+
                 <div id="messages"></div>
             </div>
             <div class="footer-chat w-100">
-                <input id="message" class="write-message w-75" type="text" placeholder="보낼 메세지를 입력하세요." >
-                <button id="sendButton" class="btn btn-primary w-25" type="button" value="전송" onclick="sendMsg()">전송</button>
+                <input id="message" class="write-message w-75 form-control" type="text" placeholder="보낼 메세지를 입력하세요." >
+                <div class="px-3 w-25">
+                    <button id="sendButton" class="btn btn-dark w-100"  style="height: 50px" type="button" value="전송" onclick="sendMsg()">전송</button>
+                </div>
             </div>
 
 

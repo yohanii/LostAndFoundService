@@ -53,17 +53,17 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
         if (dto.getType().equals(ChattingType.ENTER)) {
             chatRoomSession.add(session);
-            dto.setContent(dto.getMemberId() + "님이 입장했습니다.");
-            sendToEachSocket(chatRoomSession, new TextMessage(dto.getContent()));
+//            dto.setContent(dto.getMemberId() + "님이 입장했습니다.");
+//            sendToEachSocket(chatRoomSession, message);
         } else if (dto.getType().equals(ChattingType.QUIT)) {
             chatRoomSession.remove(session);
-            dto.setContent(dto.getMemberId() + "님이 퇴장했습니다..");
-            sendToEachSocket(chatRoomSession, new TextMessage(dto.getContent()));
+//            dto.setContent(dto.getMemberId() + "님이 퇴장했습니다..");
+//            sendToEachSocket(chatRoomSession, message);
         } else {
-            sendToEachSocket(chatRoomSession, new TextMessage(dto.getContent()));
+            sendToEachSocket(chatRoomSession, message);
+            chattingService.saveChatting(dto);
         }
-
-        chattingService.saveChatting(dto);
+//        chattingService.saveChatting(dto);
     }
 
     private  void sendToEachSocket(Set<WebSocketSession> sessions, TextMessage message){
