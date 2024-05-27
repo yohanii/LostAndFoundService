@@ -110,7 +110,7 @@ public class PostController {
         }
 
         Post savePost = dto.toPostEntity((Member) model.getAttribute("member"));
-        postRepository.save(savePost);
+        Long savedPostId = postRepository.save(savePost);
         Long savedItemId = itemRepository.save(dto.toItemEntity(savePost));
 
         if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).getOriginalFilename().isBlank()) {
@@ -119,7 +119,7 @@ public class PostController {
             imageStoreService.saveImages(new ItemImagesSaveDto(itemRepository.find(savedItemId), dto.getItemImages()));
         }
 
-        return "redirect:" + redirectURL;
+        return "redirect:/posts/" + savedPostId;
     }
 
     @GetMapping("/posts/{postId}/edit-form")

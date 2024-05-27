@@ -12,7 +12,7 @@
         <form action="post.html" th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" th:object="${postEditRequestDto}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_method" value="patch"/>
             <section id="article-images" class="addform-item">
-                <div id="previews">
+                <div id="previews" class="text-center">
                     <th:block th:each="image : ${post.item.images}">
                         <img class="img-thumbnail" style="width: 300px; height: 300px" th:src="|/images/${image.getStoreFileName()}|">
                     </th:block>

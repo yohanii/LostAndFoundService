@@ -11,7 +11,7 @@
 
     <form action="post.html" th:action="|/posts?redirectURL=/|" th:object="${postSaveRequestDto}" method="post" enctype="multipart/form-data">
       <section id="article-images" class="addform-item">
-        <div id="previews">
+        <div id="previews" class="text-center">
         </div>
         <div>
           <label class="addform-item-label fw-bold" for="itemImages" th:text="'물품 사진'">물품 사진</label>
@@ -28,11 +28,18 @@
                 <div class="p-3 p-md-5">
                   <div class="addform-item">
                     <div class="addform-item-label fw-bold">타입</div>
-                    <select th:field="*{type}" class="form-select">
-                      <option value="">==타입 선택==</option>
-                      <option th:each="type : ${T(com.yohanii.lostandfound.component.crud.entity.PostType).values()}" th:value="${type}"
-                              th:text="${type.name}">FOUND</option>
-                    </select>
+<!--                    <select th:field="*{type}" class="form-select">-->
+<!--                      <option value="">==타입 선택==</option>-->
+<!--                      <option th:each="type : ${T(com.yohanii.lostandfound.component.crud.entity.PostType).values()}" th:value="${type}"-->
+<!--                              th:text="${type.name}">FOUND</option>-->
+<!--                    </select>-->
+                    <input type="radio" th:field="*{type}" class="btn-check" name="options" id="option1" autocomplete="off"
+                           th:value="${T(com.yohanii.lostandfound.component.crud.entity.PostType).FOUND}" checked>
+                    <label class="btn btn-outline-danger" for="option1" th:text="'주인 찾아요!'">주인 찾아요</label>
+
+                    <input type="radio" th:field="*{type}" class="btn-check" name="options" id="option2" autocomplete="off"
+                           th:value="${T(com.yohanii.lostandfound.component.crud.entity.PostType).LOST}" >
+                    <label class="btn btn-outline-primary" for="option2" th:text="'물건 찾아요!'">물건 찾아요</label>
                     <div class="field-error" th:errors="*{type}">
                       타입 선택 오류
                     </div>
