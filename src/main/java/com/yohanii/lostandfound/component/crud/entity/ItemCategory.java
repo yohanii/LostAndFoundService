@@ -1,7 +1,7 @@
 package com.yohanii.lostandfound.component.crud.entity;
 
 public enum ItemCategory {
-    SMART_PHONE("스마트폰"), WALLET("지갑");
+    ETC("기타"), SMART_PHONE("스마트폰"), WALLET("지갑");
 
     private final String name;
 

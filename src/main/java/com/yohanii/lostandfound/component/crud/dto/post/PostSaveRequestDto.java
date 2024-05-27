@@ -28,7 +28,9 @@ public class PostSaveRequestDto {
     private PostType type;
 
     private String itemName;
+    @NotBlank
     private String itemPlace;
+    @NotNull
     private ItemCategory itemCategory;
     private List<MultipartFile> itemImages;
 

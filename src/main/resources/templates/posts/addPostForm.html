@@ -9,7 +9,7 @@
 <main>
   <div class="container w-50">
 
-    <form action="post.html" th:action="|/posts?redirectURL=${redirectURL}|" th:object="${postSaveRequestDto}" method="post" enctype="multipart/form-data">
+    <form action="post.html" th:action="|/posts?redirectURL=/|" th:object="${postSaveRequestDto}" method="post" enctype="multipart/form-data">
       <section id="article-images" class="addform-item">
         <div id="previews">
         </div>
@@ -53,10 +53,16 @@
                       <option th:each="itemCategory : ${T(com.yohanii.lostandfound.component.crud.entity.ItemCategory).values()}" th:value="${itemCategory}"
                               th:text="${itemCategory.name}">스마트폰</option>
                     </select>
+                    <div class="field-error" th:errors="*{itemCategory}">
+                      아이템 카테고리 선택 오류
+                    </div>
                   </div>
                   <div class="addform-item">
                     <label class="addform-item-label fw-bold" for="item-place" th:text="'장소'">찾은 혹은 잃어버린 장소</label>
-                    <input type="text" id="item-place" th:field="*{itemPlace}" class="form-control" placeholder="물품을 찾은 혹은 잃어버린 장소를 입력해주세요">
+                    <input type="text" id="item-place" th:errorclass="field-error" th:field="*{itemPlace}" class="form-control" placeholder="물품을 찾은 혹은 잃어버린 장소를 입력해주세요">
+                    <div class="field-error" th:errors="*{itemPlace}">
+                      아이템 장소 오류
+                    </div>
                   </div>
 
                   <div class="addform-item">
@@ -83,7 +89,7 @@
           <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='posts.html'"
-                    th:onclick="|location.href='@{${redirectURL}}'|"
+                    th:onclick="|location.href='/'|"
                     type="button" th:text="'취소'">취소</button>
           </div>
         </div>
