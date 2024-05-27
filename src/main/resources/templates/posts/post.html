@@ -80,10 +80,10 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <form class="dropdown-item" id="delete_form" th:if="${member.id.equals(post.member.id)}"
+                                            <form class="dropdown-item" id="delete_post" th:if="${member.id.equals(post.member.id)}"
                                                   th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">
                                                 <input type="hidden" name="_method" value="delete"/>
-                                                <a class="text-danger" href="javascript:{}" onclick="document.getElementById('delete_form').submit();">삭제</a>
+                                                <a class="text-danger" href="javascript:{}" onclick="document.getElementById('delete_post').submit();">삭제</a>
                                             </form>
                                         </li>
                                     </ul>
