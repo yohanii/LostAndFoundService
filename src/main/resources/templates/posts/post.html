@@ -25,7 +25,7 @@
                     <div class="row gx-0">
                         <div class="py-lg-1">
                             <div class="p-2 p-md-4 row">
-                                <a id="article-profile-link" href="" class="col">
+                                <a id="article-profile-link" class="col">
                                     <div>
                                         <div class="row">
                                             <div id="article-profile-image" class="col">
@@ -69,7 +69,8 @@
                     <div class="row gx-0">
                         <div class="py-lg-2">
                             <div class="p-3 p-md-5">
-                                <div class="badge bg-primary bg-gradient rounded-pill mb-2" th:text="${post.type}">주인 찾아요</div>
+                                <div th:if="${post.type.toString().equals('LOST')}" class="badge bg-primary bg-gradient rounded-pill mb-2" th:text="'물건 찾아요!'">물건 찾아요</div>
+                                <div th:if="${post.type.toString().equals('FOUND')}" class="badge bg-danger bg-gradient rounded-pill mb-2" th:text="'주인 찾아요!'">주인 찾아요</div>
                                 <div class="h2 fw-bolder" th:text="${post.title}">Article heading</div>
                                 <div class="row">
                                     <p class="col" th:text="${post.item.itemCategory}">Item category</p>
