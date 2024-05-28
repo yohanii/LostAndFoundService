@@ -19,4 +19,4 @@ cloud:
       auto: false
 
 websocket:
-  url: wanna-find.com
+  url: wanna-find.com:8080
