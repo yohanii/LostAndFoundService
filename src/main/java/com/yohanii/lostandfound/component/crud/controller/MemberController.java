@@ -52,6 +52,6 @@ public class MemberController {
             imageStoreService.saveImage(new ProfileImageSaveDto(savedMember, dto.getProfileImage()));
         }
         log.info("Save Success!!!!!!!!!");
-        return "redirect:/";
+        return "redirect:/login";
     }
 }
