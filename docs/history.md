@@ -9,6 +9,7 @@
   - unloginBodyHeader, bodyHeader to bodyHeader, loginBodyHeader
   - ItemCategory 기타 추가 & PostSaveDto Valid 조건 추가
   - LoginCheckInterceptor 적용 범위 수정
+  - 로그인 화면에서 회원가입 화면 연결 & 회원가입 시 로그인 화면으로 redirect
 - 24.5.13
   - 디렉토리 구조 변경
     - product 별로 크게 분리함
