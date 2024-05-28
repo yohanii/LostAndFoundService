@@ -1,92 +1,109 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/loginHeader :: loginHeader" />
-<head th:replace="fragments/imageJSScript :: imageJSScript">
+<head th:replace="~{fragments/loginHeader :: loginHeader}" />
+<head th:replace="~{fragments/imageJSScript :: imageJSScript}">
 <body>
 
-<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div th:replace="~{fragments/loginBodyHeader :: loginBodyHeader}"/>
 
-<div class="container">
+<main>
+    <div class="container w-50">
 
-    <div class="py-5 text-center">
-        <h2 th:text="'게시물 수정'">게시물 수정</h2>
-    </div>
+        <form action="post.html" th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" th:object="${postEditRequestDto}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="patch"/>
+            <section id="article-images" class="addform-item">
+                <div id="previews" class="text-center">
+                    <th:block th:each="image : ${post.item.images}">
+                        <img class="img-thumbnail" style="width: 300px; height: 300px" th:src="|/images/${image.getStoreFileName()}|">
+                    </th:block>
+                </div>
+                <div>
+                    <label class="addform-item-label fw-bold" for="itemImages" th:text="'물품 사진'">물품 사진</label>
+                    <input type="file" id="itemImages" multiple="multiple" th:field="*{itemImages}" class="form-control" onchange="readURLs(this);">
+                </div>
 
-    <form action="post.html" th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" th:object="${postEditRequestDto}" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_method" value="patch"/>
-        <div>
-            <div>타입</div>
-            <select th:field="*{type}" class="form-select">
-                <option value="">==타입 선택==</option>
-                <option th:each="type : ${T(com.yohanii.lostandfound.component.crud.entity.PostType).values()}" th:value="${type}"
-                        th:text="${type.name}">FOUND</option>
-            </select>
-            <div class="field-error" th:errors="*{type}">
-                타입 선택 오류
-            </div>
-        </div>
-        <div>
-            <label for="title" th:text="'게시물 제목'">게시물 제목</label>
-            <input type="text" id="title" th:field="*{title}"
-                   th:errorclass="field-error" class="form-control" placeholder="제목을 입력하세요">
-            <div class="field-error" th:errors="*{title}">
-                게시물 제목 오류
-            </div>
-        </div>
+            </section>
 
-        <div class="container-fluid bg-warning" style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
-            <div>
-                <label for="item-name" th:text="'물건 이름'">물건 이름</label>
-                <input type="text" id="item-name" th:field="*{itemName}" class="form-control" placeholder="물건 이름">
-            </div>
-            <div>
-                <label for="item-place" th:text="'찾은 혹은 잃어버린 장소'">찾은 혹은 잃어버린 장소</label>
-                <input type="text" id="item-place" th:field="*{itemPlace}" class="form-control" placeholder="찾은 혹은 잃어버린 장소를 입력해주세요">
-            </div>
-            <div>
-                <div>물건 종류</div>
-                <select th:field="*{itemCategory}" class="form-select">
-                    <option value="">==물건 종류 선택==</option>
-                    <option th:each="itemCategory : ${T(com.yohanii.lostandfound.domain.item.ItemCategory).values()}" th:value="${itemCategory}"
-                            th:text="${itemCategory.name}">스마트폰</option>
-                </select>
-            </div>
-            <div>
-                <label for="itemImages" th:text="'물건 사진'">물건 사진</label>
-                <input type="file" id="itemImages" multiple="multiple" th:field="*{itemImages}" class="form-control" onchange="readURLs(this);">
-            </div>
-            <div id="previews">
-                <th:block th:each="image : ${post.item.images}">
-                    <img class="img-thumbnail" style="width: 300px; height: 300px" th:src="|/images/${image.getStoreFileName()}|">
-                </th:block>
-            </div>
-        </div>
+            <section id="article-description" class="py-1">
+                <div class="card border-0 shadow rounded-3 overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="row gx-0">
+                            <div class="py-lg-2">
+                                <div class="p-3 p-md-5">
+                                    <div class="addform-item">
+                                        <div class="addform-item-label fw-bold">타입</div>
+<!--                                        <select th:field="*{type}" class="form-select">-->
+<!--                                            <option value="">==타입 선택==</option>-->
+<!--                                            <option th:each="type : ${T(com.yohanii.lostandfound.component.crud.entity.PostType).values()}" th:value="${type}"-->
+<!--                                                    th:text="${type.name}">FOUND</option>-->
+<!--                                        </select>-->
+                                        <input type="radio" th:field="*{type}" class="btn-check" name="options" id="option1" autocomplete="off"
+                                               th:value="${T(com.yohanii.lostandfound.component.crud.entity.PostType).FOUND}" checked>
+                                        <label class="btn btn-outline-danger" for="option1" th:text="'주인 찾아요!'">주인 찾아요</label>
 
-        <div>
-            <label for="content" th:text="'게시물 내용'">게시물 내용</label>
-            <textarea id="content" th:field="*{content}"
-                      th:errorclass="field-error" class="form-control" placeholder="내용을 입력하세요"></textarea>
-            <div class="field-error" th:errors="*{content}">
-                게시물 내용 오류
+                                        <input type="radio" th:field="*{type}" class="btn-check" name="options" id="option2" autocomplete="off"
+                                               th:value="${T(com.yohanii.lostandfound.component.crud.entity.PostType).LOST}" >
+                                        <label class="btn btn-outline-primary" for="option2" th:text="'물건 찾아요!'">물건 찾아요</label>
+                                        <div class="field-error" th:errors="*{type}">
+                                            타입 선택 오류
+                                        </div>
+                                    </div>
+                                    <div class="addform-item">
+                                        <label class="addform-item-label fw-bold" for="title" th:text="'제목'">제목</label>
+                                        <input type="text" id="title" th:field="*{title}"
+                                               th:errorclass="field-error" class="form-control" placeholder="제목">
+                                        <div class="field-error" th:errors="*{title}">
+                                            게시물 제목 오류
+                                        </div>
+                                    </div>
+
+                                    <div class="addform-item">
+                                        <div class="addform-item-label fw-bold">물품 종류</div>
+                                        <select th:field="*{itemCategory}" class="form-select">
+                                            <option value="">==물품 종류 선택==</option>
+                                            <option th:each="itemCategory : ${T(com.yohanii.lostandfound.component.crud.entity.ItemCategory).values()}" th:value="${itemCategory}"
+                                                    th:text="${itemCategory.name}">스마트폰</option>
+                                        </select>
+                                    </div>
+                                    <div class="addform-item">
+                                        <label class="addform-item-label fw-bold" for="item-place" th:text="'장소'">찾은 혹은 잃어버린 장소</label>
+                                        <input type="text" id="item-place" th:field="*{itemPlace}" class="form-control" placeholder="물품을 찾은 혹은 잃어버린 장소를 입력해주세요">
+                                    </div>
+
+                                    <div class="addform-item">
+                                        <label class="addform-item-label fw-bold" for="content" th:text="'게시물 내용'">게시물 내용</label>
+                                        <textarea id="content" th:field="*{content}"
+                                                  th:errorclass="field-error" class="form-control" placeholder="내용을 입력하세요"></textarea>
+                                        <div class="field-error" th:errors="*{content}">
+                                            게시물 내용 오류
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="py-3">
+                <div class="row">
+                    <div class="col">
+                        <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="'저장'">저장</button>
+                    </div>
+                    <div class="col">
+                        <button class="w-100 btn btn-secondary btn-lg"
+                                onclick="location.href='posts.html'"
+                                th:onclick="|location.href='@{${redirectURL}}'|"
+                                type="button" th:text="'취소'">취소</button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
+    </div> <!-- /container -->
+</main>
 
-        <hr class="my-4">
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="'저장'">저장</button>
-            </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='posts.html'"
-                        th:onclick="|location.href='@{${redirectURL}}'|"
-                        type="button" th:text="'취소'">취소</button>
-            </div>
-        </div>
-
-    </form>
-
-</div> <!-- /container -->
 </body>
 </html>

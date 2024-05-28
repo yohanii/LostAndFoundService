@@ -43,7 +43,7 @@ public class PostController {
         return "posts/posts";
     }
 
-    @GetMapping("/posts-lost")
+    @GetMapping("/posts/lost")
     public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         List<Post> postList = postRepository.findLostPosts();
@@ -52,18 +52,27 @@ public class PostController {
         model.addAttribute("requestURI", request.getRequestURI());
 
         Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
+            return "posts/unLoginPostsLost";
+        }
+
         model.addAttribute("notifications", notificationService.findNotificationsById(loginMember.getId()));
 
         return "posts/postsLost";
     }
 
-    @GetMapping("/posts-found")
+    @GetMapping("/posts/found")
     public String postsFound(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         List<Post> postList = postRepository.findFoundPosts();
 
         model.addAttribute("posts", postList);
         model.addAttribute("requestURI", request.getRequestURI());
+
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
+            return "posts/unLoginPostsFound";
+        }
 
         return "posts/postsFound";
     }
@@ -101,14 +110,16 @@ public class PostController {
         }
 
         Post savePost = dto.toPostEntity((Member) model.getAttribute("member"));
-        postRepository.save(savePost);
+        Long savedPostId = postRepository.save(savePost);
         Long savedItemId = itemRepository.save(dto.toItemEntity(savePost));
 
-        if (!dto.getItemImages().isEmpty()) {
+        if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).getOriginalFilename().isBlank()) {
+            log.info("postSave.dto.getItemImages().size() = {}", dto.getItemImages().size());
+            log.info("postSave.dto.getItemImages().get(0).getOriginalFilename() = {}", dto.getItemImages().get(0).getOriginalFilename());
             imageStoreService.saveImages(new ItemImagesSaveDto(itemRepository.find(savedItemId), dto.getItemImages()));
         }
 
-        return "redirect:" + redirectURL;
+        return "redirect:/posts/" + savedPostId;
     }
 
     @GetMapping("/posts/{postId}/edit-form")
@@ -137,7 +148,10 @@ public class PostController {
         findPost.getItem().updateItem(dto);
 
         if (!dto.getItemImages().isEmpty()) {
-            imageStoreService.saveImages(new ItemImagesSaveDto(findPost.getItem(), dto.getItemImages()));
+            if (!dto.getItemImages().get(0).isEmpty()) {
+                log.info("postEdit dto.getItemImages().size() = {}", dto.getItemImages().size());
+                imageStoreService.saveImages(new ItemImagesSaveDto(findPost.getItem(), dto.getItemImages()));
+            }
         }
 
         return "redirect:/posts/{postId}?redirectURL=" + redirectURL;
@@ -159,11 +173,16 @@ public class PostController {
         List<Post> searchPosts = postRepository.findAll(dto);
         model.addAttribute("posts", searchPosts);
 
+        Member loginMember = (Member) model.getAttribute("member");
+        if (loginMember == null) {
+            return "posts/unLoginPostsSearch";
+        }
+
         return "posts/postsSearch";
     }
 
     @GetMapping("/posts/my-posts")
-    public String MyPosts(Model model, HttpServletRequest request) {
+    public String MyPosts(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
         Member loginMember = (Member) model.getAttribute("member");
         if (loginMember == null) {
@@ -174,7 +193,7 @@ public class PostController {
         model.addAttribute("posts", myPosts);
         model.addAttribute("requestURI", request.getRequestURI());
 
-        return "posts/posts";
+        return "posts/myPosts";
     }
 
     private static void setDtoPostTypeByRedirectURL(PostSaveRequestDto dto, String redirectURL) {

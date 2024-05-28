@@ -1,96 +1,166 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/loginHeader :: loginHeader" />
+<head th:replace="~{fragments/loginHeader :: loginHeader}" />
+<script>
+    window.onload=function(){
+        var item = document.getElementsByClassName('carousel-item');
+        item[0].className += ' active';
+    };
+
+</script>
 <body>
 
-<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div th:replace="~{fragments/loginBodyHeader :: loginBodyHeader}"/>
 
-<div class="container">
 
-    <div class="py-5 text-center">
-        <h2 th:text="'게시물 상세'">게시물 상세</h2>
-    </div>
+<main>
+    <div class="container w-50">
 
-    <div align="right">
-        <button th:if="${!member.name.equals(post.member.name)}"
-                th:onclick="|location.href='@{/chat/{id}(id=${post.id})}'|"
-                class="btn btn-outline-warning"
-                th:text="'채팅하기'">채팅하기</button>
-    </div>
-    <div align="right">
-        <form id="delete_form" th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">
-            <input type="hidden" name="_method" value="delete"/>
-        </form>
-        <button form="delete_form"
-                type="submit"
-                class="btn btn-outline-danger"
-                th:if="${member.name.equals(post.member.name)}"
-                th:text="'게시물 삭제'">게시물 삭제</button>
-    </div>
+        <section id="article-images">
+            <div id="images">
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-indicators">
+                        <div th:if="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                            <th:block th:each="image, imageStat: *{post.item.images}">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${imageStat.index}" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="carousel-inner">
+                        <div th:if="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                            <th:block th:each="image: *{post.item.images}">
+                                <div class="carousel-item">
+                                    <img src="..." class="d-block w-100" style="width: 500px; height: 500px" alt="..." th:src="|/images/${image.getStoreFileName()}|">
+                                </div>
+                            </th:block>
+                        </div>
+                        <div th:unless="${post.item.images} != null and !${post.item.images.isEmpty()}">
+                            <div class="carousel-item">
+                                <img src="..." class="d-block w-100" style="width: 500px; height: 500px" alt="..." th:src="@{/img/default.png}">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </section>
 
-    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+        <section id="article-profile" class="py-1">
+            <div class="card border-0 shadow rounded-3">
+                <div class="card-body p-0">
+                    <div class="row gx-0">
+                        <div class="py-lg-1">
+                            <div class="p-2 p-md-4 row">
+                                <a id="article-profile-link" class="col">
+                                    <div>
+                                        <div class="row">
+                                            <div id="article-profile-image" class="col col-4 text-center p-1">
+                                                <img class="img-thumbnail" th:if="${post.member.profileImage} != null" alt="profile-image" th:src="|/images/${post.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px">
+                                                <img class="img-thumbnail" th:unless="${post.member.profileImage} != null"alt="profile-image" th:src="@{/img/default.png}" style="width: 60px; height: 60px">
+                                            </div>
+                                            <div id="article-profile-left" class="col">
+                                                <div id="nickname" th:text="${post.member.nickName}">nickname</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
 
-    <div>
-        <label for="type" th:text="'게시물 타입'">게시물 타입</label>
-        <input type="text" id="type" name="type" class="form-control" value="0" th:value="${post.type}" readonly>
-    </div>
-    <div>
-        <label for="title" th:text="'게시물 제목'">게시물 제목</label>
-        <input type="text" id="title" name="title" class="form-control" value="게시물 제목" th:value="${post.title}" readonly>
-    </div>
+                                <div id="article-profile-dropdown" class="dropdown col">
+                                    <button class="btn btn-outline-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                                        </svg>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <form class="dropdown-item" id="delete_post" th:if="${member.id.equals(post.member.id)}"
+                                                  th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">
+                                                <input type="hidden" name="_method" value="delete"/>
+                                                <a class="text-danger" href="javascript:{}" onclick="document.getElementById('delete_post').submit();">삭제</a>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="container-fluid bg-warning" style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
-        <div>
-            <label for="item-name" th:text="'물건 이름'">물건 이름</label>
-            <input type="text" id="item-name" th:field="*{post.item.name}" class="form-control" placeholder="물건 이름" readonly>
+        </section>
+
+        <section id="article-description" class="py-1">
+            <div class="card border-0 shadow rounded-3 overflow-hidden">
+                <div class="card-body p-0">
+                    <div class="row gx-0">
+                        <div class="py-lg-2">
+                            <div class="p-3 p-md-5">
+                                <div th:if="${post.type.toString().equals('LOST')}" class="badge bg-primary bg-gradient rounded-pill mb-2" th:text="'물건 찾아요!'">물건 찾아요</div>
+                                <div th:if="${post.type.toString().equals('FOUND')}" class="badge bg-danger bg-gradient rounded-pill mb-2" th:text="'주인 찾아요!'">주인 찾아요</div>
+                                <div class="h2 fw-bolder" th:text="${post.title}">Article heading</div>
+                                <div class="row">
+                                    <p class="col" th:text="${post.item.itemCategory}">Item category</p>
+                                    <p class="col" th:text="${post.createdTime}">Article createdAt</p>
+                                </div>
+                                <p th:text="|장소 : ${post.item.place}|">Item place</p>
+                                <p th:text="${post.content}">Article content</p>
+<!--                                <a class="stretched-link text-decoration-none" href="#!">-->
+<!--                                    Read more-->
+<!--                                    <i class="bi bi-arrow-right"></i>-->
+<!--                                </a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!--        <div align="right">-->
+<!--            <form id="delete_form" th:action="@{/posts/{postId}?redirectURL={url}(postId=${post.id}, url=${redirectURL})}" method="post">-->
+<!--                <input type="hidden" name="_method" value="delete"/>-->
+<!--            </form>-->
+<!--            <button form="delete_form"-->
+<!--                    type="submit"-->
+<!--                    class="btn btn-outline-danger"-->
+<!--                    th:if="${member.name.equals(post.member.name)}"-->
+<!--                    th:text="'게시물 삭제'">게시물 삭제</button>-->
+<!--        </div>-->
+
+<!--        <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>-->
+
+        <div class="py-3">
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-lg"
+                            th:if="${member.id.equals(post.member.id)}"
+                            onclick="location.href='editForm.html'"
+                            th:onclick="|location.href='@{/posts/{postId}/edit-form?redirectURL={url}(postId=${post.id}, url=${redirectURL})}'|"
+                            type="button" th:text="'게시물 수정'">게시물 수정</button>
+                    <button class="w-100 btn btn-primary btn-lg"
+                            th:if="${!member.id.equals(post.member.id)}"
+                            th:onclick="|location.href='@{/chat/{id}(id=${post.id})}'|"
+                            th:text="'채팅하기'">채팅하기</button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"
+                            onclick="location.href='posts.html'"
+                            th:onclick="|location.href='@{${redirectURL}}'|"
+                            type="button" th:text="'목록으로'">목록으로</button>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="item-place" th:text="'찾은 혹은 잃어버린 장소'">찾은 혹은 잃어버린 장소</label>
-            <input type="text" id="item-place" th:field="*{post.item.place}" class="form-control" placeholder="찾은 혹은 잃어버린 장소를 입력해주세요" readonly>
-        </div>
-        <div>
-            <div>물건 종류</div>
-            <input th:field="*{post.item.itemCategory}" class="form-control" readonly>
-        </div>
-        <div>
-            <label th:text="'물건 사진'">물건 사진</label>
-            <th:block id="itemImages" th:each="image : *{post.item.images}">
-                <img class="img-thumbnail" style="width: 300px; height: 300px" th:src="|/images/${image.getStoreFileName()}|"/>
-            </th:block>
-        </div>
-    </div>
 
-    <div style="overflow:hidden; height:auto;">
-        <label for="content" th:text="'게시물 내용'">게시물 내용</label>
-        <textarea type="text" id="content" name="content" class="form-control" th:text="${post.content}" readonly> </textarea>
-    </div>
-    <div>
-        <label for="memberName" th:text="'작성자'">작성자</label>
-        <input type="text" id="memberName" name="memberName" class="form-control" value="작성자" th:value="${post.member.loginId}" readonly>
-    </div>
-    <div>
-        <label for="createdTime" th:text="'작성날짜'">작성날짜</label>
-        <input type="text" id="createdTime" name="createdTime" class="form-control" value="10" th:value="${post.createdTime}" readonly>
-    </div>
 
-    <hr class="my-4">
+    </div> <!-- /container -->
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
-    <div class="row">
-        <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"
-                    th:if="${member.id.equals(post.member.id)}"
-                    onclick="location.href='editForm.html'"
-                    th:onclick="|location.href='@{/posts/{postId}/edit-form?redirectURL={url}(postId=${post.id}, url=${redirectURL})}'|"
-                    type="button" th:text="'게시물 수정'">게시물 수정</button>
-        </div>
-        <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
-                    onclick="location.href='posts.html'"
-                    th:onclick="|location.href='@{${redirectURL}}'|"
-                    type="button" th:text="'목록으로'">목록으로</button>
-        </div>
-    </div>
-
-</div> <!-- /container -->
 </body>
 </html>

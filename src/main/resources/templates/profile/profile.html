@@ -1,55 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/loginHeader :: loginHeader" />
+<head th:replace="~{fragments/loginHeader :: loginHeader}" />
 <body>
 
-<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div th:replace="~{fragments/loginBodyHeader :: loginBodyHeader}"/>
 
-<div class="container">
+<main>
+    <div class="container w-50">
+        <div class="py-5 text-center">
+            <section class="pt-5 text-center container">
+                <div class="row py-lg-5">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <h1 class="">프로필</h1>
+                    </div>
+                </div>
+            </section>
 
-    <div class="py-5 text-center">
-        <h2 th:if="${isLoginMember}"
-            th:text="'마이프로필'">마이프로필</h2>
-        <h2 th:if="!${isLoginMember}"
-            th:text="'프로필'">프로필</h2>
+            <section id="profile" class="py-1">
+                <div class="card border-0 shadow rounded-3 overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="row gx-0">
+                            <div class="py-lg-2">
+                                <div class="p-3 p-md-5">
+                                    <div class="row py-3">
+                                        <div class="col">
+                                            <img id="profileImage" th:if="${member.profileImage}" th:src="|/images/${member.profileImage.getStoreFileName()}|" class="img-fluid img-thumbnail" style="width: 150px; height: 150px"/>
+                                            <img id="defaultProfileImage" th:if="!${member.profileImage}" th:src="@{/img/default.png}" class="img-fluid img-thumbnail" style="width: 150px; height: 150px"/>
+                                        </div>
+                                        <span class="h4 col d-flex align-items-center" th:text="${member.nickName}">Article content</span>
+                                    </div>
 
-        <div style="padding: 20px; max-width: 600px; margin: 0 auto;">
-            <div>
-                <label for="name" th:text="'이름'">이름</label>
-                <input type="text" id="name" name="name" class="form-control" value="" th:value="${member.name}" readonly>
-            </div>
-
-            <div>
-                <label for="nickName" th:text="'닉네임'">닉네임</label>
-                <input type="text" id="nickName" name="nickName" class="form-control" value="" th:value="${member.nickName}" readonly>
-            </div>
-
-            <div>
-                <label for="profileImage" th:text="'프로필 이미지'">프로필 이미지</label>
-                <img id="profileImage" th:if="${member.profileImage}" th:src="|/images/${member.profileImage.getStoreFileName()}|" class="img-thumbnail" style="width: 300px; height: 300px"/>
-                <img id="defaultProfileImage" th:if="!${member.profileImage}" th:src="'/profiles/images/default.png'" class="img-thumbnail" style="width: 300px; height: 300px"/>
-            </div>
+                                    <div class="py-3">
+                                        <button class="w-50 btn btn-primary btn-lg"
+                                                th:if="${isLoginMember}"
+                                                onclick="location.href='editForm.html'"
+                                                th:onclick="|location.href='@{/profiles/edit-form/{nickName}?redirectURL={url}(nickName=${member.nickName}, url=${redirectURL})}'|"
+                                                type="button" th:text="'프로필 수정'">프로필 수정
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
         </div>
     </div>
+</main>
 
-    <div class="row">
-        <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"
-                    th:if="${isLoginMember}"
-                    onclick="location.href='editForm.html'"
-                    th:onclick="|location.href='@{/profiles/edit-form/{nickName}?redirectURL={url}(nickName=${member.nickName}, url=${redirectURL})}'|"
-                    type="button" th:text="'게시물 수정'">게시물 수정</button>
-        </div>
-        <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
-                    onclick="location.href='profile.html'"
-                    th:onclick="|location.href='@{${redirectURL}}'|"
-                    type="button" th:text="'목록으로'">목록으로</button>
-        </div>
-    </div>
-
-</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<script type="text/javascript" th:fragment="chattingJSScript">
+<script type="text/javascript" th:fragment="chattingJSScript" th:inline="javascript">
 
     function enterRoom(socket){
-        var enterMsg={"type" : "ENTER","roomId":[[${room.id}]],"memberId":[[${member.id}]],"content":""}; //sender는  글쓸때 수정하자.
+        var enterMsg={"type" : "ENTER","roomId":[[${room.id}]],"memberId":[[${member.id}]],"content":""};
         socket.send(JSON.stringify(enterMsg));
     }
     let socket = new WebSocket("ws://localhost:8080/ws/chat");
@@ -23,12 +23,32 @@
     //메세지 수신했을 때 이벤트.
     socket.onmessage = function (e) {
         console.log(e.data);
+
+        const obj = JSON.parse(e.data);
+        if (obj.type === "ENTER" || obj.type === "QUIT") {
+            return;
+        }
+
         let messageBox = document.querySelector('#messageBox');
         let messages = document.querySelector('#messages');
+
+
+        let container1 = document.createElement('div');
+        let container2 = document.createElement('div');
         let newMsg = document.createElement('div');
-        newMsg.style.height = "50px";
-        newMsg.innerText=e.data;
-        messages.append(newMsg);
+
+        container1.classList.add('message', 'text-only');
+
+        if (obj.memberId === [[${member.id}]]) {
+            container2.classList.add('response');
+        }
+
+        newMsg.classList.add('text');
+        newMsg.innerText=obj.content;
+
+        container2.append(newMsg);
+        container1.append(container2);
+        messages.append(container1);
         messageBox.scrollTop = messageBox.scrollHeight;
     }
 

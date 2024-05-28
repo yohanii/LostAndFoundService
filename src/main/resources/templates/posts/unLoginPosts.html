@@ -1,21 +1,21 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/loginHeader :: loginHeader}" />
+<head th:replace="~{fragments/header :: header}" />
 <body>
 
-<div th:replace="~{fragments/loginBodyHeader :: loginBodyHeader}"/>
+<div th:replace="~{fragments/bodyHeader :: bodyHeader}"/>
 
 <main>
 
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="">주인 찾아요</h1>
-                <p class="lead text-body-secondary">습득한 물건의 주인을 찾아주세요!</p>
-                <!--                <p>-->
-                <!--                    <a href="#" class="btn btn-primary my-2">Main call to action</a>-->
-                <!--                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
-                <!--                </p>-->
+                <h1 class="">찾아줘요</h1>
+                <p class="lead text-body-secondary">잃어버린 물건이나 습득한 물건을 등록해보세요!</p>
+<!--                <p>-->
+<!--                    <a href="#" class="btn btn-primary my-2">Main call to action</a>-->
+<!--                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
+<!--                </p>-->
             </div>
         </div>
     </section>
@@ -73,7 +73,7 @@
                                 <div th:if="${post.type.toString().equals('LOST')}" class="badge bg-primary bg-gradient rounded-pill mb-2" th:text="'물건 찾아요!'">물건 찾아요</div>
                                 <div th:if="${post.type.toString().equals('FOUND')}" class="badge bg-danger bg-gradient rounded-pill mb-2" th:text="'주인 찾아요!'">주인 찾아요</div>
                                 <p class="card-text fw-bold" th:text="${post.title}">title</p>
-                                <!--                                <p class="card-text" th:text="${post.member.nickName}">member nickName</p>-->
+<!--                                <p class="card-text" th:text="${post.member.nickName}">member nickName</p>-->
                                 <p class="card-text" th:text="${post.item.place}">find place</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small class="text-body-secondary" th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">9 mins</small>

@@ -1,38 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div class="header" th:fragment="bodyHeader">
-    <nav class="navbar navbar-light" style="background-color: #D9D9D9">
-        <a class="navbar-brand fw-bold" href="/" style="padding: 10px; padding-left: 20px;">
-            LAF
-        </a>
-        <div style="float: right">
-            <div class="dropdown" style="display: inline-block;">
-                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    알림
-                </button>
-                <ul class="dropdown-menu" th:if="${!#lists.isEmpty(notifications)}">
-                    <li th:each="noti: ${notifications}" th:if="${notiStat.count} <= 5">
-                        <span class="dropdown-item" th:text="${noti.content}"></span>
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top" aria-label="Second navbar example">
+        <div class="container">
+            <img th:src="@{/img/logo.png}" style="width: 50px"/>
+            <a class="navbar-brand navbar-brand-padding" href="/">나를 찾아줘</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item nav-item-padding">
+                        <a class="nav-link active" aria-current="page" th:href="@{/posts/found}">주인 찾아요</a>
                     </li>
-                </ul>
-                <ul class="dropdown-menu" th:if="${#lists.isEmpty(notifications)}">
-                    <li><a class="dropdown-item">알림 없음</a></li>
+                    <li class="nav-item nav-item-padding">
+                        <a class="nav-link active" aria-current="page" th:href="@{/posts/lost}">물건 찾아요</a>
+                    </li>
                 </ul>
             </div>
 
-            <div class="dropdown" style="display: inline-block;">
-                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    마이페이지
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" th:href="@{|/profiles/${member.nickName}|}">프로필</a></li>
-                    <li><a class="dropdown-item" href="#" th:href="@{|/posts/my-posts|}">내가 쓴 게시물</a></li>
-                    <li><a class="dropdown-item" href="#" th:href="@{|/chat/rooms|}">채팅 목록</a></li>
-                </ul>
+            <div style="float: right">
+                <button type="button" th:onclick="|location.href='/login'|" class="btn btn-light" th:text="로그인">로그인</button>
             </div>
-            <form style="display: inline-block; padding: 10px" th:action="@{/logout}" th:method="post">
-                <button class="btn btn-danger" th:type="submit" th:text="'로그아웃'">로그아웃</button>
-            </form>
         </div>
     </nav>
+
 </div>

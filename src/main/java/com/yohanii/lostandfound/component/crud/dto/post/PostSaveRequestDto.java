@@ -1,10 +1,6 @@
 package com.yohanii.lostandfound.component.crud.dto.post;
 
-import com.yohanii.lostandfound.component.crud.entity.Item;
-import com.yohanii.lostandfound.component.crud.entity.ItemCategory;
-import com.yohanii.lostandfound.component.crud.entity.Post;
-import com.yohanii.lostandfound.component.crud.entity.PostType;
-import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.entity.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -28,7 +24,9 @@ public class PostSaveRequestDto {
     private PostType type;
 
     private String itemName;
+    @NotBlank
     private String itemPlace;
+    @NotNull
     private ItemCategory itemCategory;
     private List<MultipartFile> itemImages;
 

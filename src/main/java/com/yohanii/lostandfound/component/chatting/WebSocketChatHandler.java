@@ -38,8 +38,11 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         log.info("handleTextMessage");
         String payload = message.getPayload();
+        log.info("handleTextMessage payload = {}", payload);
         ChattingMessageDto dto = objectMapper.readValue(payload, ChattingMessageDto.class);
+        log.info("handleTextMessage dto.getRoomId = {}", dto.getRoomId());
         Room room = roomRepository.find(dto.getRoomId());
+        log.info("handleTextMessage room = {}", room);
 
         if(!chatRoomSessionMap.containsKey(room.getId())){
             chatRoomSessionMap.put(room.getId(), new HashSet<>());
@@ -50,17 +53,17 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
         if (dto.getType().equals(ChattingType.ENTER)) {
             chatRoomSession.add(session);
-            dto.setContent(dto.getMemberId() + "님이 입장했습니다.");
-            sendToEachSocket(chatRoomSession, new TextMessage(objectMapper.writeValueAsString(dto)) );
+//            dto.setContent(dto.getMemberId() + "님이 입장했습니다.");
+//            sendToEachSocket(chatRoomSession, message);
         } else if (dto.getType().equals(ChattingType.QUIT)) {
             chatRoomSession.remove(session);
-            dto.setContent(dto.getMemberId() + "님이 퇴장했습니다..");
-            sendToEachSocket(chatRoomSession, new TextMessage(objectMapper.writeValueAsString(dto)) );
+//            dto.setContent(dto.getMemberId() + "님이 퇴장했습니다..");
+//            sendToEachSocket(chatRoomSession, message);
         } else {
             sendToEachSocket(chatRoomSession, message);
+            chattingService.saveChatting(dto);
         }
-
-        chattingService.saveChatting(dto);
+//        chattingService.saveChatting(dto);
     }
 
     private  void sendToEachSocket(Set<WebSocketSession> sessions, TextMessage message){
