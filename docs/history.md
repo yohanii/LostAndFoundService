@@ -1,5 +1,14 @@
 ## 기록
 
+- 24.5.28
+  - view 수정
+    - 전체적인 화면 수정
+    - image 없을 시 default 보여주게 처리
+  - edit Post 시 기존 사진 없어지는 문제 해결
+  - post delete 안되는 문제 해결
+  - unloginBodyHeader, bodyHeader to bodyHeader, loginBodyHeader
+  - ItemCategory 기타 추가 & PostSaveDto Valid 조건 추가
+  - LoginCheckInterceptor 적용 범위 수정
 - 24.5.13
   - 디렉토리 구조 변경
     - product 별로 크게 분리함
