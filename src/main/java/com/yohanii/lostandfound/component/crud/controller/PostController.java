@@ -148,7 +148,10 @@ public class PostController {
         findPost.getItem().updateItem(dto);
 
         if (!dto.getItemImages().isEmpty()) {
-            imageStoreService.saveImages(new ItemImagesSaveDto(findPost.getItem(), dto.getItemImages()));
+            if (!dto.getItemImages().get(0).isEmpty()) {
+                log.info("postEdit dto.getItemImages().size() = {}", dto.getItemImages().size());
+                imageStoreService.saveImages(new ItemImagesSaveDto(findPost.getItem(), dto.getItemImages()));
+            }
         }
 
         return "redirect:/posts/{postId}?redirectURL=" + redirectURL;
