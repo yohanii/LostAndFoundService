@@ -6,7 +6,7 @@
         var enterMsg={"type" : "ENTER","roomId":[[${room.id}]],"memberId":[[${member.id}]],"content":""};
         socket.send(JSON.stringify(enterMsg));
     }
-    let socket = new WebSocket("ws://" + location.host + "/ws/chat");
+    let socket = new WebSocket("ws://" + [[${url}]] + "/ws");
 
     socket.onopen = function (e) {
         console.log('open server!')
