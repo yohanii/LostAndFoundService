@@ -25,3 +25,6 @@ cloud:
       folder: local/images/
     stack:
       auto: false
+
+websocket:
+  url: localhost:8080
