@@ -9,7 +9,42 @@
   - unloginBodyHeader, bodyHeader to bodyHeader, loginBodyHeader
   - ItemCategory 기타 추가 & PostSaveDto Valid 조건 추가
   - LoginCheckInterceptor 적용 범위 수정
-  - 로그인 화면에서 회원가입 화면 연결 & 회원가입 시 로그인 화면으로 redirect
+    - 로그인 화면에서 회원가입 화면 연결 & 회원가입 시 로그인 화면으로 redirect
+      - HOTFIX: websocket url 설정
+        - 문제 : 운영환경에서 websocket 이용한 chatting 안되는 문제
+          - 해결
+            1. websocket 생성자 url 변경
+               - `"ws://localhost:8080/ws/chat"` -> `"ws://" + [[${url}]] + "/ws"`
+               - WebSocketConfig paths도 바꿔줌. `"/ws/chat"` -> `"/ws"`
+            2. nginx 포워딩 설정
+               - ```
+                 server {
+                        server_name wanna-find.com www.wanna-find.com; # managed by Certbot
+                        root         /usr/share/nginx/html;
+                        
+                        ...
+              
+                        location /ws {
+                                proxy_pass http://localhost:8080/ws;
+                                proxy_http_version 1.1;
+                                proxy_set_header Upgrade $http_upgrade;
+                                proxy_set_header Connection "Upgrade";
+                                proxy_set_header Host $host;
+                                proxy_set_header X-Real-IP $remote_addr;
+                                proxy_set_header X-Forwarded-Host $host;
+                                proxy_set_header X-Forwarded-Server $host;
+                                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                        }
+                        ...
+                 }
+                 ```
+            3. Mixed content 문제 해결
+               - https 사이트에서 http 사이트 요청 시 발생하는 보안 문제
+               - header에 아래 코드 추가
+               ```html
+               <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+                ```
+      
 - 24.5.13
   - 디렉토리 구조 변경
     - product 별로 크게 분리함
