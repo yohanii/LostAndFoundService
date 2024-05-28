@@ -17,3 +17,6 @@ cloud:
       folder: prod/images/
     stack:
       auto: false
+
+websocket:
+  url: wanna-find.com

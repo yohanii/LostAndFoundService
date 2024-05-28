@@ -10,6 +10,7 @@ import com.yohanii.lostandfound.component.chatting.service.RoomService;
 import com.yohanii.lostandfound.component.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class ChattingController {
     private final PostRepository postRepository;
     private final RoomRepository roomRepository;
     private final NotificationService notificationService;
+
+    @Value("${websocket.url}")
+    private String webSocketUrl;
 
     @GetMapping("/chat/{postId}")
     public String chat(@PathVariable Long postId, Model model) {
@@ -59,6 +63,7 @@ public class ChattingController {
     public String chattingRoom(@PathVariable String storeRoomName, Model model) {
         Room findRoom = roomRepository.findByStoreRoomName(storeRoomName).orElseThrow(() -> new IllegalArgumentException("room is empty"));
         model.addAttribute("room", findRoom);
+        model.addAttribute("url", webSocketUrl);
 
         return "chat/chattingRoom";
     }
