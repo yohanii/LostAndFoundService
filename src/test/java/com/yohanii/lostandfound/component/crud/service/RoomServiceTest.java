@@ -35,7 +35,7 @@ class RoomServiceTest {
         Member member = Member.builder().build();
         Long savedMemberId = memberRepository.save(member).getId();
         Post post = Post.builder().build();
-        Long savedPostId = postRepository.save(post);
+        Long savedPostId = postRepository.save(post).getId();
 
         RoomSaveRequestDto dto = new RoomSaveRequestDto();
         dto.setMemberId(savedMemberId);

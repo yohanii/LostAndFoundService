@@ -5,6 +5,7 @@ import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,8 +64,8 @@ public class AdminService {
     public OverviewResponseDto getOverview() {
 
         long memberCount = memberRepository.count();
-        long lostPostCount = postRepository.getLostPostCount();
-        long foundPostCount = postRepository.getFoundPostCount();
+        long lostPostCount = postRepository.countByType(PostType.LOST);
+        long foundPostCount = postRepository.countByType(PostType.FOUND);
         long roomCount = roomRepository.getRoomCount();
 
         return new OverviewResponseDto(

@@ -1,14 +1,14 @@
 package com.yohanii.lostandfound.component.crud.controller;
 
-import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
-import com.yohanii.lostandfound.component.crud.entity.Post;
-import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.entity.PostType;
 import com.yohanii.lostandfound.component.crud.dto.image.ItemImagesSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
+import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
+import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
 import com.yohanii.lostandfound.component.notification.service.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +46,7 @@ public class PostController {
     @GetMapping("/posts/lost")
     public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
-        List<Post> postList = postRepository.findLostPosts();
+        List<Post> postList = postRepository.findAllByType(PostType.LOST);
 
         model.addAttribute("posts", postList);
         model.addAttribute("requestURI", request.getRequestURI());
@@ -64,7 +64,7 @@ public class PostController {
     @GetMapping("/posts/found")
     public String postsFound(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
-        List<Post> postList = postRepository.findFoundPosts();
+        List<Post> postList = postRepository.findAllByType(PostType.FOUND);
 
         model.addAttribute("posts", postList);
         model.addAttribute("requestURI", request.getRequestURI());
@@ -80,7 +80,8 @@ public class PostController {
     @GetMapping("/posts/{postId}")
     public String post(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
-        Post post = postRepository.findById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
         model.addAttribute("post", post);
         model.addAttribute("redirectURL", redirectURL);
@@ -110,7 +111,7 @@ public class PostController {
         }
 
         Post savePost = dto.toPostEntity((Member) model.getAttribute("member"));
-        Long savedPostId = postRepository.save(savePost);
+        Long savedPostId = postRepository.save(savePost).getId();
         Long savedItemId = itemRepository.save(dto.toItemEntity(savePost));
 
         if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).getOriginalFilename().isBlank()) {
@@ -125,7 +126,8 @@ public class PostController {
     @GetMapping("/posts/{postId}/edit-form")
     public String postEditForm(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
-        Post findPost = postRepository.findById(postId);
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
         dto.setTitle(findPost.getTitle());
         dto.setContent(findPost.getContent());
         dto.setType(findPost.getType());
@@ -143,7 +145,8 @@ public class PostController {
     @Transactional
     public String postEdit(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
 
-        Post findPost = postRepository.findById(postId);
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
         findPost.updatePost(dto);
         findPost.getItem().updateItem(dto);
 
@@ -161,7 +164,7 @@ public class PostController {
     @Transactional
     public String postDelete(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL) {
 
-        postRepository.delete(postId);
+        postRepository.deleteById(postId);
 
         return "redirect:" + redirectURL;
     }
@@ -170,7 +173,7 @@ public class PostController {
     public String postSearch(@ModelAttribute PostSearchRequestDto dto, Model model) {
 
         log.info("posts search");
-        List<Post> searchPosts = postRepository.findAll(dto);
+        List<Post> searchPosts = postRepository.findAllByPostSearchRequestDto(dto);
         model.addAttribute("posts", searchPosts);
 
         Member loginMember = (Member) model.getAttribute("member");
@@ -189,7 +192,7 @@ public class PostController {
             return "redirect:/";
         }
 
-        List<Post> myPosts = postRepository.findAll(loginMember.getId());
+        List<Post> myPosts = postRepository.findAllByMemberId(loginMember.getId());
         model.addAttribute("posts", myPosts);
         model.addAttribute("requestURI", request.getRequestURI());
 

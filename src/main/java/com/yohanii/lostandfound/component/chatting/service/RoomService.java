@@ -29,7 +29,8 @@ public class RoomService {
                 .member(memberRepository.findById(dto.getMemberId())
                         .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다.")))
                 .partnerId(dto.getPartnerId())
-                .post(postRepository.findById(dto.getPostId()))
+                .post(postRepository.findById(dto.getPostId())
+                        .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다.")))
                 .storeRoomName(createStoreRoomName())
                 .build();
         return roomRepository.save(saveRoom);
