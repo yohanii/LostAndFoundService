@@ -2,7 +2,6 @@ package com.yohanii.lostandfound.component.login.service;
 
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
-import com.yohanii.lostandfound.component.login.service.LoginService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,8 +27,7 @@ class LoginServiceTest {
                 .loginId("testId")
                 .password("testPassword")
                 .build();
-        Long memberId = memberRepository.save(testMember1);
-        Member saveMember = memberRepository.find(memberId);
+        Member saveMember = memberRepository.save(testMember1);
 
         Optional<Member> result = loginService.login(saveMember.getLoginId(), saveMember.getPassword());
 

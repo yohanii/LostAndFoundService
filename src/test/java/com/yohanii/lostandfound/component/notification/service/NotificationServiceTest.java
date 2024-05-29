@@ -1,12 +1,11 @@
 package com.yohanii.lostandfound.component.notification.service;
 
+import com.yohanii.lostandfound.component.chatting.repository.EmitterRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
-import com.yohanii.lostandfound.component.chatting.repository.EmitterRepository;
 import com.yohanii.lostandfound.component.notification.entity.Notification;
-import com.yohanii.lostandfound.component.notification.repository.NotificationRepository;
 import com.yohanii.lostandfound.component.notification.entity.NotificationType;
-import com.yohanii.lostandfound.component.notification.service.NotificationService;
+import com.yohanii.lostandfound.component.notification.repository.NotificationRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -32,7 +31,8 @@ class NotificationServiceTest {
 
     @Test
     void subscribe() {
-        Long memberId = 0L;
+        Member testMember = Member.builder().build();
+        Long memberId = memberRepository.save(testMember).getId();
         notificationService.subscribe(memberId);
 
         SseEmitter findEmitter = emitterRepository.get(memberId);
@@ -43,7 +43,7 @@ class NotificationServiceTest {
     @Test
     void testNotify_정상과정() {
         Member testMember = Member.builder().build();
-        Long memberId = memberRepository.save(testMember);
+        Long memberId = memberRepository.save(testMember).getId();
         String testData = "test data";
         notificationService.subscribe(memberId);
 
@@ -59,7 +59,7 @@ class NotificationServiceTest {
     @Test
     void testNotify_emiiter_null일때도_notification_저장되는지() {
         Member testMember = Member.builder().build();
-        Long memberId = memberRepository.save(testMember);
+        Long memberId = memberRepository.save(testMember).getId();
         String testData = "test data";
 
         notificationService.notify(memberId, testData);

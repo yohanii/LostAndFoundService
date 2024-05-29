@@ -1,10 +1,10 @@
 package com.yohanii.lostandfound.component.chatting.service;
 
+import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,8 @@ public class RoomService {
     @Transactional
     public Long createRoom(RoomSaveRequestDto dto) {
         Room saveRoom = Room.builder()
-                .member(memberRepository.find(dto.getMemberId()))
+                .member(memberRepository.findById(dto.getMemberId())
+                        .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다.")))
                 .partnerId(dto.getPartnerId())
                 .post(postRepository.findById(dto.getPostId()))
                 .storeRoomName(createStoreRoomName())

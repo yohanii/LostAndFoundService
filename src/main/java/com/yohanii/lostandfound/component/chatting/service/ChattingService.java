@@ -1,12 +1,12 @@
 package com.yohanii.lostandfound.component.chatting.service;
 
+import com.yohanii.lostandfound.component.chatting.dto.chatting.ChattingMessageDto;
 import com.yohanii.lostandfound.component.chatting.entity.Chatting;
-import com.yohanii.lostandfound.component.chatting.repository.ChattingRepository;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
+import com.yohanii.lostandfound.component.chatting.repository.ChattingRepository;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
-import com.yohanii.lostandfound.component.chatting.dto.chatting.ChattingMessageDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,8 @@ public class ChattingService {
 
     @Transactional
     public Long saveChatting(ChattingMessageDto dto) {
-        Member member = memberRepository.find(dto.getMemberId());
+        Member member = memberRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다."));
         Room room = roomRepository.find(dto.getRoomId());
 
         LocalDateTime now = room.updateUpdatedTime();

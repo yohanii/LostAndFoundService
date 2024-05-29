@@ -3,7 +3,6 @@ package com.yohanii.lostandfound.component.notification.repository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.notification.entity.Notification;
-import com.yohanii.lostandfound.component.notification.repository.NotificationRepository;
 import com.yohanii.lostandfound.component.notification.entity.NotificationType;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -27,8 +26,8 @@ class NotificationRepositoryTest {
     void findAll() {
         Member testMember1 = Member.builder().build();
         Member testMember2 = Member.builder().build();
-        Long memberId1 = memberRepository.save(testMember1);
-        Long memberId2 = memberRepository.save(testMember2);
+        Long memberId1 = memberRepository.save(testMember1).getId();
+        memberRepository.save(testMember2);
 
         Notification saveNotification1 = Notification.builder()
                 .receiver(testMember1)

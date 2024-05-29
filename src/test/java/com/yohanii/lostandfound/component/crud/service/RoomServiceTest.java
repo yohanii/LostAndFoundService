@@ -1,13 +1,13 @@
 package com.yohanii.lostandfound.component.crud.service;
 
-import com.yohanii.lostandfound.component.chatting.service.RoomService;
+import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
+import com.yohanii.lostandfound.component.chatting.service.RoomService;
 import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -33,7 +33,7 @@ class RoomServiceTest {
     @Test
     void createRoom() {
         Member member = Member.builder().build();
-        Long savedMemberId = memberRepository.save(member);
+        Long savedMemberId = memberRepository.save(member).getId();
         Post post = Post.builder().build();
         Long savedPostId = postRepository.save(post);
 

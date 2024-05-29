@@ -3,7 +3,6 @@ package com.yohanii.lostandfound.component.crud.controller;
 import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
-import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final MemberRepository memberRepository;
     private final PostRepository postRepository;
 
     @GetMapping("/")
@@ -32,9 +30,6 @@ public class HomeController {
         if (loginMember == null) {
             return "posts/unLoginPosts";
         }
-
-        Member findMember = memberRepository.find(loginMember.getId());
-        model.addAttribute("member", findMember);
 
         return "posts/posts";
     }
