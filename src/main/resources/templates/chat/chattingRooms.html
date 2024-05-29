@@ -17,10 +17,18 @@
             </section>
 
             <div id="rooms" th:each="room: ${rooms}">
-                <div class="w-100">
-                    <button class="btn btn-outline-dark w-100"
-                            th:text="|${room.post.title} / 상대 : ${room.partnerId} / ${room.updatedTime}|"
-                            th:onclick="|location.href='@{/chat/room/{name}(name=${room.storeRoomName})}'|"/>
+                <div class="py-2 w-100 row border rounded-3 align-items-center bg-light shadow" th:onclick="|location.href='@{/chat/room/{name}(name=${room.storeRoomName})}'|" style="cursor:pointer">
+                    <div class="col-3 p-1">
+                        <img th:if="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="|/images/${room.post.item.images.get(0).getStoreFileName()}|" style="width: 100px; height: 100px">
+                        <img th:unless="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="@{/img/default.png}" style="width: 100px; height: 100px">
+                    </div>
+                    <div class="col p-2 text-start">
+                        <h4 class="p-1" th:text="${room.post.title}"></h4>
+                        <p th:if="${room.chattings.size()} > 0" class="p-1 text-muted" th:text="${room.chattings.get(room.chattings.size() - 1).content}"></p>
+                    </div>
+                    <div class="col-3 text-end">
+                        <p class="pb-5 text-muted" th:text="${#temporals.format(room.updatedTime, 'yyyy-MM-dd')}">
+                    </div>
                 </div>
             </div>
 

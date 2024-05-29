@@ -12,55 +12,30 @@
 
 <div th:replace="~{fragments/loginBodyHeader :: loginBodyHeader}"/>
 
-<!--<main>-->
-<!--    <div class="container w-100">-->
-<!--        <div class="py-5 text-center">-->
-<!--            <section class="pt-5 text-center container">-->
-<!--                <div class="row py-lg-5">-->
-<!--                    <div class="col-lg-6 col-md-8 mx-auto">-->
-<!--                        <h1 class="fw-light">채팅</h1>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </section>-->
-
-<!--            <section id="article-profile" class="py-1">-->
-<!--                <div class="card border-0 shadow rounded-3">-->
-<!--                    <div class="card-body p-0">-->
-<!--                        <div class="row gx-0">-->
-<!--                            <div class="py-lg-1">-->
-<!--                                <div class="p-2 p-md-4 row">-->
-
-<!--                                    <div id="messageBox" style="background-color: lightgray; height: 500px; width: 100%; overflow-y: auto" >-->
-<!--                                        <div id="history" th:each="chat: ${room.chattings}" class="justify-content-start">-->
-<!--                                            <th:block th:text="|${chat.member.id}님 : ${chat.content}|" style="height: 50px"></th:block>-->
-<!--                                        </div>-->
-<!--                                        <div id="messages"></div>-->
-<!--                                    </div>-->
-<!--                                    <div class="row">-->
-<!--                                        <input id="message" class="col" type="text" placeholder="보낼 메세지를 입력하세요." >-->
-<!--                                        <button id="sendButton" class="w-25 btn btn-primary" type="button" value="전송" onclick="sendMsg()">전송</button>-->
-<!--                                    </div>-->
-
-<!--                                    <button id="quitButton" class="w-100 btn btn-secondary" type="button" value="방나가기" onclick="quit()">방 나가기</button>-->
-
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </section>-->
-
-<!--        </div>-->
-<!--    </div>-->
-<!--</main>-->
-
 <div class="container chatContainer">
     <div class="row">
         <section class="chat">
-            <div class="header-chat">
-<!--                <i class="icon fa fa-user-o" aria-hidden="true"></i>-->
-                <p class="name px-3" th:text="${room.partnerId}">Megan Leib</p>
-<!--                <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>-->
+            <div class="header-chat row border m-0 h-auto p-3">
+<!--                <div class="col">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-2 text-center" th:text="상대방" />-->
+<!--                        <div class="col-2">-->
+<!--                            <img class="img-thumbnail p-0"  th:if="${room.member.profileImage}" th:src="|/images/${room.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px;">-->
+<!--                            <img class="img-thumbnail p-0" th:if="!${room.member.profileImage}" th:src="@{/img/default.png}" style="width: 60px; height: 60px;">-->
+<!--                        </div>-->
+<!--                        <p class="col name px-3" th:text="${room.member.nickName}">상대 이름</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="col">
+                    <div class="row">
+<!--                        <div class="col-2 text-center" th:text="물품" />-->
+                        <div class="col-1">
+                            <img th:if="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="|/images/${room.post.item.images.get(0).getStoreFileName()}|" style="width: 60px; height: 60px">
+                            <img th:unless="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="@{/img/default.png}" style="width: 60px; height: 60px">
+                        </div>
+                        <h4 class="col px-3 d-flex align-items-center" th:text="${room.post.title}">post title</h4>
+                    </div>
+                </div>
             </div>
             <div class="messages-chat" id="messageBox">
 <!--                <p class="response-time time"> 15h04</p>-->
@@ -75,7 +50,11 @@
                 <div id="history" th:each="chat: ${room.chattings}">
                     <th:block>
                         <div class="message text-only">
-                            <div th:if="${chat.member.id} != ${member.id}">
+                            <div class="align-items-center" th:if="${chat.member.id} != ${member.id}">
+<!--                                <img class="col img-thumbnail p-0"  th:if="${chat.member.profileImage}" th:src="|/images/${chat.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px;">-->
+<!--                                <img class="col img-thumbnail p-0" th:if="!${chat.member.profileImage}" th:src="@{/img/default.png}" style="width: 60px; height: 60px;">-->
+<!--                                <img th:if="${post.item} != null and ${post.item.images} != null and !${post.item.images.isEmpty()}" class="bd-placeholder-img card-img-top" width="100%" height="225" th:src="|/images/${post.item.images.get(0).getStoreFileName()}|">-->
+
                                 <p class="text" th:text="${chat.content}">message</p>
 <!--                                <p class="time" th:text="${chat.createdTime}"> 15h09</p>-->
                             </div>

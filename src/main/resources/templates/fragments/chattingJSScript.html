@@ -29,6 +29,9 @@
             return;
         }
 
+        // <img class="col img-thumbnail p-0"  th:if="${chat.member.profileImage}" th:src="|/images/${chat.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px;">
+        //     <img class="col img-thumbnail p-0" th:if="!${chat.member.profileImage}" th:src="@{/img/default.png}" style="width: 60px; height: 60px;">
+
         let messageBox = document.querySelector('#messageBox');
         let messages = document.querySelector('#messages');
 
@@ -42,6 +45,20 @@
         if (obj.memberId === [[${member.id}]]) {
             container2.classList.add('response');
         }
+        // else {
+        //     container2.classList.add('row', 'align-items-center');
+        //     newMsg.classList.add('col', 'm-2');
+        //
+        //     let img = document.createElement('img');
+        //     img.classList.add('col', 'img-thumbnail','p-0');
+        //     img.style = "width: 60px; height: 60px;";
+        //     // if (){
+        //     //     img.src = "/images/" + ;
+        //     // } else {
+        //         img.src = "/img/default.png";
+        //     // }
+        //     container2.append(img);
+        // }
 
         newMsg.classList.add('text');
         newMsg.innerText=obj.content;

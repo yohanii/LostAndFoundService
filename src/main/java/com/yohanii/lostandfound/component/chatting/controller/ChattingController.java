@@ -70,6 +70,10 @@ public class ChattingController {
 
     @GetMapping("/chat/rooms")
     public String chattingRooms(Model model) {
+
+        //게시물 사진 / 제목 / 시간 / 마지막 채팅
+        //room.post.item.image / room.post.title / room.updatedTime / room.chattings.last
+
         Member loginMember = (Member) model.getAttribute("member");
 
         List<Room> findRooms = roomService.findRoomByMemberId(loginMember.getId());
