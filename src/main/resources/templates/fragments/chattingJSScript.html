@@ -72,9 +72,11 @@
 
     //메세지 보내기 버튼 눌렀을 떄..
     function sendMsg() {
-        let content=document.querySelector('#message').value;
+        let message = document.querySelector('#message');
+        let content = message.value;
         var talkMsg={"type" : "TALK","roomId":[[${room.id}]] ,"memberId":[[${member.id}]],"content":content};
         socket.send(JSON.stringify(talkMsg));
+        message.value = null;
     }
 
     function quit(){
