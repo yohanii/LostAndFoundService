@@ -511,7 +511,7 @@ a {
 
 .chat .header-chat .name {
     margin: 0 0 0 20px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-family:'Montserrat', sans-serif;
     font-size: 13pt;
     color:#515151;

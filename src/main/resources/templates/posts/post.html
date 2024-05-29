@@ -106,8 +106,8 @@
                                 <div th:if="${post.type.toString().equals('FOUND')}" class="badge bg-danger bg-gradient rounded-pill mb-2" th:text="'주인 찾아요!'">주인 찾아요</div>
                                 <div class="h2 fw-bolder" th:text="${post.title}">Article heading</div>
                                 <div class="row">
-                                    <p class="col" th:text="${post.item.itemCategory}">Item category</p>
-                                    <p class="col" th:text="${post.createdTime}">Article createdAt</p>
+                                    <p class="col" th:text="${post.item.itemCategory.name}">Item category</p>
+                                    <p class="col" th:text="${#temporals.format(post.createdTime, 'yyyy-MM-dd')}">Article createdAt</p>
                                 </div>
                                 <p th:text="|장소 : ${post.item.place}|">Item place</p>
                                 <p th:text="${post.content}">Article content</p>
