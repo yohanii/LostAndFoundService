@@ -6,6 +6,14 @@
     window.onload=function(){
         let mySpace = document.getElementById("messageBox");
         mySpace.scrollTop = mySpace.scrollHeight;
+
+        let message = document.querySelector('#message');
+        message.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMsg();
+            }
+        });
     };
 </script>
 <body class="d-flex flex-column h-100">
