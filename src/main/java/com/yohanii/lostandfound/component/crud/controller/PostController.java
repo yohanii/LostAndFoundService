@@ -4,6 +4,7 @@ import com.yohanii.lostandfound.component.crud.dto.image.ItemImagesSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
+import com.yohanii.lostandfound.component.crud.entity.Item;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.entity.PostType;
@@ -112,12 +113,12 @@ public class PostController {
 
         Post savePost = dto.toPostEntity((Member) model.getAttribute("member"));
         Long savedPostId = postRepository.save(savePost).getId();
-        Long savedItemId = itemRepository.save(dto.toItemEntity(savePost));
+        Item savedItem = itemRepository.save(dto.toItemEntity(savePost));
 
         if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).getOriginalFilename().isBlank()) {
             log.info("postSave.dto.getItemImages().size() = {}", dto.getItemImages().size());
             log.info("postSave.dto.getItemImages().get(0).getOriginalFilename() = {}", dto.getItemImages().get(0).getOriginalFilename());
-            imageStoreService.saveImages(new ItemImagesSaveDto(itemRepository.find(savedItemId), dto.getItemImages()));
+            imageStoreService.saveImages(new ItemImagesSaveDto(savedItem, dto.getItemImages()));
         }
 
         return "redirect:/posts/" + savedPostId;
