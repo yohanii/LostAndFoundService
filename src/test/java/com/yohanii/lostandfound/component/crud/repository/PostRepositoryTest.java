@@ -1,6 +1,5 @@
 package com.yohanii.lostandfound.component.crud.repository;
 
-import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.entity.PostType;
 import org.junit.jupiter.api.DisplayName;
@@ -75,9 +74,7 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        PostSearchRequestDto dto = new PostSearchRequestDto("", null);
-
-        List<Post> result = postRepository.findAllByPostSearchRequestDto(dto);
+        List<Post> result = postRepository.findAllByTypeAndContent(null, "");
         assertThat(result).contains(post1, post2, post3);
     }
 
@@ -101,9 +98,7 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        PostSearchRequestDto dto = new PostSearchRequestDto("", PostType.LOST);
-
-        List<Post> result = postRepository.findAllByPostSearchRequestDto(dto);
+        List<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "");
         assertThat(result).contains(post1, post2);
         assertThat(result).doesNotContain(post3);
     }
@@ -128,9 +123,7 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        PostSearchRequestDto dto = new PostSearchRequestDto("bcdefg", null);
-
-        List<Post> result = postRepository.findAllByPostSearchRequestDto(dto);
+        List<Post> result = postRepository.findAllByTypeAndContent(null, "bcdefg");
         assertThat(result).contains(post2, post3);
         assertThat(result).doesNotContain(post1);
     }
@@ -155,9 +148,7 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        PostSearchRequestDto dto = new PostSearchRequestDto("bcdefg", PostType.LOST);
-
-        List<Post> result = postRepository.findAllByPostSearchRequestDto(dto);
+        List<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "bcdefg");
         assertThat(result).contains(post2);
         assertThat(result).doesNotContain(post1, post3);
     }

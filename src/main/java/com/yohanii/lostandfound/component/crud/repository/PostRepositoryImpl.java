@@ -2,7 +2,6 @@ package com.yohanii.lostandfound.component.crud.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.entity.PostType;
 import com.yohanii.lostandfound.component.crud.entity.QPost;
@@ -22,15 +21,15 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
     }
 
     @Override
-    public List<Post> findAllByPostSearchRequestDto(PostSearchRequestDto dto) {
+    public List<Post> findAllByTypeAndContent(PostType postType, String content) {
 
         QPost post = QPost.post;
 
         return queryFactory
                 .select(post)
                 .from(post)
-                .where(typeEq(dto.getType()),
-                        contentContains(dto.getContent()))
+                .where(typeEq(postType),
+                        contentContains(content))
                 .fetch();
     }
 

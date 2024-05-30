@@ -173,7 +173,7 @@ public class PostController {
     public String postSearch(@ModelAttribute PostSearchRequestDto dto, Model model) {
 
         log.info("posts search");
-        List<Post> searchPosts = postRepository.findAllByPostSearchRequestDto(dto);
+        List<Post> searchPosts = postRepository.findAllByTypeAndContent(dto.getType(), dto.getContent());
         model.addAttribute("posts", searchPosts);
 
         Member loginMember = (Member) model.getAttribute("member");
