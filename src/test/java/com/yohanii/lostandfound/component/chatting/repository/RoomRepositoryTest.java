@@ -1,19 +1,17 @@
 package com.yohanii.lostandfound.component.chatting.repository;
 
 import com.yohanii.lostandfound.component.chatting.entity.Room;
-import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
-import com.yohanii.lostandfound.component.crud.entity.Post;
-import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -25,190 +23,57 @@ class RoomRepositoryTest {
     MemberRepository memberRepository;
 
     @Test
-    void save() {
-        Member member = Member.builder().build();
-        Post post = Post.builder().build();
-
-        Room saveRoom = Room.builder()
-                .member(member)
-                .post(post)
-                .partnerId(100L)
-                .storeRoomName("storeRoomName")
-                .build();
-        roomRepository.save(saveRoom);
-
-        Room savedRoom = roomRepository.find(saveRoom.getId());
-
-        assertThat(savedRoom.getMember()).isEqualTo(member);
-        assertThat(savedRoom.getPost()).isEqualTo(post);
-        assertThat(savedRoom.getPartnerId()).isEqualTo(saveRoom.getPartnerId());
-        assertThat(savedRoom.getStoreRoomName()).isEqualTo(saveRoom.getStoreRoomName());
-        assertThat(savedRoom.getCreatedTime()).isEqualTo(saveRoom.getCreatedTime());
-    }
-
-    @Test
-    void save_CreatedTime_UpdatedTime_같음() {
-        Room room = Room.builder().build();
-
-        roomRepository.save(room);
-
-        Room findRoom = roomRepository.find(room.getId());
-        assertThat(findRoom.getCreatedTime()).isEqualTo(findRoom.getUpdatedTime());
-    }
-
-    @Test
-    void find() {
-        Room saveRoom = Room.builder().build();
-        Long savedId = roomRepository.save(saveRoom);
-
-        Room findRoom = roomRepository.find(savedId);
-
-        assertThat(findRoom).isEqualTo(saveRoom);
-    }
-
-    @Test
-    void findAll() {
-        Room saveRoom1 = Room.builder().build();
-        Room saveRoom2 = Room.builder().build();
-        roomRepository.save(saveRoom1);
-        roomRepository.save(saveRoom2);
-
-        List<Room> rooms = roomRepository.findAll();
-
-        assertThat(rooms.size()).isEqualTo(2);
-        assertThat(rooms).contains(saveRoom1, saveRoom2);
-    }
-
-    @Test
-    void findByStoreRoomName() {
-        Room saveRoom = Room.builder()
-                .storeRoomName("storeRoomName")
-                .build();
-        roomRepository.save(saveRoom);
-
-        Optional<Room> findRoom = roomRepository.findByStoreRoomName(saveRoom.getStoreRoomName());
-
-        assertThat(findRoom).isPresent();
-        assertThat(findRoom.get()).isEqualTo(saveRoom);
-    }
-
-    @Test
-    void findByMemberId() {
-        Member member = Member.builder().build();
-        Member edgeMember = Member.builder().build();
-        memberRepository.save(member);
-        memberRepository.save(edgeMember);
-
-        Room saveRoom1 = Room.builder()
-                .member(member)
-                .partnerId(10001L)
-                .build();
-
-        Room saveRoom2 = Room.builder()
-                .member(member)
-                .partnerId(10002L)
-                .build();
-
-        Room saveRoom3 = Room.builder()
-                .member(edgeMember)
-                .partnerId(member.getId())
-                .build();
-        roomRepository.save(saveRoom1);
-        roomRepository.save(saveRoom2);
-        roomRepository.save(saveRoom3);
-
-        List<Room> findRooms = roomRepository.findByMemberId(member.getId());
-        assertThat(findRooms.size()).isEqualTo(2);
-        assertThat(findRooms).contains(saveRoom1, saveRoom2);
-    }
-
-    @Test
-    void findByPartnerId() {
-        Member member = Member.builder().build();
-        Member otherMember1 = Member.builder().build();
-        Member otherMember2 = Member.builder().build();
-        memberRepository.save(member);
-        memberRepository.save(otherMember1);
-        memberRepository.save(otherMember2);
-
-        Room saveRoom1 = Room.builder()
-                .member(member)
-                .partnerId(10001L)
-                .build();
-
-        Room saveRoom2 = Room.builder()
-                .member(otherMember1)
-                .partnerId(member.getId())
-                .build();
-
-        Room saveRoom3 = Room.builder()
-                .member(otherMember2)
-                .partnerId(member.getId())
-                .build();
-        roomRepository.save(saveRoom1);
-        roomRepository.save(saveRoom2);
-        roomRepository.save(saveRoom3);
-
-        List<Room> findRooms = roomRepository.findByPartnerId(member.getId());
-        assertThat(findRooms.size()).isEqualTo(2);
-        assertThat(findRooms).contains(saveRoom2, saveRoom3);
-    }
-
-    @Test
-    void findByIds() {
-        Member member = Member.builder().build();
-        Member otherMember1 = Member.builder().build();
-        Member otherMember2 = Member.builder().build();
-        memberRepository.save(member);
-        memberRepository.save(otherMember1);
-        memberRepository.save(otherMember2);
-
-        Room saveRoom1 = Room.builder()
-                .member(member)
-                .partnerId(10001L)
-                .build();
-
-        Room saveRoom2 = Room.builder()
-                .member(otherMember1)
-                .partnerId(member.getId())
-                .build();
-
-        Room saveRoom3 = Room.builder()
-                .member(otherMember2)
-                .partnerId(member.getId())
-                .build();
-        roomRepository.save(saveRoom1);
-        roomRepository.save(saveRoom2);
-        roomRepository.save(saveRoom3);
-
-        Optional<Room> findRoom = roomRepository.findByIds(member.getId(), otherMember1.getId());
-        assertThat(findRoom).isPresent();
-        assertThat(findRoom.get()).isEqualTo(saveRoom2);
-    }
-
-    @Test
+    @DisplayName("입력된 roomIds에 해당하는 room들을 모두 제거한다.")
     void deleteAll() {
         Room room1 = Room.builder().build();
         Room room2 = Room.builder().build();
         Room room3 = Room.builder().build();
 
-        roomRepository.save(room1);
-        roomRepository.save(room2);
-        roomRepository.save(room3);
+        Long savedRoomId1 = roomRepository.save(room1).getId();
+        Long savedRoomId2 = roomRepository.save(room2).getId();
+        Long savedRoomId3 = roomRepository.save(room3).getId();
 
-        roomRepository.deleteAll(List.of(room1.getId(), room2.getId(), room3.getId()));
-        assertThat(roomRepository.findAll().size()).isEqualTo(0);
+        roomRepository.deleteAll(List.of(savedRoomId1, savedRoomId2));
+
+        List<Room> rooms = roomRepository.findAll();
+        assertThat(rooms).doesNotContain(room1, room2);
+        assertThat(rooms).contains(room3);
+
     }
 
     @Test
-    void getRoomCount() {
+    @DisplayName("입력된 roomId에 해당하는 room가 없을 경우, 존재하는 room만 제거한다.")
+    void deleteAll_non_exist_roomId() {
         Room room1 = Room.builder().build();
         Room room2 = Room.builder().build();
+        Room room3 = Room.builder().build();
 
-        roomRepository.save(room1);
-        roomRepository.save(room2);
+        Long savedRoomId1 = roomRepository.save(room1).getId();
+        Long savedRoomId2 = roomRepository.save(room2).getId();
+        Long savedRoomId3 = roomRepository.save(room3).getId();
+        roomRepository.deleteById(savedRoomId3);
 
-        long roomCount = roomRepository.getRoomCount();
-        assertThat(roomCount).isEqualTo(2);
+        roomRepository.deleteAll(List.of(savedRoomId1, savedRoomId2, savedRoomId3));
+
+        List<Room> rooms = roomRepository.findAll();
+        assertThat(rooms).doesNotContain(room1, room2, room3);
+    }
+
+    @Test
+    @DisplayName("memberId, partnerId가 일치하는 room을 반환한다.")
+    void findByMemberIdAndPartnerId() {
+        Member member = Member.builder().build();
+        Member savedMember = memberRepository.save(member);
+
+        Room room = Room.builder()
+                .member(savedMember)
+                .partnerId(-1L)
+                .build();
+
+        Room savedRoom = roomRepository.save(room);
+
+        Room result = roomRepository.findByMemberIdAndPartnerId(savedMember.getId(), room.getPartnerId()).orElse(null);
+
+        assertThat(result).isEqualTo(savedRoom);
     }
 }

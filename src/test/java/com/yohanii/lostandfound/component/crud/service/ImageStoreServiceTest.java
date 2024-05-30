@@ -1,15 +1,13 @@
 package com.yohanii.lostandfound.component.crud.service;
 
-import com.yohanii.lostandfound.component.crud.entity.Image;
-import com.yohanii.lostandfound.component.crud.repository.ImageRepository;
-import com.yohanii.lostandfound.component.crud.entity.ImageType;
-import com.yohanii.lostandfound.component.crud.entity.Item;
-import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
-import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.dto.image.ItemImagesSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.image.ProfileImageSaveDto;
-import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
+import com.yohanii.lostandfound.component.crud.entity.Image;
+import com.yohanii.lostandfound.component.crud.entity.ImageType;
+import com.yohanii.lostandfound.component.crud.entity.Item;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +30,6 @@ class ImageStoreServiceTest {
     ImageStoreService imageStoreService;
     @Autowired
     MemberRepository memberRepository;
-    @Autowired
-    ImageRepository imageRepository;
     @Autowired
     ItemRepository itemRepository;
 

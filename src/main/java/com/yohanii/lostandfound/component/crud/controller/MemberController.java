@@ -1,9 +1,9 @@
 package com.yohanii.lostandfound.component.crud.controller;
 
-import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.dto.image.ProfileImageSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.member.MemberSaveRequestDto;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,13 +45,12 @@ public class MemberController {
             return "members/addMemberForm";
         }
 
-        Long savedMemberId = memberRepository.save(dto.toEntity());
-        Member savedMember = memberRepository.find(savedMemberId);
+        Member savedMember = memberRepository.save(dto.toEntity());
 
         if (!dto.getProfileImage().isEmpty()) {
             imageStoreService.saveImage(new ProfileImageSaveDto(savedMember, dto.getProfileImage()));
         }
-        log.info("Save Success!!!!!!!!!");
+
         return "redirect:/login";
     }
 }

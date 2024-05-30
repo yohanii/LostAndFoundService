@@ -1,12 +1,13 @@
 package com.yohanii.lostandfound.component.admin.service;
 
+import com.yohanii.lostandfound.component.admin.dto.OverviewResponseDto;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.admin.dto.OverviewResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,10 +63,10 @@ public class AdminService {
 
     public OverviewResponseDto getOverview() {
 
-        long memberCount = memberRepository.getMemberCount();
-        long lostPostCount = postRepository.getLostPostCount();
-        long foundPostCount = postRepository.getFoundPostCount();
-        long roomCount = roomRepository.getRoomCount();
+        long memberCount = memberRepository.count();
+        long lostPostCount = postRepository.countByType(PostType.LOST);
+        long foundPostCount = postRepository.countByType(PostType.FOUND);
+        long roomCount = roomRepository.count();
 
         return new OverviewResponseDto(
                 memberCount,

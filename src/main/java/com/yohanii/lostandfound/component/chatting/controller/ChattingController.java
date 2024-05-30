@@ -1,12 +1,12 @@
 package com.yohanii.lostandfound.component.chatting.controller;
 
+import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
+import com.yohanii.lostandfound.component.chatting.service.RoomService;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
-import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
-import com.yohanii.lostandfound.component.chatting.service.RoomService;
 import com.yohanii.lostandfound.component.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,8 @@ public class ChattingController {
 
         Member loginMember = (Member) model.getAttribute("member");
         Long loginMemberId = loginMember.getId();
-        Post post = postRepository.findById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
 
         Optional<Room> findRoomByIds = roomService.findRoomByIds(loginMemberId, post.getMember().getId());
         if (findRoomByIds.isPresent()) {

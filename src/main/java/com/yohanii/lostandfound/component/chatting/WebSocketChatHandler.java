@@ -1,11 +1,11 @@
 package com.yohanii.lostandfound.component.chatting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yohanii.lostandfound.component.chatting.service.ChattingService;
+import com.yohanii.lostandfound.component.chatting.dto.chatting.ChattingMessageDto;
 import com.yohanii.lostandfound.component.chatting.entity.ChattingType;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
-import com.yohanii.lostandfound.component.chatting.dto.chatting.ChattingMessageDto;
+import com.yohanii.lostandfound.component.chatting.service.ChattingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,10 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -41,7 +44,8 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         log.info("handleTextMessage payload = {}", payload);
         ChattingMessageDto dto = objectMapper.readValue(payload, ChattingMessageDto.class);
         log.info("handleTextMessage dto.getRoomId = {}", dto.getRoomId());
-        Room room = roomRepository.find(dto.getRoomId());
+        Room room = roomRepository.findById(dto.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 채팅방이 존재하지 않습니다."));
         log.info("handleTextMessage room = {}", room);
 
         if(!chatRoomSessionMap.containsKey(room.getId())){

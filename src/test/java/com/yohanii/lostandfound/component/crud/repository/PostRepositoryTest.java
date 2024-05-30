@@ -1,11 +1,8 @@
 package com.yohanii.lostandfound.component.crud.repository;
 
-import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.entity.Post;
-import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import com.yohanii.lostandfound.component.crud.entity.PostType;
-import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -21,221 +18,138 @@ class PostRepositoryTest {
 
     @Autowired
     PostRepository postRepository;
-    @Autowired
-    MemberRepository memberRepository;
 
     @Test
-    void save() {
-        Member member = Member.builder().build();
-        Post post = Post.builder()
-                .member(member)
-                .title("hello")
-                .content("hello123")
-                .type(PostType.LOST)
-                .build();
-
-        Long savedId = postRepository.save(post);
-
-        Post savedPost = postRepository.findById(savedId);
-        assertThat(savedPost.getMember()).isEqualTo(member);
-        assertThat(savedPost.getTitle()).isEqualTo("hello");
-        assertThat(savedPost.getContent()).isEqualTo("hello123");
-        assertThat(savedPost.getType()).isEqualTo(PostType.LOST);
-    }
-
-    @Test
-    void save_CreatedTime_UpdatedTime_같음() {
-        Post post = Post.builder().build();
-
-        postRepository.save(post);
-
-        Post findPost = postRepository.findById(post.getId());
-        assertThat(findPost.getCreatedTime()).isEqualTo(findPost.getUpdatedTime());
-    }
-
-    @Test
-    void findById() {
-        Post post1 = Post.builder()
-                .title("hello")
-                .content("hello123")
-                .type(PostType.LOST)
-                .build();
-        Post post2 = Post.builder()
-                .title("hello2")
-                .content("hello1234")
-                .type(PostType.FOUND)
-                .build();
-        Long savedId1 = postRepository.save(post1);
-        Long savedId2 = postRepository.save(post2);
-
-        Post savedPost1 = postRepository.findById(savedId1);
-        Post savedPost2 = postRepository.findById(savedId2);
-
-        assertThat(savedPost1).isEqualTo(post1);
-        assertThat(savedPost2).isEqualTo(post2);
-    }
-
-    @Test
-    void findAll() {
-        Post post1 = Post.builder()
-                .title("hello")
-                .content("hello123")
-                .type(PostType.LOST)
-                .build();
-        Post post2 = Post.builder()
-                .title("hello2")
-                .content("hello1234")
-                .type(PostType.FOUND)
-                .build();
-        postRepository.save(post1);
-        postRepository.save(post2);
-
-        List<Post> result = postRepository.findAll();
-        assertThat(result).contains(post1, post2);
-        assertThat(result.size()).isEqualTo(2);
-    }
-
-    @Test
-    void delete() {
-        Post post1 = Post.builder()
-                .title("hello")
-                .content("hello123")
-                .type(PostType.LOST)
-                .build();
-        postRepository.save(post1);
-        List<Post> postsBefore = postRepository.findAll();
-
-        postRepository.delete(post1.getId());
-        List<Post> postsAfter = postRepository.findAll();
-
-        assertThat(postsAfter.size()).isEqualTo(postsBefore.size() - 1);
-        assertThat(postsBefore).contains(post1);
-        assertThat(postsAfter).doesNotContain(post1);
-    }
-
-    @Test
-    void findAllPostSearchRequestDto() {
-        Post post1 = Post.builder()
-                .content("!@#$%post1")
-                .type(PostType.FOUND)
-                .build();
-        Post post2 = Post.builder()
-                .content("!@#$%post2")
-                .type(PostType.FOUND)
-                .build();
-        Post post3 = Post.builder()
-                .content("!@#$%post3")
-                .type(PostType.LOST)
-                .build();
-        postRepository.save(post1);
-        postRepository.save(post2);
-        postRepository.save(post3);
-
-        List<Post> searchPosts1 = postRepository.findAll(new PostSearchRequestDto("!@#$", PostType.FOUND));
-        List<Post> searchPosts2 = postRepository.findAll(new PostSearchRequestDto("!@#$", PostType.LOST));
-        List<Post> searchPosts3 = postRepository.findAll(new PostSearchRequestDto("!@#$", null));
-
-        assertThat(searchPosts1.size()).isEqualTo(2);
-        assertThat(searchPosts2.size()).isEqualTo(1);
-        assertThat(searchPosts3.size()).isEqualTo(3);
-        assertThat(searchPosts1).contains(post1, post2);
-        assertThat(searchPosts2).contains(post3);
-        assertThat(searchPosts3).contains(post1, post2, post3);
-    }
-
-    @Test
-    void findAllPostSearchRequestDto_empty_content() {
-        Post post1 = Post.builder()
-                .content("!@#$%post1")
-                .type(PostType.FOUND)
-                .build();
-        Post post2 = Post.builder()
-                .content("!@#$%post2")
-                .type(PostType.FOUND)
-                .build();
-        Post post3 = Post.builder()
-                .content("!@#$%post3")
-                .type(PostType.LOST)
-                .build();
-        postRepository.save(post1);
-        postRepository.save(post2);
-        postRepository.save(post3);
-
-        List<Post> searchPosts = postRepository.findAll(new PostSearchRequestDto("", null));
-
-        assertThat(searchPosts.size()).isEqualTo(3);
-        assertThat(searchPosts).contains(post1, post2, post3);
-    }
-
-    @Test
-    void findAllByMemberId() {
-        Member member = Member.builder().build();
-        memberRepository.save(member);
-
-        Post post1 = Post.builder()
-                .member(member)
-                .build();
-        Post post2 = Post.builder()
-                .member(member)
-                .build();
-        Post post3 = Post.builder().build();
-
-        postRepository.save(post1);
-        postRepository.save(post2);
-        postRepository.save(post3);
-
-        List<Post> findPosts = postRepository.findAll(member.getId());
-
-        assertThat(findPosts.size()).isEqualTo(2);
-        assertThat(findPosts).contains(post1, post2);
-        assertThat(findPosts).doesNotContain(post3);
-    }
-
-    @Test
-    void deleteAll() {
+    @DisplayName("postIds에 들어와 있는 post들이 모두 제거된다.")
+    void deleteAll_정상입력() {
         Post post1 = Post.builder().build();
         Post post2 = Post.builder().build();
         Post post3 = Post.builder().build();
 
+        Long savedPostId1 = postRepository.save(post1).getId();
+        Long savedPostId2 = postRepository.save(post2).getId();
+        Long savedPostId3 = postRepository.save(post3).getId();
+
+        postRepository.deleteAll(List.of(savedPostId1, savedPostId2, savedPostId3));
+
+        List<Post> posts = postRepository.findAll();
+        assertThat(posts).doesNotContain(post1, post2, post3);
+    }
+
+    @Test
+    @DisplayName("postIds 중 존재하는 post가 일부일 경우에도 존재하는 post들만 정상적으로 제거된다.")
+    void deleteAll_3개중_2개만_존재할경우() {
+        Post post1 = Post.builder().build();
+        Post post2 = Post.builder().build();
+        Post post3 = Post.builder().build();
+
+        Long savedPostId1 = postRepository.save(post1).getId();
+        Long savedPostId2 = postRepository.save(post2).getId();
+        Long savedPostId3 = postRepository.save(post3).getId();
+        postRepository.deleteById(savedPostId3);
+
+        postRepository.deleteAll(List.of(savedPostId1, savedPostId2, savedPostId3));
+
+        List<Post> posts = postRepository.findAll();
+        assertThat(posts).doesNotContain(post1, post2, post3);
+    }
+
+    @Test
+    @DisplayName("dto에 type과 content가 비어있을 경우, 전체 post 반환")
+    void findAllByPostSearchRequestDto_empty() {
+        Post post1 = Post.builder()
+                .type(PostType.LOST)
+                .content("cdefg hijklmnop")
+                .build();
+        Post post2 = Post.builder()
+                .type(PostType.LOST)
+                .content("bcdefg hijklmnop")
+                .build();
+        Post post3 = Post.builder()
+                .type(PostType.FOUND)
+                .content("abcdefg hijklmnop")
+                .build();
+
         postRepository.save(post1);
         postRepository.save(post2);
         postRepository.save(post3);
 
-        postRepository.deleteAll(List.of(post1.getId(), post2.getId(), post3.getId()));
-        assertThat(postRepository.findAll().size()).isEqualTo(0);
+        List<Post> result = postRepository.findAllByTypeAndContent(null, "");
+        assertThat(result).contains(post1, post2, post3);
     }
 
     @Test
-    void getLostPostCount() {
+    @DisplayName("dto에 type이 들어올 경우, type에 해당하는 posts 반환")
+    void findAllByPostSearchRequestDto_type() {
         Post post1 = Post.builder()
                 .type(PostType.LOST)
+                .content("cdefg hijklmnop")
                 .build();
         Post post2 = Post.builder()
+                .type(PostType.LOST)
+                .content("bcdefg hijklmnop")
+                .build();
+        Post post3 = Post.builder()
                 .type(PostType.FOUND)
+                .content("abcdefg hijklmnop")
                 .build();
 
         postRepository.save(post1);
         postRepository.save(post2);
+        postRepository.save(post3);
 
-        long lostPostCount = postRepository.getLostPostCount();
-
-        assertThat(lostPostCount).isEqualTo(1);
+        List<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "");
+        assertThat(result).contains(post1, post2);
+        assertThat(result).doesNotContain(post3);
     }
 
     @Test
-    void getFoundPostCount() {
+    @DisplayName("dto에 content가 들어올 경우, content가 포함된 posts 반환")
+    void findAllByPostSearchRequestDto_content() {
         Post post1 = Post.builder()
                 .type(PostType.LOST)
+                .content("cdefg hijklmnop")
                 .build();
         Post post2 = Post.builder()
+                .type(PostType.LOST)
+                .content("bcdefg hijklmnop")
+                .build();
+        Post post3 = Post.builder()
                 .type(PostType.FOUND)
+                .content("abcdefg hijklmnop")
                 .build();
 
         postRepository.save(post1);
         postRepository.save(post2);
+        postRepository.save(post3);
 
-        long foundPostCount = postRepository.getFoundPostCount();
+        List<Post> result = postRepository.findAllByTypeAndContent(null, "bcdefg");
+        assertThat(result).contains(post2, post3);
+        assertThat(result).doesNotContain(post1);
+    }
 
-        assertThat(foundPostCount).isEqualTo(1);
+    @Test
+    @DisplayName("dto에 type과 content가 모두 들어올 경우, 해당 type이며, content가 포함된 posts 반환")
+    void findAllByPostSearchRequestDto_type_and_content() {
+        Post post1 = Post.builder()
+                .type(PostType.LOST)
+                .content("cdefg hijklmnop")
+                .build();
+        Post post2 = Post.builder()
+                .type(PostType.LOST)
+                .content("bcdefg hijklmnop")
+                .build();
+        Post post3 = Post.builder()
+                .type(PostType.FOUND)
+                .content("abcdefg hijklmnop")
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+        postRepository.save(post3);
+
+        List<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "bcdefg");
+        assertThat(result).contains(post2);
+        assertThat(result).doesNotContain(post1, post3);
     }
 }

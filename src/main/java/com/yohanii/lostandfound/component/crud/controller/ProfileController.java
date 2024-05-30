@@ -1,9 +1,9 @@
 package com.yohanii.lostandfound.component.crud.controller;
 
-import com.yohanii.lostandfound.component.crud.entity.Member;
-import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.dto.image.ProfileImageSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.profile.ProfileEditRequestDto;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,8 @@ public class ProfileController {
     public String profile(@PathVariable String nickName, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
         log.info("ProfileController.profile");
 
-        Member findMember = memberRepository.findByNickName(nickName).orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
+        Member findMember = memberRepository.findByNickName(nickName)
+                .orElseThrow(() -> new IllegalStateException("해당 nickName으로 찾을 수 없습니다."));
         log.info("findMember.name() = " + findMember.getName());
         log.info("findMember.nickName = " + findMember.getNickName());
 
