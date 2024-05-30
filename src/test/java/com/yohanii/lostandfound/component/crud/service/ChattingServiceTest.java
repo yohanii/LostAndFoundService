@@ -34,13 +34,13 @@ class ChattingServiceTest {
         Member member = Member.builder().build();
         Long savedMemberId = memberRepository.save(member).getId();
         Room room = Room.builder().build();
-        Long savedRoomId = roomRepository.save(room);
+        Long savedRoomId = roomRepository.save(room).getId();
 
 
         ChattingMessageDto dto = new ChattingMessageDto(savedMemberId, savedRoomId, ChattingType.ENTER, "입장했습니다.");
         Long savedChattingId = chattingService.saveChatting(dto);
 
-        Chatting findChatting = chattingRepository.find(savedChattingId);
+        Chatting findChatting = chattingRepository.findById(savedChattingId).orElse(null);
 
         assertThat(findChatting.getMember()).isEqualTo(member);
         assertThat(findChatting.getRoom()).isEqualTo(room);
@@ -53,12 +53,12 @@ class ChattingServiceTest {
         Member member = Member.builder().build();
         Long savedMemberId = memberRepository.save(member).getId();
         Room room = Room.builder().build();
-        Long savedRoomId = roomRepository.save(room);
+        Long savedRoomId = roomRepository.save(room).getId();
         ChattingMessageDto dto = new ChattingMessageDto(savedMemberId, savedRoomId, ChattingType.ENTER, "입장했습니다.");
 
         Long savedChattingId = chattingService.saveChatting(dto);
 
-        Chatting findChatting = chattingRepository.find(savedChattingId);
+        Chatting findChatting = chattingRepository.findById(savedChattingId).orElse(null);
         Room chattingRoom = findChatting.getRoom();
 
         assertThat(chattingRoom.getUpdatedTime()).isEqualTo(findChatting.getCreatedTime());

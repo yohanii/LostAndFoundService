@@ -66,7 +66,7 @@ public class AdminService {
         long memberCount = memberRepository.count();
         long lostPostCount = postRepository.countByType(PostType.LOST);
         long foundPostCount = postRepository.countByType(PostType.FOUND);
-        long roomCount = roomRepository.getRoomCount();
+        long roomCount = roomRepository.count();
 
         return new OverviewResponseDto(
                 memberCount,

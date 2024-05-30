@@ -25,7 +25,8 @@ public class ChattingService {
     public Long saveChatting(ChattingMessageDto dto) {
         Member member = memberRepository.findById(dto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다."));
-        Room room = roomRepository.find(dto.getRoomId());
+        Room room = roomRepository.findById(dto.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 채팅방이 존재하지 않습니다."));
 
         LocalDateTime now = room.updateUpdatedTime();
         Chatting saveChatting = Chatting.builder()
@@ -36,6 +37,6 @@ public class ChattingService {
                 .createdTime(now)
                 .build();
 
-        return chattingRepository.save(saveChatting);
+        return chattingRepository.save(saveChatting).getId();
     }
 }

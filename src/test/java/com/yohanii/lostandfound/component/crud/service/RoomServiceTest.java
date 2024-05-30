@@ -9,6 +9,7 @@ import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +44,7 @@ class RoomServiceTest {
         dto.setPostId(savedPostId);
         Long savedRoomId = roomService.createRoom(dto);
 
-        Room savedRoom = roomRepository.find(savedRoomId);
+        Room savedRoom = roomRepository.findById(savedRoomId).orElse(null);
 
         assertThat(savedRoom.getMember()).isEqualTo(member);
         assertThat(savedRoom.getPost()).isEqualTo(post);
@@ -56,7 +57,7 @@ class RoomServiceTest {
         Room room = Room.builder()
                 .storeRoomName("testStoreRoomName")
                 .build();
-        Long savedRoomId = roomRepository.save(room);
+        Long savedRoomId = roomRepository.save(room).getId();
 
         String storeRoomName = roomService.getStoreRoomNameById(savedRoomId);
 
@@ -93,5 +94,41 @@ class RoomServiceTest {
         List<Room> findRooms = roomService.findRoomByMemberId(member.getId());
         assertThat(findRooms.size()).isEqualTo(3);
         assertThat(findRooms).contains(saveRoom1, saveRoom2, saveRoom3);
+    }
+
+    @Test
+    @DisplayName("memberId, partnerId가 일치하는 room을 반환한다.")
+    void findByMemberIdAndPartnerId() {
+        Member member = Member.builder().build();
+        Member savedMember = memberRepository.save(member);
+
+        Room room = Room.builder()
+                .member(savedMember)
+                .partnerId(-1L)
+                .build();
+
+        Room savedRoom = roomRepository.save(room);
+
+        Room result = roomService.findRoomByIds(savedMember.getId(), room.getPartnerId()).orElse(null);
+
+        assertThat(result).isEqualTo(savedRoom);
+    }
+
+    @Test
+    @DisplayName("memberId, partnerId 서로 바뀐 상태에서도 해당 room을 반환한다.")
+    void findByMemberIdAndPartnerId_reverse() {
+        Member member = Member.builder().build();
+        Member savedMember = memberRepository.save(member);
+
+        Room room = Room.builder()
+                .member(savedMember)
+                .partnerId(-1L)
+                .build();
+
+        Room savedRoom = roomRepository.save(room);
+
+        Room result = roomService.findRoomByIds(room.getPartnerId(), savedMember.getId()).orElse(null);
+
+        assertThat(result).isEqualTo(savedRoom);
     }
 }
