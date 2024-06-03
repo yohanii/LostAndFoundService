@@ -22,149 +22,85 @@ https://www.wanna-find.com/
 - MySQL
 - Thymeleaf
 
+## 🧭 아키텍처
+![아키텍처1.png](docs%2Fimg%2F%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%981.png)
+
 ## 💎 Main Features
 - 기본적인 게시판 CRUD
-  - 게시글 CRUD
   - S3에 이미지 저장
-- 비로그인 시 페이지 접근 제한
-  - Interceptor를 활용한 로그인 여부 체크 및 페이지 접근 제한
+- Session 방식 로그인
+  - Spring Interceptor를 활용해 비로그인 시 페이지 접근 제한
 - 검색 기능
   - 게시물 타입, 내용에 대한 검색 기능 구현
-  - JPQL을 사용해 동적 쿼리 작성
 - 1:1 채팅 기능
   - WebSocket을 활용한 실시간 채팅 기능 구현
-- 알림 기능
-  - SSE을 활용한 실시간 알림 기능 구현
-- AOP
-  - 많은 Controller method에서 parameter로 로그인 유저 객체를 받아오는 상황
-  - AOP를 사용해, 16개 method 중복 코드 제거
-- 테스트 코드
-  - JUnit5를 활용하여 단위/통합 테스트 작성
-  - 테스트용 H2 db 분리
+- AOP 
+  - 16개 method 코드 중복 제거
 - Nginx를 이용한 포트포워딩
-- Let's Encrypt를 이용한 HTTPS 사용
 
 ## 💾 ERD
 ![ERD.png](docs/img/ERDv6.png)
 
-## 🎯 문제 해결
+## 🎯 트러블 슈팅
 ### 목차
 
-1. [WebSocket 1:1 채팅 기능](#1-websocket-11-채팅-기능)
-2. [SSE 알림 기능](#2-sse-알림-기능)
-3. [AOP를 사용해, 16개 method 중복 코드 제거](#3-aop를-사용해-16개-method-중복-코드-제거)
-4. [H2 user 키워드 예약어 문제](#4-h2-user-키워드-예약어-문제)
-5. [비로그인 시 페이지 접근 제한](#5-비로그인-시-페이지-접근-제한)
-6. [검색 기능](#6-검색-기능)
+1. [운영환경에서 WebSocket 이용한 Chatting 안되는 문제](#1-운영환경에서-websocket-이용한-chatting-안되는-문제)
+2. [AOP를 사용해, 16개 method 중복 코드 제거](#2-aop를-사용해-16개-method-중복-코드-제거)
+3. [H2 user 키워드 예약어 문제](#3-h2-user-키워드-예약어-문제)
 
----
-### 1. WebSocket 1:1 채팅 기능
+--- 
+
+### 1. 운영환경에서 WebSocket 이용한 Chatting 안되는 문제
 #### 문제
-* 게시물의 게시자와 실시간 1:1 채팅할 수 있는 기능이 필요했습니다.  
+* WebSocket을 이용한 실시간 1:1 채팅 기능이 로컬에선 정상작동되지만, 운영환경에선 동작하지 않음.
 
 #### 해결
-* '실시간'이 핵심이기 때문에, WebSocket 통신을 사용하기로 했고, 관련 Config와 Handler를 추가했습니다.  
-[WebSocketConfig](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/service/chat/WebSocketChatHandler.java)  
-[WebSocketChatHandler](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/WebSocketConfig.java)
+* WebSocket은 hop-by-hop 프로토콜이기 때문에, Nginx에서 적절한 헤더를 추가해주어야 했음.
+* WebSocket 핸드셰이크는 HTTP 업그레이드 기능을 사용해 호환할 수 있다.
+* ```
+  //nginx.conf
+  server {
+          server_name wanna-find.com www.wanna-find.com; # managed by Certbot
+          ...
+
+          location /ws {
+                  proxy_pass http://localhost:8080/ws;
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection "Upgrade";
+                  proxy_set_header Host $host;
+                  ...
+          }
+          ...
+  }
+  ```
+* HTTP 버전은 1.1이상 이어야 하며, `Upgrade header`와 `Connection header`를 명시해주어 수신하는 웹서버가 해당 요청이 WebSocket 요청임을 알 수 있게한다.
+
 ---
 
-
-### 2. SSE 알림 기능
+### 2. AOP를 사용해, 16개 method 중복 코드 제거
 #### 문제
-* 로그인 상태일 때, 누군가 새로 채팅을 걸면 실시간 알림이 오는 기능이 필요했습니다.  
+* Controller method들에서 parameter로 로그인 유저 객체를 사용하는 상황  
 
 #### 해결
-* WebSocket는 자원 낭비이고, 서버에서 클라이언트로만 응답을 보낼 수 있는 SSE를 사용하기로 했습니다.  
-* SseEmitter는 EmitterRepository의 ConcurrentHashMap에 저장을 해줍니다.  
-* 관련 Controller, Service, Repository를 추가했습니다.  
-[EmitterRepository](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/domain/notify/EmitterRepository.java)  
-[NotificationService](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/service/notify/NotificationService.java)  
-[NotificationController](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/web/notify/NotificationController.java)  
+* 중복 코드를 줄이고자, AOP를 사용해 Session에서 받아온, loginUser 객체를 model에 넣어줌.
+* 포인트컷을 통해 AOP 적용되는 범위를 제한
+* 결과적으로, 총 16개 method의 중복 코드를 제거  
+
 ---
 
 
-### 3. AOP를 사용해, 16개 method 중복 코드 제거
+### 3. H2 user 키워드 예약어 문제
 #### 문제
-* Nav에서 loginUser에 대한 data가 필요해,  
-* 많은 Controller method에서 parameter로 loginUser 객체를 받아오는 상황이었습니다.  
-
-#### 해결
-* 중복 코드를 줄이고자, AOP를 사용하기로 했습니다.  
-* AOP에서 Session에서 받아온, loginUser 객체를 model에 넣어주었고,   
-* 포인트컷을 통해 AOP 적용되는 범위를 제한했습니다.  
-* 결과적으로, 총 16개 method의 중복 코드를 제거했습니다.  
-[LoginMemberAOP](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/aop/LoginMemberAOP.java)
----
-
-
-### 4. H2 user 키워드 예약어 문제
-#### 문제
-* 테스트용 db로 H2를 사용하면서, 문제가 발생했습니다.  
+* 테스트용 db로 H2를 사용하면서, 문제가 발생.  
 * Message: `Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user..`  
 
 #### 해결
-* H2 db 2.1.214 버전에서 user 키워드가 예약어로 지정되어 있어서 발생한 문제였고,  
-* `User` Entitiy에 `@Table(name = "users")` 써줘서 해결했고,  
-* 계속 문제가 생길 것 같아, `User` -> `Member`로 이름변경을 해줬습니다.
+* H2 db 2.1.214 버전에서 user 키워드가 예약어로 지정되어 있어서 발생한 문제
+* `User` Entitiy에 `@Table(name = "users")` 추가해서 임시 해결 
+* 계속 문제가 생길 것 같아, `User` -> `Member`로 이름변경을 해줌.
 ---
 
 
-### 5. 비로그인 시 페이지 접근 제한
-#### 문제
-* 로그인, 비로그인 상태에 따라, 접근할 수 있는 페이지를 구분해야했습니다.
-
-#### 해결
-* Interceptor를 이용해, 요청을 받아들이기 전에, 로그인 상태인지 검증하기로 했습니다.  
-* 비로그인 상태라면, 로그인 form으로 redirect 시켜주었습니다.  
-* WebConfig에서 인터셉터 추가 및 접근 가능 페이지를 관리해주었습니다.  
-[LoginCheckInterceptor](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/web/interceptor/LoginCheckInterceptor.java)  
-[WebConfig](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/WebConfig.java)
----
-
-
-### 6. 검색 기능
-#### 문제
-* 게시글 검색에 타입, 내용이 사용되어서, 동적 쿼리 작성이 필요했습니다.
-
-#### 해결
-* JPQL을 이용해 직접 동적 쿼리를 작성했습니다.  
-* 추후에 QueryDSL로 수정할 예정입니다.  
-[postRepository](https://github.com/yohanii/LostAndFoundService/blob/main/src/main/java/com/yohanii/lostandfound/domain/post/PostRepository.java)  
-
----
-
-## 📷 결과 화면
-- Home & loginHome  
-  <img src="docs/img/home1.png" width="300" height="150"/>
-  <img src="docs/img/loginHome1.png" width="300" height="150"/>
-
-- 로그인 & 회원가입  
-  <img src="docs/img/login1.png" width="150" height="150"/>
-  <img src="docs/img/join1.png" width="150" height="150"/>
-
-- 알림 & 알림목록  
-  <img src="docs/img/notification1.png" width="150" height="80"/>
-  <img src="docs/img/notificationBtn1.png" width="150" height="100"/>
-  <img src="docs/img/chattingRooms1.png" width="150" height="150"/>
-
-- 1:1 채팅 & 채팅 목록  
-  <img src="docs/img/chatting1.png" width="150" height="150"/>
-  <img src="docs/img/chattingRooms1.png" width="150" height="150"/>
-
-- 검색  
-  <img src="docs/img/search1.png" width="150" height="150"/>
-
-- 게시글 CRUD  
-  <img src="docs/img/lostposts1.png" width="150" height="150"/>
-  <img src="docs/img/postCreate1.png" width="150" height="150"/>
-  <img src="docs/img/postRead1.png" width="150" height="150"/>
-  <img src="docs/img/postRead2.png" width="150" height="150"/>
-  <img src="docs/img/postUpdate1.png" width="150" height="150"/>
-
-- 마이페이지
-  - 프로필  
-    <img src="docs/img/profile1.png" width="150" height="150"/>
-  - 내가 쓴 게시물  
-    <img src="docs/img/myPost1.png" width="150" height="150"/>
 
 
