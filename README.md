@@ -36,7 +36,7 @@ https://www.wanna-find.com/
   - WebSocket을 활용한 실시간 채팅 기능 구현
 - AOP 
   - 16개 method 코드 중복 제거
-- Nginx를 이용한 포트포워딩
+- Nginx를 이용한 리버스 프록시
 
 ## 💾 ERD
 ![ERD.png](docs/img/ERDv6.png)
