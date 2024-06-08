@@ -26,17 +26,17 @@ https://www.wanna-find.com/
 ![아키텍처1.png](docs%2Fimg%2F%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%981.png)
 
 ## 💎 Main Features
-- 기본적인 게시판 CRUD
+- 게시판 CRUD
   - S3에 이미지 저장
+  - AOP 사용해 16개 method 코드 중복 제거
 - Session 방식 로그인
   - Spring Interceptor를 활용해 비로그인 시 페이지 접근 제한
 - 검색 기능
   - 게시물 타입, 내용에 대한 검색 기능 구현
 - 1:1 채팅 기능
   - WebSocket을 활용한 실시간 채팅 기능 구현
-- AOP 
-  - 16개 method 코드 중복 제거
-- Nginx를 이용한 리버스 프록시
+- 관리자 페이지
+  - 사용자, 게시물, 채팅방 삭제 및 사용자 권한 변경 
 
 ## 💾 ERD
 ![ERD.png](docs/img/ERDv7.png)
@@ -46,7 +46,7 @@ https://www.wanna-find.com/
 
 1. [운영환경에서 WebSocket 이용한 Chatting 안되는 문제](#1-운영환경에서-websocket-이용한-chatting-안되는-문제)
 2. [AOP를 사용해, 16개 method 중복 코드 제거](#2-aop를-사용해-16개-method-중복-코드-제거)
-3. [H2 user 키워드 예약어 문제](#3-h2-user-키워드-예약어-문제)
+3. [맴버 삭제 불가능 문제](#3-맴버-삭제-불가능-문제)
 
 --- 
 
@@ -126,17 +126,20 @@ https://www.wanna-find.com/
 ---
 
 
-## 3. H2 user 키워드 예약어 문제
+## 3. 맴버 삭제 불가능 문제
 ### 문제
-* 테스트용 db로 H2를 사용하면서, 문제가 발생.  
-```
-Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "insert into [*]user..
-```
-
+  - Member 객체 삭제시 error 발생
+  - ```
+    Cannot delete or update a parent row: a foreign key constraint fails cascade
+    ```
+### 시도
+  - 다른 테이블에 해당 데이터를 참조하고 있는 외래키가 있어서 발생했다고 판단
+  - 연관관계의 부모에 `cascade = CascadeType.ALL, orphanRemoval = true`을 모두 추가
+  - 그러나, 계속 실패해서 자식측에 `optional = false` 추가
+  - 결국 실패
 ### 해결
-* H2 db 2.1.214 버전에서 user 키워드가 예약어로 지정되어 있어서 발생한 문제
-* `User` Entitiy에 `@Table(name = "users")` 추가해서 임시 해결 
-* 계속 문제가 생길 것 같아, `User` -> `Member`로 이름변경을 해줌.
+  - JPQL로 쿼리를 날려서 delete한 것이 원인이었다. 그러면, cascade가 적용안된다.
+  - `em.remove`를 통해 삭제해줘서 해결
 ---
 
 
