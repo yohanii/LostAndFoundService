@@ -1,6 +1,6 @@
 package com.yohanii.lostandfound.component.notification.service;
 
-import com.yohanii.lostandfound.component.chatting.repository.EmitterRepository;
+import com.yohanii.lostandfound.component.notification.repository.EmitterRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.notification.entity.Notification;

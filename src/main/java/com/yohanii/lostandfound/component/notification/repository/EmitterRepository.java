@@ -1,4 +1,4 @@
-package com.yohanii.lostandfound.component.chatting.repository;
+package com.yohanii.lostandfound.component.notification.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
