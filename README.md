@@ -135,7 +135,6 @@ https://www.wanna-find.com/
 ### 시도
   - 다른 테이블에 해당 데이터를 참조하고 있는 외래키가 있어서 발생했다고 판단
   - 연관관계의 부모에 `cascade = CascadeType.ALL, orphanRemoval = true`을 모두 추가
-  - 그러나, 계속 실패해서 자식측에 `optional = false` 추가
   - 결국 실패
 ### 해결
   - JPQL로 쿼리를 날려서 delete한 것이 원인이었다. 그러면, cascade가 적용안된다.
