@@ -20,4 +20,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Query("delete from Member m where m.id in :memberIds")
     void deleteAll(@Param("memberIds") List<Long> memberIds);
+
+    List<Member> findAllByLoginId(String loginId);
 }

@@ -16,15 +16,15 @@ public class AdminInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         HttpSession session = request.getSession();
-        if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null || session.getAttribute(SessionConst.LOGIN_MEMBER) instanceof Member member) {
-            Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-            if (loginMember.getAuth() != MemberAuth.ADMIN) {
-                log.info("AdminInterceptor : MemberAuth is not ADMIN");
-                response.sendRedirect("/");
-                return false;
+        if (session != null && session.getAttribute(SessionConst.LOGIN_MEMBER) != null && session.getAttribute(SessionConst.LOGIN_MEMBER) instanceof Member member) {
+            if (member.getAuth().equals(MemberAuth.ADMIN)) {
+                log.info("AdminInterceptor : MemberAuth is ADMIN");
+                return true;
             }
         }
 
-        return true;
+        response.sendRedirect("/");
+
+        return false;
     }
 }
