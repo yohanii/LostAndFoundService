@@ -36,9 +36,14 @@ public class MemberController {
     @Transactional
     public String save(@Validated @ModelAttribute MemberSaveRequestDto dto, BindingResult bindingResult) {
 
-        Optional<Member> findMember = memberRepository.findByNickName(dto.getNickName());
-        if (findMember.isPresent()) {
-            bindingResult.reject("errorCode입니다", "닉네임 중복입니다.");
+        Optional<Member> findMemberByLoginId = memberRepository.findByLoginId(dto.getLoginId());
+        if (findMemberByLoginId.isPresent()) {
+            bindingResult.reject("duplicated_loginId", "로그인 아이디 중복입니다.");
+        }
+
+        Optional<Member> findMemberByNickName = memberRepository.findByNickName(dto.getNickName());
+        if (findMemberByNickName.isPresent()) {
+            bindingResult.reject("duplicated_nickName", "닉네임 중복입니다.");
         }
 
         if (bindingResult.hasErrors()) {
