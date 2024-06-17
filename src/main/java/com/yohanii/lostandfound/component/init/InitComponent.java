@@ -14,5 +14,6 @@ public class InitComponent {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         initService.saveAdmin();
+        initService.fillMembers();
     }
 }
