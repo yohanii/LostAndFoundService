@@ -1,14 +1,15 @@
 package com.yohanii.lostandfound.component.crud.dto.post;
 
-import com.yohanii.lostandfound.component.crud.entity.*;
+import com.yohanii.lostandfound.component.crud.entity.ItemCategory;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -28,24 +29,13 @@ public class PostSaveRequestDto {
     private ItemCategory itemCategory;
     private List<MultipartFile> itemImages;
 
-    public Post toPostEntity(Member member) {
-        LocalDateTime now = LocalDateTime.now();
+    private static ModelMapper modelMapper = new ModelMapper();
 
-        return Post.builder()
-                .member(member)
-                .title(title)
-                .content(content)
-                .type(type)
-                .createdTime(now)
-                .updatedTime(now)
-                .build();
-    }
+    public PostSaveInfoDto toServiceDto(Long memberId) {
 
-    public Item toItemEntity(Post post) {
-        return Item.builder()
-                .post(post)
-                .place(itemPlace)
-                .itemCategory(itemCategory)
-                .build();
+        PostSaveInfoDto result = modelMapper.map(this, PostSaveInfoDto.class);
+        result.setMemberId(memberId);
+
+        return result;
     }
 }

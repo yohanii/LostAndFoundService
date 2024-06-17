@@ -4,13 +4,12 @@ import com.yohanii.lostandfound.component.crud.dto.image.ItemImagesSaveDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostEditRequestDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostSaveRequestDto;
 import com.yohanii.lostandfound.component.crud.dto.post.PostSearchRequestDto;
-import com.yohanii.lostandfound.component.crud.entity.Item;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.entity.PostType;
-import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import com.yohanii.lostandfound.component.crud.service.ImageStoreService;
+import com.yohanii.lostandfound.component.crud.service.PostService;
 import com.yohanii.lostandfound.component.notification.service.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostRepository postRepository;
-    private final ItemRepository itemRepository;
+    private final PostService postService;
     private final ImageStoreService imageStoreService;
     private final NotificationService notificationService;
 
@@ -90,26 +88,14 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    @Transactional
     public String postSave(@Validated @ModelAttribute PostSaveRequestDto dto, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         if (bindingResult.hasErrors()) {
-            log.info("PostController.postSave bindingResult.hasErrors");
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                log.info(error.getDefaultMessage());
-            }
             return "posts/addPostForm";
         }
 
-        Post savePost = dto.toPostEntity((Member) model.getAttribute("member"));
-        Long savedPostId = postRepository.save(savePost).getId();
-        Item savedItem = itemRepository.save(dto.toItemEntity(savePost));
-
-        if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).getOriginalFilename().isBlank()) {
-            log.info("postSave.dto.getItemImages().size() = {}", dto.getItemImages().size());
-            log.info("postSave.dto.getItemImages().get(0).getOriginalFilename() = {}", dto.getItemImages().get(0).getOriginalFilename());
-            imageStoreService.saveImages(new ItemImagesSaveDto(savedItem, dto.getItemImages()));
-        }
+        Long loginMemberId = ((Member) model.getAttribute("member")).getId();
+        Long savedPostId = postService.savePost(dto.toServiceDto(loginMemberId));
 
         return "redirect:/posts/" + savedPostId;
     }
