@@ -22,8 +22,6 @@ public class PostSaveRequestDto {
     private String content;
     @NotNull
     private PostType type;
-
-    private String itemName;
     @NotBlank
     private String itemPlace;
     @NotNull
@@ -46,7 +44,6 @@ public class PostSaveRequestDto {
     public Item toItemEntity(Post post) {
         return Item.builder()
                 .post(post)
-                .name(itemName)
                 .place(itemPlace)
                 .itemCategory(itemCategory)
                 .build();

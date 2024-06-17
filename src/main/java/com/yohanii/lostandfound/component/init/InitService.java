@@ -66,6 +66,11 @@ public class InitService {
                                 })
                                 .toList())
                 .size();
+    }
 
+    @Transactional
+    public int fillPosts() {
+
+        return 0;
     }
 }

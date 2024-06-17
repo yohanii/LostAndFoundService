@@ -18,7 +18,6 @@ public class PostEditRequestDto {
     private String content;
     private PostType type;
 
-    private String itemName;
     private String itemPlace;
     private ItemCategory itemCategory;
     private List<MultipartFile> itemImages;

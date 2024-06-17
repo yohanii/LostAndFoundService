@@ -34,16 +34,6 @@ public class PostController {
     private final ImageStoreService imageStoreService;
     private final NotificationService notificationService;
 
-//    @GetMapping("/posts")
-    public String posts(Model model) {
-
-        List<Post> postList = postRepository.findAll();
-
-        model.addAttribute("posts", postList);
-
-        return "posts/posts";
-    }
-
     @GetMapping("/posts/lost")
     public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
 
@@ -132,7 +122,6 @@ public class PostController {
         dto.setTitle(findPost.getTitle());
         dto.setContent(findPost.getContent());
         dto.setType(findPost.getType());
-        dto.setItemName(findPost.getItem().getName());
         dto.setItemPlace(findPost.getItem().getPlace());
         dto.setItemCategory(findPost.getItem().getItemCategory());
 
