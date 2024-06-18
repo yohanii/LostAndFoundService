@@ -81,4 +81,9 @@ class InitServiceTest {
 
         assertThat(result).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("")
+    void fillPosts() {
+    }
 }
