@@ -37,6 +37,7 @@ public class InitService {
 
     public static final int INIT_MEMBER_COUNT = 1000;
     public static final long INIT_POST_COUNT = 1000;
+    public static final String INIT_IMAGE_PATH = "src/main/resources/static/img/item/";
     public static final Map<String, Integer> itemImages = Map.of(
             "airpot.jpeg", 3,
             "hat.jpg", 2,
@@ -137,7 +138,7 @@ public class InitService {
 
             for (int index = 1; index <= count; index++) {
                 String name = split[0] + index + "." + split[1];
-                Path path = Paths.get("src/main/resources/static/img/item/" + name);
+                Path path = Paths.get(INIT_IMAGE_PATH + name);
                 byte[] content = null;
 
                 try {
