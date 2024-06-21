@@ -36,4 +36,10 @@ class PostServiceTest {
         Assertions.assertThatThrownBy(() -> postService.savePost(dto))
                 .isInstanceOf(NoSuchElementException.class);
     }
+
+    @Test
+    @DisplayName("")
+    void findPostsByType() {
+
+    }
 }

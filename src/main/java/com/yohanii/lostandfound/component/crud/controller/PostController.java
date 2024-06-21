@@ -14,6 +14,10 @@ import com.yohanii.lostandfound.component.notification.service.NotificationServi
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -33,11 +37,14 @@ public class PostController {
     private final NotificationService notificationService;
 
     @GetMapping("/posts/lost")
-    public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    public String postsLost(@ModelAttribute PostSearchRequestDto dto,
+                            @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                            Model model,
+                            HttpServletRequest request) {
 
-        List<Post> postList = postRepository.findAllByType(PostType.LOST);
+        Page<Post> postPage = postService.findPostsByType(pageable, PostType.LOST);
 
-        model.addAttribute("posts", postList);
+        model.addAttribute("posts", postPage);
         model.addAttribute("requestURI", request.getRequestURI());
 
         Member loginMember = (Member) model.getAttribute("member");
@@ -51,11 +58,14 @@ public class PostController {
     }
 
     @GetMapping("/posts/found")
-    public String postsFound(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    public String postsFound(@ModelAttribute PostSearchRequestDto dto,
+                             @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                             Model model,
+                             HttpServletRequest request) {
 
-        List<Post> postList = postRepository.findAllByType(PostType.FOUND);
+        Page<Post> postPage = postService.findPostsByType(pageable, PostType.FOUND);
 
-        model.addAttribute("posts", postList);
+        model.addAttribute("posts", postPage);
         model.addAttribute("requestURI", request.getRequestURI());
 
         Member loginMember = (Member) model.getAttribute("member");
