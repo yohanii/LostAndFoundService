@@ -43,11 +43,19 @@ public class PostService {
     }
 
 
-    public Page<Post> findPostsByType(Pageable pageable, PostType postType) {
+    public Page<Post> findPostsByType(PostType postType, Pageable pageable) {
         return postRepository.findAllByType(postType, pageable);
     }
 
     public Page<Post> findPosts(Pageable pageable) {
         return postRepository.findAll(pageable);
+    }
+
+    public Page<Post> findMyPosts(Long memberId, Pageable pageable) {
+        return postRepository.findAllByMemberId(memberId, pageable);
+    }
+
+    public Page<Post> findSearchPosts(PostType type, String content, Pageable pageable) {
+        return postRepository.findAllByTypeAndContent(type, content, pageable);
     }
 }

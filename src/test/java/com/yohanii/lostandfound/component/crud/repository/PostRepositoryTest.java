@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -74,7 +76,9 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        List<Post> result = postRepository.findAllByTypeAndContent(null, "");
+        PageRequest pageRequest = PageRequest.of(0, 3);
+
+        Page<Post> result = postRepository.findAllByTypeAndContent(null, "", pageRequest);
         assertThat(result).contains(post1, post2, post3);
     }
 
@@ -98,7 +102,9 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        List<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "");
+        PageRequest pageRequest = PageRequest.of(0, 3);
+
+        Page<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "", pageRequest);
         assertThat(result).contains(post1, post2);
         assertThat(result).doesNotContain(post3);
     }
@@ -123,7 +129,9 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        List<Post> result = postRepository.findAllByTypeAndContent(null, "bcdefg");
+        PageRequest pageRequest = PageRequest.of(0, 3);
+
+        Page<Post> result = postRepository.findAllByTypeAndContent(null, "bcdefg", pageRequest);
         assertThat(result).contains(post2, post3);
         assertThat(result).doesNotContain(post1);
     }
@@ -148,7 +156,9 @@ class PostRepositoryTest {
         postRepository.save(post2);
         postRepository.save(post3);
 
-        List<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "bcdefg");
+        PageRequest pageRequest = PageRequest.of(0, 3);
+
+        Page<Post> result = postRepository.findAllByTypeAndContent(PostType.LOST, "bcdefg", pageRequest);
         assertThat(result).contains(post2);
         assertThat(result).doesNotContain(post1, post3);
     }

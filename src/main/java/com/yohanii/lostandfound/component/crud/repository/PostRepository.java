@@ -17,7 +17,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostRepositor
 
     long countByType(PostType postType);
     Page<Post> findAllByType(PostType postType, Pageable pageable);
-    List<Post> findAllByMemberId(Long id);
+    Page<Post> findAllByMemberId(Long id, Pageable pageable);
 
     @Modifying
     @Query("delete from Post p where p.id in :postIds")

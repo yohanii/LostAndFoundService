@@ -25,8 +25,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -42,7 +40,7 @@ public class PostController {
                             Model model,
                             HttpServletRequest request) {
 
-        Page<Post> postPage = postService.findPostsByType(pageable, PostType.LOST);
+        Page<Post> postPage = postService.findPostsByType(PostType.LOST, pageable);
 
         model.addAttribute("posts", postPage);
         model.addAttribute("requestURI", request.getRequestURI());
@@ -63,7 +61,7 @@ public class PostController {
                              Model model,
                              HttpServletRequest request) {
 
-        Page<Post> postPage = postService.findPostsByType(pageable, PostType.FOUND);
+        Page<Post> postPage = postService.findPostsByType(PostType.FOUND, pageable);
 
         model.addAttribute("posts", postPage);
         model.addAttribute("requestURI", request.getRequestURI());
@@ -156,10 +154,12 @@ public class PostController {
     }
 
     @PostMapping("/posts/search")
-    public String postSearch(@ModelAttribute PostSearchRequestDto dto, Model model) {
+    public String postSearch(@ModelAttribute PostSearchRequestDto dto,
+                             @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                             Model model) {
 
-        log.info("posts search");
-        List<Post> searchPosts = postRepository.findAllByTypeAndContent(dto.getType(), dto.getContent());
+        Page<Post> searchPosts = postService.findSearchPosts(dto.getType(), dto.getContent(), pageable);
+
         model.addAttribute("posts", searchPosts);
 
         Member loginMember = (Member) model.getAttribute("member");
@@ -171,14 +171,17 @@ public class PostController {
     }
 
     @GetMapping("/posts/my-posts")
-    public String MyPosts(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    public String myPosts(@ModelAttribute PostSearchRequestDto dto,
+                          @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                          Model model,
+                          HttpServletRequest request) {
 
         Member loginMember = (Member) model.getAttribute("member");
         if (loginMember == null) {
             return "redirect:/";
         }
 
-        List<Post> myPosts = postRepository.findAllByMemberId(loginMember.getId());
+        Page<Post> myPosts = postService.findMyPosts(loginMember.getId(), pageable);
         model.addAttribute("posts", myPosts);
         model.addAttribute("requestURI", request.getRequestURI());
 
