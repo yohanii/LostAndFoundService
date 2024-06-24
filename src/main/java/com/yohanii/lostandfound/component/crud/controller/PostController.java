@@ -153,7 +153,7 @@ public class PostController {
         return "redirect:" + redirectURL;
     }
 
-    @PostMapping("/posts/search")
+    @GetMapping("/posts/search")
     public String postSearch(@ModelAttribute PostSearchRequestDto dto,
                              @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
                              Model model) {
