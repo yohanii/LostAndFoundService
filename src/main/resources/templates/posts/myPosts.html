@@ -100,7 +100,8 @@
                             </a>
                         </li>
 
-                        <div th:each="current : ${#numbers.sequence(T(java.lang.Math).max(posts.pageable.pageNumber - 3, 0), T(java.lang.Math).min(posts.pageable.pageNumber + 3, posts.totalPages - 1))}">
+                        <div th:if="${posts.totalPages} > 0"
+                             th:each="current : ${#numbers.sequence(T(java.lang.Math).max(posts.pageable.pageNumber - 3, 0), T(java.lang.Math).min(posts.pageable.pageNumber + 3, posts.totalPages - 1))}">
                             <li class="page-item">
                                 <a class="page-link" href="#" th:text="${current} + 1"
                                    th:href="@{/posts/my-posts(page=${current})}"
@@ -111,14 +112,14 @@
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Next"
                                th:href="@{/posts/my-posts(page=${posts.pageable.pageNumber} + 1)}"
-                               th:classappend="${posts.pageable.pageNumber eq posts.totalPages - 1} ? 'disabled'">
+                               th:classappend="${posts.pageable.pageNumber eq posts.totalPages - 1 or posts.totalPages lt 1} ? 'disabled'">
                                 <span aria-hidden="true">&gt;</span>
                             </a>
                         </li>
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Last"
                                th:href="@{/posts/my-posts(page=${posts.totalPages} - 1)}"
-                               th:classappend="${posts.pageable.pageNumber eq posts.totalPages - 1} ? 'disabled'">
+                               th:classappend="${posts.pageable.pageNumber eq posts.totalPages - 1 or posts.totalPages lt 1} ? 'disabled'">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
