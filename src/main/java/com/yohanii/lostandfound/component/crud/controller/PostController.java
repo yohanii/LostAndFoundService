@@ -158,8 +158,10 @@ public class PostController {
                              @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
                              Model model) {
 
+        log.info("postSearch start");
         Page<Post> searchPosts = postService.findSearchPosts(dto.getType(), dto.getContent(), pageable);
 
+        log.info("postSearch postService success");
         model.addAttribute("posts", searchPosts);
 
         Member loginMember = (Member) model.getAttribute("member");
