@@ -4,11 +4,14 @@ import com.yohanii.lostandfound.component.crud.dto.post.PostSaveInfoDto;
 import com.yohanii.lostandfound.component.crud.entity.Item;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
+import com.yohanii.lostandfound.component.crud.entity.PostType;
 import com.yohanii.lostandfound.component.crud.repository.ItemRepository;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,4 +43,19 @@ public class PostService {
     }
 
 
+    public Page<Post> findPostsByType(PostType postType, Pageable pageable) {
+        return postRepository.findAllByType(postType, pageable);
+    }
+
+    public Page<Post> findPosts(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    public Page<Post> findMyPosts(Long memberId, Pageable pageable) {
+        return postRepository.findAllByMemberId(memberId, pageable);
+    }
+
+    public Page<Post> findSearchPosts(PostType type, String content, Pageable pageable) {
+        return postRepository.findAllByTypeAndContent(type, content, pageable);
+    }
 }

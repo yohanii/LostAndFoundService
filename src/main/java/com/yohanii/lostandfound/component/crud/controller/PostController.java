@@ -14,14 +14,16 @@ import com.yohanii.lostandfound.component.notification.service.NotificationServi
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -33,11 +35,14 @@ public class PostController {
     private final NotificationService notificationService;
 
     @GetMapping("/posts/lost")
-    public String postsLost(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    public String postsLost(@ModelAttribute PostSearchRequestDto dto,
+                            @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                            Model model,
+                            HttpServletRequest request) {
 
-        List<Post> postList = postRepository.findAllByType(PostType.LOST);
+        Page<Post> postPage = postService.findPostsByType(PostType.LOST, pageable);
 
-        model.addAttribute("posts", postList);
+        model.addAttribute("posts", postPage);
         model.addAttribute("requestURI", request.getRequestURI());
 
         Member loginMember = (Member) model.getAttribute("member");
@@ -51,11 +56,14 @@ public class PostController {
     }
 
     @GetMapping("/posts/found")
-    public String postsFound(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    public String postsFound(@ModelAttribute PostSearchRequestDto dto,
+                             @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                             Model model,
+                             HttpServletRequest request) {
 
-        List<Post> postList = postRepository.findAllByType(PostType.FOUND);
+        Page<Post> postPage = postService.findPostsByType(PostType.FOUND, pageable);
 
-        model.addAttribute("posts", postList);
+        model.addAttribute("posts", postPage);
         model.addAttribute("requestURI", request.getRequestURI());
 
         Member loginMember = (Member) model.getAttribute("member");
@@ -145,11 +153,15 @@ public class PostController {
         return "redirect:" + redirectURL;
     }
 
-    @PostMapping("/posts/search")
-    public String postSearch(@ModelAttribute PostSearchRequestDto dto, Model model) {
+    @GetMapping("/posts/search")
+    public String postSearch(@ModelAttribute PostSearchRequestDto dto,
+                             @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                             Model model) {
 
-        log.info("posts search");
-        List<Post> searchPosts = postRepository.findAllByTypeAndContent(dto.getType(), dto.getContent());
+        log.info("postSearch start");
+        Page<Post> searchPosts = postService.findSearchPosts(dto.getType(), dto.getContent(), pageable);
+
+        log.info("postSearch postService success");
         model.addAttribute("posts", searchPosts);
 
         Member loginMember = (Member) model.getAttribute("member");
@@ -161,14 +173,17 @@ public class PostController {
     }
 
     @GetMapping("/posts/my-posts")
-    public String MyPosts(@ModelAttribute PostSearchRequestDto dto, Model model, HttpServletRequest request) {
+    public String myPosts(@ModelAttribute PostSearchRequestDto dto,
+                          @PageableDefault(size = 15, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable,
+                          Model model,
+                          HttpServletRequest request) {
 
         Member loginMember = (Member) model.getAttribute("member");
         if (loginMember == null) {
             return "redirect:/";
         }
 
-        List<Post> myPosts = postRepository.findAllByMemberId(loginMember.getId());
+        Page<Post> myPosts = postService.findMyPosts(loginMember.getId(), pageable);
         model.addAttribute("posts", myPosts);
         model.addAttribute("requestURI", request.getRequestURI());
 
