@@ -87,14 +87,14 @@
                     <ul class="pagination">
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="First"
-                               th:href="@{/posts/search(page=0)}"
+                               th:href="@{/posts/search(content=${postSearchRequestDto.content}, type=${postSearchRequestDto.type}, page=0)}"
                                th:classappend="${posts.pageable.pageNumber eq 0} ? 'disabled'">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Previous"
-                               th:href="@{/posts/search(page=${posts.pageable.pageNumber} - 1)}"
+                               th:href="@{/posts/search(content=${postSearchRequestDto.content}, type=${postSearchRequestDto.type}, page=${posts.pageable.pageNumber} - 1)}"
                                th:classappend="${posts.pageable.pageNumber eq 0} ? 'disabled'">
                                 <span aria-hidden="true">&lt;</span>
                             </a>
@@ -103,21 +103,21 @@
                         <div th:each="current : ${#numbers.sequence(T(java.lang.Math).max(posts.pageable.pageNumber - 3, 0), T(java.lang.Math).min(posts.pageable.pageNumber + 3, posts.totalPages - 1))}">
                             <li class="page-item">
                                 <a class="page-link" href="#" th:text="${current} + 1"
-                                   th:href="@{/posts/search(page=${current})}"
+                                   th:href="@{/posts/search(content=${postSearchRequestDto.content}, type=${postSearchRequestDto.type}, page=${current})}"
                                    th:classappend="${current eq posts.pageable.pageNumber} ? 'active'">1</a>
                             </li>
                         </div>
 
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Next"
-                               th:href="@{/posts/search(page=${posts.pageable.pageNumber} + 1)}"
+                               th:href="@{/posts/search(content=${postSearchRequestDto.content}, type=${postSearchRequestDto.type}, page=${posts.pageable.pageNumber} + 1)}"
                                th:classappend="${posts.pageable.pageNumber eq posts.totalPages - 1} ? 'disabled'">
                                 <span aria-hidden="true">&gt;</span>
                             </a>
                         </li>
                         <li class="page-item">
                             <a class="page-link" href="#" aria-label="Last"
-                               th:href="@{/posts/search(page=${posts.totalPages} - 1)}"
+                               th:href="@{/posts/search(content=${postSearchRequestDto.content}, type=${postSearchRequestDto.type}, page=${posts.totalPages} - 1)}"
                                th:classappend="${posts.pageable.pageNumber eq posts.totalPages - 1} ? 'disabled'">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
