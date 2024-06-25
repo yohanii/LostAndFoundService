@@ -22,7 +22,7 @@ public class ChattingService {
     private final ChattingRepository chattingRepository;
 
     @Transactional
-    public Long saveChatting(ChattingMessageDto dto) {
+    public Chatting saveChatting(ChattingMessageDto dto) {
         Member member = memberRepository.findById(dto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다."));
         Room room = roomRepository.findById(dto.getRoomId())
@@ -37,6 +37,6 @@ public class ChattingService {
                 .createdTime(now)
                 .build();
 
-        return chattingRepository.save(saveChatting).getId();
+        return chattingRepository.save(saveChatting);
     }
 }
