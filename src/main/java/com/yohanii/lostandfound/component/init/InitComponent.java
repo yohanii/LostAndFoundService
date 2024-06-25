@@ -15,6 +15,6 @@ public class InitComponent {
     public void init() {
         initService.saveAdmin();
         initService.fillMembers();
-        initService.fillPosts();
+//        initService.fillPosts();
     }
 }
