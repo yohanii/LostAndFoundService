@@ -3,6 +3,8 @@ package com.yohanii.lostandfound.component.chatting.service;
 import com.yohanii.lostandfound.component.chatting.dto.chatting.RoomSaveRequestDto;
 import com.yohanii.lostandfound.component.chatting.entity.Room;
 import com.yohanii.lostandfound.component.chatting.repository.RoomRepository;
+import com.yohanii.lostandfound.component.crud.entity.Member;
+import com.yohanii.lostandfound.component.crud.entity.Post;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,22 +23,21 @@ public class RoomService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Long createRoom(RoomSaveRequestDto dto) {
+    public Room createRoom(RoomSaveRequestDto dto) {
+
+        Member member = memberRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new NoSuchElementException("해당하는 유저가 존재하지 않습니다."));
+        Post post = postRepository.findById(dto.getPostId())
+                .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다."));
+
         Room saveRoom = Room.builder()
-                .member(memberRepository.findById(dto.getMemberId())
-                        .orElseThrow(() -> new NoSuchElementException("해당하는 유저가 존재하지 않습니다.")))
+                .member(member)
+                .post(post)
                 .partnerId(dto.getPartnerId())
-                .post(postRepository.findById(dto.getPostId())
-                        .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다.")))
                 .storeRoomName(createStoreRoomName())
                 .build();
-        return roomRepository.save(saveRoom).getId();
-    }
 
-    public String getStoreRoomNameById(Long id) {
-        return roomRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 채팅방이 존재하지 않습니다."))
-                .getStoreRoomName();
+        return roomRepository.save(saveRoom);
     }
 
     public List<Room> findRoomByMemberId(Long id) {

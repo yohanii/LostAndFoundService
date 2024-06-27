@@ -48,17 +48,12 @@ public class ChattingController {
             return "redirect:/chat/room/" + findRoomByIds.get().getStoreRoomName();
         }
 
-        RoomSaveRequestDto dto = new RoomSaveRequestDto();
-        dto.setMemberId(loginMemberId);
-        dto.setPostId(postId);
-        dto.setPartnerId(post.getMember().getId());
+        RoomSaveRequestDto dto = new RoomSaveRequestDto(loginMemberId, post.getMember().getId(), postId);
+        Room savedRoom = roomService.createRoom(dto);
 
-        Long savedRoomId = roomService.createRoom(dto);
-
-        String storeRoomName = roomService.getStoreRoomNameById(savedRoomId);
         notificationService.notify(post.getMember().getId(), loginMember.getNickName() + "님이 채팅을 새로 걸었습니다.");
 
-        return "redirect:/chat/room/" + storeRoomName;
+        return "redirect:/chat/room/" + savedRoom.getStoreRoomName();
     }
 
     @GetMapping("/chat/room/{storeRoomName}")

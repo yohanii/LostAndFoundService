@@ -42,15 +42,16 @@ class ChattingServiceTest {
     void saveChatting() {
 
         //given
-        Long memberId = 1L;
-        Long roomId = 1L;
+        Member member = Member.builder()
+                .id(1L)
+                .build();
+        Room room = Room.builder()
+                .id(1L)
+                .build();
+        ChattingMessageDto dto = new ChattingMessageDto(member.getId(), room.getId(), ChattingType.ENTER, "입장했습니다.");
 
-        Member member = Member.builder().build();
-        Room room = Room.builder().build();
-        ChattingMessageDto dto = new ChattingMessageDto(memberId, roomId, ChattingType.ENTER, "입장했습니다.");
-
-        given(memberRepository.findById(memberId)).willReturn(Optional.ofNullable(member));
-        given(roomRepository.findById(roomId)).willReturn(Optional.ofNullable(room));
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(roomRepository.findById(room.getId())).willReturn(Optional.of(room));
         given(chattingRepository.save(any(Chatting.class)))
                 .willReturn(Chatting.builder()
                         .member(member)
@@ -78,7 +79,7 @@ class ChattingServiceTest {
 
         given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
 
-        //then
+        //when -> then
         assertThatThrownBy(() -> chattingService.saveChatting(dto))
                 .isInstanceOf(NoSuchElementException.class);
     }
@@ -93,7 +94,7 @@ class ChattingServiceTest {
         given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(Member.builder().build()));
         given(roomRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
 
-        //then
+        //when -> then
         assertThatThrownBy(() -> chattingService.saveChatting(dto))
                 .isInstanceOf(NoSuchElementException.class);
     }

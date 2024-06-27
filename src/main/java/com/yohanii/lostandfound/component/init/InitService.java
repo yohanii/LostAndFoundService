@@ -34,8 +34,6 @@ public class InitService {
     private final PostService postService;
     private final PostRepository postRepository;
 
-    public static final int INIT_MEMBER_COUNT = 1000;
-    public static final long INIT_POST_COUNT = 1000;
     public static final String INIT_IMAGE_PATH = "src/main/resources/static/img/item/";
     public static final Map<String, Integer> itemImages = Map.of(
             "airpot.jpeg", 3,
@@ -69,14 +67,14 @@ public class InitService {
     }
 
     @Transactional
-    public int fillMembers() {
+    public int fillMembers(int count) {
 
-        if (memberRepository.count() >= INIT_MEMBER_COUNT) {
+        if (memberRepository.count() >= count) {
             return 0;
         }
 
         return memberRepository.saveAll(
-                        IntStream.range(0, INIT_MEMBER_COUNT)
+                        IntStream.range(0, count)
                                 .mapToObj(index -> {
                                     LocalDateTime now = LocalDateTime.now();
 
@@ -94,9 +92,9 @@ public class InitService {
                 .size();
     }
 
-    public long fillPosts() {
+    public long fillPosts(int count) {
 
-        if (postRepository.count() >= INIT_POST_COUNT) {
+        if (postRepository.count() >= count) {
             return 0L;
         }
 

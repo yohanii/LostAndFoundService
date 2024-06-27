@@ -11,10 +11,13 @@ public class InitComponent {
 
     private final InitService initService;
 
+    public static final int INIT_MEMBER_COUNT = 1000;
+    public static final long INIT_POST_COUNT = 1000;
+
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         initService.saveAdmin();
-        initService.fillMembers();
-//        initService.fillPosts();
+        initService.fillMembers(INIT_MEMBER_COUNT);
+//        initService.fillPosts(INIT_POST_COUNT);
     }
 }

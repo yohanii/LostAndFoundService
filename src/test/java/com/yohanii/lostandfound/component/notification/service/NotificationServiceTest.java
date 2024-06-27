@@ -1,89 +1,97 @@
 package com.yohanii.lostandfound.component.notification.service;
 
-import com.yohanii.lostandfound.component.notification.repository.EmitterRepository;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import com.yohanii.lostandfound.component.notification.entity.Notification;
-import com.yohanii.lostandfound.component.notification.entity.NotificationType;
+import com.yohanii.lostandfound.component.notification.repository.EmitterRepository;
 import com.yohanii.lostandfound.component.notification.repository.NotificationRepository;
-import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class NotificationServiceTest {
 
-    @Autowired
+    @InjectMocks
     NotificationService notificationService;
-    @Autowired
+    @Mock
     EmitterRepository emitterRepository;
-    @Autowired
+    @Mock
     NotificationRepository notificationRepository;
-    @Autowired
+    @Mock
     MemberRepository memberRepository;
 
     @Test
-    void subscribe() {
-        Member testMember = Member.builder().build();
-        Long memberId = memberRepository.save(testMember).getId();
-        notificationService.subscribe(memberId);
+    @DisplayName("구독 시, emitter를 생성하고, event 하나를 보낸다.")
+    void subscribe() throws IOException {
 
-        SseEmitter findEmitter = emitterRepository.get(memberId);
+        //given
+        Member member = Member.builder()
+                .id(1L)
+                .build();
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(emitterRepository.get(member.getId())).willReturn(new SseEmitter());
 
-        assertThat(findEmitter).isNotNull();
+        //when
+        notificationService.subscribe(member.getId());
+
+        //then
+        then(emitterRepository).should().deleteById(member.getId());
+        then(emitterRepository).should().save(eq(member.getId()), any(SseEmitter.class));
+
     }
 
     @Test
+    @DisplayName("event 하나를 보내고, 알림을 저장한다")
     void testNotify_정상과정() {
-        Member testMember = Member.builder().build();
-        Long memberId = memberRepository.save(testMember).getId();
+
+        //given
+        Member member = Member.builder()
+                .id(1L)
+                .build();
         String testData = "test data";
-        notificationService.subscribe(memberId);
 
-        notificationService.notify(memberId, testData);
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(emitterRepository.get(member.getId())).willReturn(new SseEmitter());
 
-        List<Notification> notifications = notificationRepository.findAll();
-        assertThat(notifications.size()).isEqualTo(1);
-        assertThat(notifications.get(0).getReceiver()).isEqualTo(testMember);
-        assertThat(notifications.get(0).getContent()).isEqualTo(testData);
-        assertThat(notifications.get(0).getNotificationType()).isEqualTo(NotificationType.CHATTING);
+        //when
+        notificationService.notify(member.getId(), testData);
+
+        //then
+        then(notificationRepository).should().save(any(Notification.class));
+
     }
 
     @Test
-    void testNotify_emiiter_null일때도_notification_저장되는지() {
-        Member testMember = Member.builder().build();
-        Long memberId = memberRepository.save(testMember).getId();
+    @DisplayName("해당하는 emitter가 존재하지 않아도, 알림은 저장된다.")
+    void testNotify_emitter_null일때도_notification_저장() {
+
+        //given
+        Member member = Member.builder()
+                .id(1L)
+                .build();
         String testData = "test data";
 
-        notificationService.notify(memberId, testData);
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(emitterRepository.get(member.getId())).willReturn(null);
 
-        List<Notification> notifications = notificationRepository.findAll();
-        assertThat(notifications.size()).isEqualTo(1);
-        assertThat(notifications.get(0).getReceiver()).isEqualTo(testMember);
-        assertThat(notifications.get(0).getContent()).isEqualTo(testData);
-        assertThat(notifications.get(0).getNotificationType()).isEqualTo(NotificationType.CHATTING);
+        //when
+        notificationService.notify(member.getId(), testData);
+
+        //then
+        then(notificationRepository).should().save(any(Notification.class));
+
     }
-
-//    @Test
-//    void readAllNotifications() {
-//        Member testMember = Member.builder().build();
-//        Long memberId = memberRepository.save(testMember);
-//        String testData = "test data";
-//
-//        notificationService.notify(memberId, testData);
-//        notificationService.notify(memberId, testData);
-//        notificationService.readAllNotifications(memberId);
-//
-//        List<Notification> notifications = notificationRepository.findAll(memberId);
-//        assertThat(notifications.size()).isEqualTo(2);
-//        assertThat(notifications.get(0).getIsRead()).isTrue();
-//        assertThat(notifications.get(1).getIsRead()).isTrue();
-//    }
 }
