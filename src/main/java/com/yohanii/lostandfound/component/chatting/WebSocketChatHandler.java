@@ -15,10 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -45,7 +42,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         ChattingMessageDto dto = objectMapper.readValue(payload, ChattingMessageDto.class);
         log.info("handleTextMessage dto.getRoomId = {}", dto.getRoomId());
         Room room = roomRepository.findById(dto.getRoomId())
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 채팅방이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 채팅방이 존재하지 않습니다."));
         log.info("handleTextMessage room = {}", room);
 
         if(!chatRoomSessionMap.containsKey(room.getId())){

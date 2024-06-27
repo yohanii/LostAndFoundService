@@ -35,7 +35,8 @@ public class Item {
     private ItemCategory itemCategory;
 
     @Builder
-    public Item(Post post, String place, ItemCategory itemCategory) {
+    public Item(Long id, Post post, String place, ItemCategory itemCategory) {
+        this.id = id;
         this.post = post;
         this.place = place;
         this.itemCategory = itemCategory;

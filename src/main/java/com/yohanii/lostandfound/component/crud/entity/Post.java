@@ -45,7 +45,8 @@ public class Post {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Post(Member member, Item item, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public Post(Long id, Member member, Item item, String title, String content, PostType type, LocalDateTime createdTime, LocalDateTime updatedTime) {
+        this.id = id;
         this.member = member;
         this.item = item;
         this.title = title;

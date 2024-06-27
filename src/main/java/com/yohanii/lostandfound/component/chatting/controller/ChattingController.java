@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -40,24 +41,19 @@ public class ChattingController {
         Member loginMember = (Member) model.getAttribute("member");
         Long loginMemberId = loginMember.getId();
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다."));
 
         Optional<Room> findRoomByIds = roomService.findRoomByIds(loginMemberId, post.getMember().getId());
         if (findRoomByIds.isPresent()) {
             return "redirect:/chat/room/" + findRoomByIds.get().getStoreRoomName();
         }
 
-        RoomSaveRequestDto dto = new RoomSaveRequestDto();
-        dto.setMemberId(loginMemberId);
-        dto.setPostId(postId);
-        dto.setPartnerId(post.getMember().getId());
+        RoomSaveRequestDto dto = new RoomSaveRequestDto(loginMemberId, post.getMember().getId(), postId);
+        Room savedRoom = roomService.createRoom(dto);
 
-        Long savedRoomId = roomService.createRoom(dto);
-
-        String storeRoomName = roomService.getStoreRoomNameById(savedRoomId);
         notificationService.notify(post.getMember().getId(), loginMember.getNickName() + "님이 채팅을 새로 걸었습니다.");
 
-        return "redirect:/chat/room/" + storeRoomName;
+        return "redirect:/chat/room/" + savedRoom.getStoreRoomName();
     }
 
     @GetMapping("/chat/room/{storeRoomName}")

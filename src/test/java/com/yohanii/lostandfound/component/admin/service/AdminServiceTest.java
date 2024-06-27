@@ -6,75 +6,77 @@ import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.*;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
 
-    @Autowired
+    @InjectMocks
     AdminService adminService;
-    @Autowired
+    @Mock
     MemberRepository memberRepository;
 
+    Member member1;
+    Member member2;
+
     @BeforeEach
-    void before() {
-        memberRepository.deleteAll();
+    void setUp() {
+        member1 = Member.builder()
+                .id(1L)
+                .auth(MemberAuth.MEMBER)
+                .build();
+
+        member2 = Member.builder()
+                .id(2L)
+                .auth(MemberAuth.ADMIN)
+                .build();
     }
 
     @Test
     void findAllMembers() {
-        Member member1 = Member.builder().build();
-        Member member2 = Member.builder().build();
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+        //given
+        given(memberRepository.findAll()).willReturn(List.of(member1, member2));
 
+        //when
         List<Member> members = adminService.findAllMembers();
 
+        //then
         assertThat(members.size()).isEqualTo(2);
         assertThat(members).contains(member1, member2);
     }
 
     @Test
     void deleteMembers() {
-        Member member1 = Member.builder().build();
-        Member member2 = Member.builder().build();
-        Member member3 = Member.builder().build();
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-
+        //given
+        //when
         adminService.deleteMembers(List.of(member1.getId(), member2.getId()));
-        List<Member> members = adminService.findAllMembers();
 
-        assertThat(members.size()).isEqualTo(1);
-        assertThat(members).doesNotContain(member1, member2);
-        assertThat(members).contains(member3);
+        //then
+        then(memberRepository).should().deleteAll(List.of(member1.getId(), member2.getId()));
     }
 
     @Test
     @DisplayName("memberIds에 해당하는 member들의 auth가 변경되어야 한다.")
     void updateMembersAuth() {
-        Member member1 = Member.builder().auth(MemberAuth.ADMIN).build();
-        Member member2 = Member.builder().auth(MemberAuth.MEMBER).build();
-        Member member3 = Member.builder().auth(MemberAuth.MEMBER).build();
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
+        //given
+        given(memberRepository.findAll()).willReturn(List.of(member1, member2));
 
-        adminService.updateMembersAuth(List.of(member1.getId(), member2.getId(), member3.getId()));
+        //when
+        adminService.updateMembersAuth(List.of(member1.getId(), member2.getId()));
 
-        assertThat(member1.getAuth()).isEqualTo(MemberAuth.MEMBER);
-        assertThat(member2.getAuth()).isEqualTo(MemberAuth.ADMIN);
-        assertThat(member3.getAuth()).isEqualTo(MemberAuth.ADMIN);
+        //then
+        assertThat(member1.getAuth()).isEqualTo(MemberAuth.ADMIN);
+        assertThat(member2.getAuth()).isEqualTo(MemberAuth.MEMBER);
     }
 }

@@ -1,6 +1,5 @@
 package com.yohanii.lostandfound.component.chatting.entity;
 
-import com.yohanii.lostandfound.component.chatting.entity.Chatting;
 import com.yohanii.lostandfound.component.crud.entity.Member;
 import com.yohanii.lostandfound.component.crud.entity.Post;
 import jakarta.persistence.*;
@@ -46,7 +45,8 @@ public class Room {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Room(Member member, Post post, Long partnerId, String storeRoomName) {
+    public Room(Long id, Member member, Post post, Long partnerId, String storeRoomName) {
+        this.id = id;
         this.member = member;
         this.post = post;
         this.partnerId = partnerId;

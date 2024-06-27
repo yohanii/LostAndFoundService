@@ -1,12 +1,12 @@
 package com.yohanii.lostandfound.component.chatting.dto.chatting;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 public class RoomSaveRequestDto {
 
     private Long memberId;

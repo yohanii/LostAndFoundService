@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +23,11 @@ public class ChattingService {
     private final ChattingRepository chattingRepository;
 
     @Transactional
-    public Long saveChatting(ChattingMessageDto dto) {
+    public Chatting saveChatting(ChattingMessageDto dto) {
         Member member = memberRepository.findById(dto.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 유저가 존재하지 않습니다."));
         Room room = roomRepository.findById(dto.getRoomId())
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 채팅방이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 채팅방이 존재하지 않습니다."));
 
         LocalDateTime now = room.updateUpdatedTime();
         Chatting saveChatting = Chatting.builder()
@@ -37,6 +38,6 @@ public class ChattingService {
                 .createdTime(now)
                 .build();
 
-        return chattingRepository.save(saveChatting).getId();
+        return chattingRepository.save(saveChatting);
     }
 }

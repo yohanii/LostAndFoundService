@@ -33,7 +33,8 @@ public class Notification {
     private LocalDateTime createdTime;
 
     @Builder
-    public Notification(Member receiver, String content, NotificationType notificationType) {
+    public Notification(Long id, Member receiver, String content, NotificationType notificationType) {
+        this.id = id;
         this.receiver = receiver;
         this.content = content;
         this.notificationType = notificationType;

@@ -61,9 +61,7 @@ public class ImageStoreService {
                 .storeFileName(storeFileName)
                 .build();
 
-        imageRepository.save(saveImage);
-
-        return saveImage;
+        return imageRepository.save(saveImage);
     }
 
     @Transactional
@@ -93,8 +91,8 @@ public class ImageStoreService {
                     .storeFileName(storeFileName)
                     .build();
 
-            imageRepository.save(saveImage);
-            images.add(saveImage);
+            Image savedImage = imageRepository.save(saveImage);
+            images.add(savedImage);
         }
 
         return images;

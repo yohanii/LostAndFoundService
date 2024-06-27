@@ -39,7 +39,8 @@ public class Chatting {
     private LocalDateTime createdTime;
 
     @Builder
-    public Chatting(Member member, Room room, ChattingType type, String content, LocalDateTime createdTime) {
+    public Chatting(Long id, Member member, Room room, ChattingType type, String content, LocalDateTime createdTime) {
+        this.id = id;
         this.member = member;
         this.room = room;
         this.type = type;

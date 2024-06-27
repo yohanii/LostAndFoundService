@@ -39,7 +39,8 @@ public class Member {
     private LocalDateTime updatedTime;
 
     @Builder
-    public Member(String name, Image profileImage, String loginId, String password, String nickName, LocalDateTime createdTime, LocalDateTime updatedTime, MemberAuth auth) {
+    public Member(Long id, String name, Image profileImage, String loginId, String password, String nickName, LocalDateTime createdTime, LocalDateTime updatedTime, MemberAuth auth) {
+        this.id = id;
         this.name = name;
         this.profileImage = profileImage;
         this.loginId = loginId;

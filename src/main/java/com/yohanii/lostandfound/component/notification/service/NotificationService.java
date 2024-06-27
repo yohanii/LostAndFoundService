@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -40,7 +41,7 @@ public class NotificationService {
 
     private void sendToClient(Long id, Object data, NotificationType type) {
         Member receiver = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 유저가 존재하지 않습니다."));
 
         SseEmitter emitter = emitterRepository.get(id);
         if (emitter != null) {

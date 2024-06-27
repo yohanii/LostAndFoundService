@@ -34,7 +34,8 @@ public class Image {
     private String storeFileName;
 
     @Builder
-    public Image(Member member, Item item, ImageType type, String uploadFileName, String storeFileName) {
+    public Image(Long id, Member member, Item item, ImageType type, String uploadFileName, String storeFileName) {
+        this.id = id;
         this.member = member;
         this.item = item;
         this.type = type;

@@ -1,5 +1,21 @@
 ## 기록
 
+- 24.6.27
+  - 통합 테스트를 유닛 테스트로 전환
+    - 전체 테스트 시간 : 10.24s → 1.97s (81% 감소)
+    - ImageStoreServiceTest : 5.444s → 0.122s 
+    - InitServiceTest : 2.41s → 0.006s 
+    - AdminServiceTest : 1.931s → 0.193s
+    - ImageStoreServiceTest의 경우, s3에 직접 이미지 올리고 확인하는 작업이 없어지면서 매우 빨라졌다. 
+    - InitServiceTest의 경우, 맴버 1000개를 만들어서 확인하는 작업이 없어지고, 받은 count값 만큼 만들도록 기존 코드를 수정하여, 테스트 하기 쉽게 리팩토링 해주었다.
+    - BDDMockito 사용 - Mockito 보다 통일성, 가독성 상승
+- 24.6.24
+  - 게시물 Pagination 추가
+    - Ngrinder를 사용한 Smoke Test
+    - VUser 2일 때, MTT : 23,615ms -> 131ms (99% 감소)
+- 24.6.18
+  - InitData 추가
+    - 초기 맴버 1000명, 초기 게시물 10000개
 - 24.5.28
   - view 수정
     - 전체적인 화면 수정

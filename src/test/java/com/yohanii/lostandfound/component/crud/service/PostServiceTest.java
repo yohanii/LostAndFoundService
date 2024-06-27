@@ -1,21 +1,28 @@
 package com.yohanii.lostandfound.component.crud.service;
 
 import com.yohanii.lostandfound.component.crud.dto.post.PostSaveInfoDto;
+import com.yohanii.lostandfound.component.crud.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
-@SpringBootTest
-@Transactional
+import static org.mockito.BDDMockito.anyLong;
+import static org.mockito.BDDMockito.given;
+
+@ExtendWith(MockitoExtension.class)
 class PostServiceTest {
 
-    @Autowired
+    @InjectMocks
     PostService postService;
+    @Mock
+    MemberRepository memberRepository;
 
     @Test
     @DisplayName("dto를 받아서, post, item, images을 저장한다.")
@@ -30,9 +37,14 @@ class PostServiceTest {
     @Test
     @DisplayName("memberId에 해당하는 member가 없으면 exception")
     void savePost_no_member() {
-        PostSaveInfoDto dto = new PostSaveInfoDto();
-        dto.setMemberId(-1L);
 
+        //given
+        PostSaveInfoDto dto = new PostSaveInfoDto();
+        dto.setMemberId(1L);
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
+
+        //when -> then
         Assertions.assertThatThrownBy(() -> postService.savePost(dto))
                 .isInstanceOf(NoSuchElementException.class);
     }
