@@ -66,19 +66,4 @@ class ChattingServiceTest {
         assertThat(result.getContent()).isEqualTo(dto.getContent());
     }
 
-    @Test
-    void saveChatting시_room의_updatedPost_update() {
-        Member member = Member.builder().build();
-        Long savedMemberId = memberRepository.save(member).getId();
-        Room room = Room.builder().build();
-        Long savedRoomId = roomRepository.save(room).getId();
-        ChattingMessageDto dto = new ChattingMessageDto(savedMemberId, savedRoomId, ChattingType.ENTER, "입장했습니다.");
-
-        Chatting result = chattingService.saveChatting(dto);
-
-//        Chatting findChatting = chattingRepository.findById(savedChattingId).orElse(null);
-//        Room chattingRoom = findChatting.getRoom();
-//
-//        assertThat(chattingRoom.getUpdatedTime()).isEqualTo(findChatting.getCreatedTime());
-    }
 }

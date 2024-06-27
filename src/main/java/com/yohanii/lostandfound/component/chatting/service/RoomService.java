@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +24,10 @@ public class RoomService {
     public Long createRoom(RoomSaveRequestDto dto) {
         Room saveRoom = Room.builder()
                 .member(memberRepository.findById(dto.getMemberId())
-                        .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다.")))
+                        .orElseThrow(() -> new NoSuchElementException("해당하는 유저가 존재하지 않습니다.")))
                 .partnerId(dto.getPartnerId())
                 .post(postRepository.findById(dto.getPostId())
-                        .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다.")))
+                        .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다.")))
                 .storeRoomName(createStoreRoomName())
                 .build();
         return roomRepository.save(saveRoom).getId();
@@ -38,7 +35,7 @@ public class RoomService {
 
     public String getStoreRoomNameById(Long id) {
         return roomRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 채팅방이 존재하지 않습니다."))
+                .orElseThrow(() -> new NoSuchElementException("해당하는 채팅방이 존재하지 않습니다."))
                 .getStoreRoomName();
     }
 

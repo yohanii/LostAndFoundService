@@ -25,6 +25,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -78,7 +80,7 @@ public class PostController {
     public String post(@PathVariable Long postId, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다."));
 
         model.addAttribute("post", post);
         model.addAttribute("redirectURL", redirectURL);
@@ -112,7 +114,7 @@ public class PostController {
     public String postEditForm(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL, Model model) {
 
         Post findPost = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다."));
         dto.setTitle(findPost.getTitle());
         dto.setContent(findPost.getContent());
         dto.setType(findPost.getType());
@@ -130,7 +132,7 @@ public class PostController {
     public String postEdit(@PathVariable Long postId, @ModelAttribute PostEditRequestDto dto, @RequestParam(defaultValue = "/") String redirectURL) {
 
         Post findPost = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다."));
         findPost.updatePost(dto);
         findPost.getItem().updateItem(dto);
 

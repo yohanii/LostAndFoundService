@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -40,7 +41,7 @@ public class ChattingController {
         Member loginMember = (Member) model.getAttribute("member");
         Long loginMemberId = loginMember.getId();
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 게시물이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당하는 게시물이 존재하지 않습니다."));
 
         Optional<Room> findRoomByIds = roomService.findRoomByIds(loginMemberId, post.getMember().getId());
         if (findRoomByIds.isPresent()) {
