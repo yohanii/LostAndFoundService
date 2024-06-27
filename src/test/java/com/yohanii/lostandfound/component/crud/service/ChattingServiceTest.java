@@ -16,10 +16,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,4 +69,32 @@ class ChattingServiceTest {
         assertThat(result.getContent()).isEqualTo(dto.getContent());
     }
 
+    @Test
+    @DisplayName("dto의 memberId에 해당하는 member 없을 시, NoSuchElementException 발생")
+    void saveChatting_해당하는_유저_없음() {
+
+        //given
+        ChattingMessageDto dto = new ChattingMessageDto(1L, 1L, ChattingType.ENTER, "입장했습니다.");
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
+
+        //then
+        assertThatThrownBy(() -> chattingService.saveChatting(dto))
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    @DisplayName("dto의 roomId에 해당하는 room 없을 시, NoSuchElementException 발생")
+    void saveChatting_해당하는_채팅방_없음() {
+
+        //given
+        ChattingMessageDto dto = new ChattingMessageDto(1L, 1L, ChattingType.ENTER, "입장했습니다.");
+
+        given(memberRepository.findById(anyLong())).willReturn(Optional.ofNullable(Member.builder().build()));
+        given(roomRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
+
+        //then
+        assertThatThrownBy(() -> chattingService.saveChatting(dto))
+                .isInstanceOf(NoSuchElementException.class);
+    }
 }
