@@ -6,40 +6,46 @@
 ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
 ## 📌 사이트 주소
-https://www.wanna-find.com/
+~~https://www.wanna-find.com/~~
 
 
 ## 📖 개요
   - 1인 개발
-  - 개발 기간 : 23.11.01 ~
+  - 개발 기간 : 23.11 ~ 24.06 (실개발 2달반)
   - 잃어버린 물건의 주인을 찾아주는 게시판 형태의 **분실물 서비스** 입니다.
-  - AWS(EC2, RDS, S3)환경으로 배포한 상태입니다.
+  - AWS(EC2, RDS, S3)환경으로 배포했습니다.
 
 ## 🛠 개발 환경
 - JAVA : 17
 - Spring Boot : 3.1.5
 - JPA
 - MySQL
+- QueryDSL
 - Thymeleaf
 
-## 🧭 아키텍처
-![아키텍처1.png](docs%2Fimg%2F%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%981.png)
 
 ## 💎 Main Features
 - 게시판 CRUD
   - S3에 이미지 저장
-  - AOP 사용해 16개 method 코드 중복 제거
 - Session 방식 로그인
-  - Spring Interceptor를 활용해 비로그인 시 페이지 접근 제한
-- 검색 기능
-  - 게시물 타입, 내용에 대한 검색 기능 구현
-- 1:1 채팅 기능
-  - WebSocket을 활용한 실시간 채팅 기능 구현
+- QueryDSL 사용한 검색 기능
+- WebSocket을 활용한 1:1 채팅 기능
 - 관리자 페이지
-  - 사용자, 게시물, 채팅방 삭제 및 사용자 권한 변경 
+
+## 🖥️ 결과
+- Pagination 적용으로 Post 10000개 기준 단위 시간 감소 50s -> 0.18s
+- Interceptor를 활용해 비로그인 시 페이지 접근 제한
+- AOP를 사용해, 16개 method 중복 코드 제거
+- BDDMockito를 사용한 단위 테스트 작성
+
+ 
+## 🧭 아키텍처
+![아키텍처1.png](docs%2Fimg%2F%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%981.png)
+
 
 ## 💾 ERD
 ![ERD.png](docs/img/ERDv7.png)
+
 
 ## 🎯 트러블 슈팅
 ### 목차
