@@ -14,7 +14,7 @@
             <section id="article-images" class="addform-item">
                 <div id="previews" class="text-center">
                     <th:block th:each="image : ${post.item.images}">
-                        <img class="img-thumbnail" style="width: 300px; height: 300px" th:src="|/images/${image.getStoreFileName()}|">
+                        <img class="img-thumbnail" style="width: 300px; height: 300px" th:src="|/images/${image.getUploadFileName()}|">
                     </th:block>
                 </div>
                 <div>

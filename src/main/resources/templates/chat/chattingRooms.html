@@ -19,7 +19,7 @@
             <div id="rooms" th:each="room: ${rooms}">
                 <div class="py-2 w-100 row border rounded-3 align-items-center bg-light shadow" th:onclick="|location.href='@{/chat/room/{name}(name=${room.storeRoomName})}'|" style="cursor:pointer">
                     <div class="col-3 p-1">
-                        <img th:if="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="|/images/${room.post.item.images.get(0).getStoreFileName()}|" style="width: 100px; height: 100px">
+                        <img th:if="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="|/images/${room.post.item.images.get(0).getUploadFileName()}|" style="width: 100px; height: 100px">
                         <img th:unless="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="@{/img/default.png}" style="width: 100px; height: 100px">
                     </div>
                     <div class="col p-2 text-start">

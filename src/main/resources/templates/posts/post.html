@@ -30,7 +30,7 @@
                         <div th:if="${post.item.images} != null and !${post.item.images.isEmpty()}">
                             <th:block th:each="image: *{post.item.images}">
                                 <div class="carousel-item">
-                                    <img src="..." class="d-block w-100" style="width: 500px; height: 500px" alt="..." th:src="|/images/${image.getStoreFileName()}|">
+                                    <img src="..." class="d-block w-100" style="width: 500px; height: 500px" alt="..." th:src="|/images/${image.getUploadFileName()}|">
                                 </div>
                             </th:block>
                         </div>
@@ -62,7 +62,7 @@
                                     <div>
                                         <div class="row">
                                             <div id="article-profile-image" class="col col-4 text-center p-1">
-                                                <img class="img-thumbnail" th:if="${post.member.profileImage} != null" alt="profile-image" th:src="|/images/${post.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px">
+                                                <img class="img-thumbnail" th:if="${post.member.profileImage} != null" alt="profile-image" th:src="|/images/${post.member.profileImage.getUploadFileName()}|" style="width: 60px; height: 60px">
                                                 <img class="img-thumbnail" th:unless="${post.member.profileImage} != null"alt="profile-image" th:src="@{/img/default.png}" style="width: 60px; height: 60px">
                                             </div>
                                             <div id="article-profile-left" class="col">

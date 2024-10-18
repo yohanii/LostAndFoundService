@@ -46,7 +46,7 @@ public class ImageStoreService {
         String uploadFileName = dto.getProfileImage().getOriginalFilename();
         String storeFileName = createStoreFileName(uploadFileName, ImageType.MEMBER);
 
-        saveFileS3(storeFileName, dto.getProfileImage(), ImageType.MEMBER);
+//        saveFileS3(storeFileName, dto.getProfileImage(), ImageType.MEMBER);
 
         Image profileImage = dto.getMember().getProfileImage();
         if (profileImage != null) {
@@ -82,7 +82,7 @@ public class ImageStoreService {
             String uploadFileName = file.getOriginalFilename();
             String storeFileName = createStoreFileName(uploadFileName, ImageType.ITEM);
 
-            saveFileS3(storeFileName, file, ImageType.ITEM);
+//            saveFileS3(storeFileName, file, ImageType.ITEM);
 
             Image saveImage = Image.builder()
                     .item(dto.getItem())

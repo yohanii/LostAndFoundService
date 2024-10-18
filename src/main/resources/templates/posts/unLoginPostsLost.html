@@ -67,7 +67,7 @@
                 <div th:each="post: ${posts}">
                     <div class="col" th:onclick="|location.href='@{/posts/{postId}(postId=${post.id})}'|" style="cursor: pointer">
                         <div class="card shadow-sm">
-                            <img th:if="${post.item} != null and ${post.item.images} != null and !${post.item.images.isEmpty()}" class="bd-placeholder-img card-img-top" width="100%" height="225" th:src="|/images/${post.item.images.get(0).getStoreFileName()}|">
+                            <img th:if="${post.item} != null and ${post.item.images} != null and !${post.item.images.isEmpty()}" class="bd-placeholder-img card-img-top" width="100%" height="225" th:src="|/images/${post.item.images.get(0).getUploadFileName()}|">
                             <img th:unless="${post.item} != null and ${post.item.images} != null and !${post.item.images.isEmpty()}" class="bd-placeholder-img card-img-top" width="100%" height="225" th:src="@{/img/default.png}">
                             <div class="card-body border">
                                 <div th:if="${post.type.toString().equals('LOST')}" class="badge bg-primary bg-gradient rounded-pill mb-2" th:text="'물건 찾아요!'">물건 찾아요</div>

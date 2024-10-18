@@ -10,6 +10,7 @@ import com.yohanii.lostandfound.component.crud.repository.PostRepository;
 import com.yohanii.lostandfound.component.crud.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +40,6 @@ public class InitService {
             "airpot.jpeg", 3,
             "hat.jpg", 2,
             "phone.jpeg", 2,
-            "wallet.jpeg", 1,
             "watch.jpg", 2
     );
 
@@ -160,7 +160,7 @@ public class InitService {
 
         for (int index = 1; index <= count; index++) {
             String name = split[0] + index + "." + split[1];
-//            result.add(new MockMultipartFile(name, name, "text/plain", contents.getOrDefault(name, null)));
+            result.add(new MockMultipartFile(name, name, "text/plain", contents.getOrDefault(name, null)));
         }
 
         return result;

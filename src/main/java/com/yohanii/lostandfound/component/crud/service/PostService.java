@@ -36,9 +36,9 @@ public class PostService {
         Long savedPostId = postRepository.save(savePost).getId();
         Item savedItem = itemRepository.save(dto.toItemEntity(savePost));
 
-        if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).isEmpty()) {
+//        if (!dto.getItemImages().isEmpty() && !dto.getItemImages().get(0).isEmpty()) {
             imageStoreService.saveImages(dto.toItemImagesSaveDto(savedItem));
-        }
+//        }
         return savedPostId;
     }
 

@@ -28,7 +28,7 @@
 <!--                    <div class="row">-->
 <!--                        <div class="col-2 text-center" th:text="상대방" />-->
 <!--                        <div class="col-2">-->
-<!--                            <img class="img-thumbnail p-0"  th:if="${room.member.profileImage}" th:src="|/images/${room.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px;">-->
+<!--                            <img class="img-thumbnail p-0"  th:if="${room.member.profileImage}" th:src="|/images/${room.member.profileImage.getUploadFileName()}|" style="width: 60px; height: 60px;">-->
 <!--                            <img class="img-thumbnail p-0" th:if="!${room.member.profileImage}" th:src="@{/img/default.png}" style="width: 60px; height: 60px;">-->
 <!--                        </div>-->
 <!--                        <p class="col name px-3" th:text="${room.member.nickName}">상대 이름</p>-->
@@ -38,7 +38,7 @@
                     <div class="row">
 <!--                        <div class="col-2 text-center" th:text="물품" />-->
                         <div class="col-1">
-                            <img th:if="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="|/images/${room.post.item.images.get(0).getStoreFileName()}|" style="width: 60px; height: 60px">
+                            <img th:if="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="|/images/${room.post.item.images.get(0).getUploadFileName()}|" style="width: 60px; height: 60px">
                             <img th:unless="${room.post.item} != null and ${room.post.item.images} != null and !${room.post.item.images.isEmpty()}" class="img-fluid img-thumbnail" th:src="@{/img/default.png}" style="width: 60px; height: 60px">
                         </div>
                         <h4 class="col px-3 d-flex align-items-center" th:text="${room.post.title}">post title</h4>
@@ -59,9 +59,9 @@
                     <th:block>
                         <div class="message text-only">
                             <div class="align-items-center" th:if="${chat.member.id} != ${member.id}">
-<!--                                <img class="col img-thumbnail p-0"  th:if="${chat.member.profileImage}" th:src="|/images/${chat.member.profileImage.getStoreFileName()}|" style="width: 60px; height: 60px;">-->
+<!--                                <img class="col img-thumbnail p-0"  th:if="${chat.member.profileImage}" th:src="|/images/${chat.member.profileImage.getUploadFileName()}|" style="width: 60px; height: 60px;">-->
 <!--                                <img class="col img-thumbnail p-0" th:if="!${chat.member.profileImage}" th:src="@{/img/default.png}" style="width: 60px; height: 60px;">-->
-<!--                                <img th:if="${post.item} != null and ${post.item.images} != null and !${post.item.images.isEmpty()}" class="bd-placeholder-img card-img-top" width="100%" height="225" th:src="|/images/${post.item.images.get(0).getStoreFileName()}|">-->
+<!--                                <img th:if="${post.item} != null and ${post.item.images} != null and !${post.item.images.isEmpty()}" class="bd-placeholder-img card-img-top" width="100%" height="225" th:src="|/images/${post.item.images.get(0).getUploadFileName()}|">-->
 
                                 <p class="text" th:text="${chat.content}">message</p>
 <!--                                <p class="time" th:text="${chat.createdTime}"> 15h09</p>-->
