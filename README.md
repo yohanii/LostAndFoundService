@@ -8,8 +8,6 @@
 ## 📌 사이트 주소
 ~~https://www.wanna-find.com/~~
 
-임시 사이트 : http://ec2-3-35-137-219.ap-northeast-2.compute.amazonaws.com:8080/
-
 
 ## 📖 개요
   - 1인 개발
